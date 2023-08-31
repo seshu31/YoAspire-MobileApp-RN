@@ -1,1 +1,1 @@
-# YoAspire-MobileApp-RN
+# YoAspireMobileAppRN
