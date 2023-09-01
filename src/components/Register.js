@@ -48,7 +48,12 @@ const Register = ({navigation}) => {
     setIsChecked(prevIsChecked => !prevIsChecked);
   };
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    console.log(data);
+    navigation.navigate('otp-verification', {
+      email: data.email,
+    });
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
