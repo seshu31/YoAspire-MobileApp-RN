@@ -5,6 +5,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Register from './src/components/Register';
 import Login from './src/components/Login';
+import OTP from './src/components/OTP';
+import ForgotPassword from './src/components/ForgotPassword';
+import EnterPassword from './src/components/EnterPassword';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Index from './src/components/Index';
 // import OTP from './src/components/OTP';
@@ -55,6 +58,12 @@ const App = () => {
             component={Login}
             // initialParams={{loginHandler: loginHandler}}
           />
+          <Stack.Screen name="otp-verification" component={OTP} />
+          <Stack.Screen
+                  name="forgot-password"
+                  component={ForgotPassword}
+                />
+                <Stack.Screen name="enter-password" component={EnterPassword} />
         </Stack.Navigator>
       </NavigationContainer>
       {/* {loggedIn != null ? (

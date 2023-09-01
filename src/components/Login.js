@@ -227,6 +227,11 @@ const styles = StyleSheet.create({
     color: '#376eb3',
     textAlign: 'center',
   },
+  forgotText: {
+    width: '100%',
+    color: '#2196f3',
+    textAlign: 'right',
+  },
 });
 
 export default Login;
