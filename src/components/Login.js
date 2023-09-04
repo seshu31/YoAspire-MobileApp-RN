@@ -38,7 +38,10 @@ const Login = ({navigation, route}) => {
   //   route.params.loginHandler(true); // Assuming this function exists in the parent component
   // };
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    console.log(data);
+    navigation.navigate('index');
+  };
 
   return (
     <View style={styles.container}>
