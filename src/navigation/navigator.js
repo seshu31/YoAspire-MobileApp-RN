@@ -46,14 +46,12 @@ const Navigator = ({handleCreatePost}) => {
         options={{
           tabBarLabel: 'Network',
           tabBarIcon: ({color}) => (
-            <View style={styles.notificationIcon}>
-              <Ionicons name="people" size={normalize(26)} color={color} />
-            </View>
+            <Ionicons name="people" size={normalize(26)} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="CreatePost" 
+        name="CreatePost"
         children={() => (
           <CreatePost
             handleFetch={handleFetch}
@@ -96,11 +94,5 @@ const Navigator = ({handleCreatePost}) => {
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  notificationIcon: {
-    position: 'relative',
-  },
-});
 
 export default Navigator;
