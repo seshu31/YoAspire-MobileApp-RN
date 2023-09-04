@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Register from './src/components/Register';
 import Login from './src/components/Login';
+import Index from './src/components/Index';
 import OTP from './src/components/OTP';
 import ForgotPassword from './src/components/ForgotPassword';
 import EnterPassword from './src/components/EnterPassword';
@@ -53,6 +54,7 @@ const App = () => {
             headerShown: false,
           }}>
           <Stack.Screen name="register" component={Register} />
+          <Stack.Screen name="index" component={Index} />
           <Stack.Screen
             name="login"
             component={Login}
@@ -89,7 +91,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // marginTop: StatusBar.currentHeight,
   },
 });
 
