@@ -24,7 +24,7 @@ const Navigator = ({handleCreatePost}) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Network"
       screenOptions={{
         tabBarStyle: {backgroundColor: theme.colors.white},
         headerShown: false,

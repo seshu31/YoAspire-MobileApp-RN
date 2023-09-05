@@ -9,6 +9,7 @@ import Index from './src/components/Index';
 import OTP from './src/components/OTP';
 import ForgotPassword from './src/components/ForgotPassword';
 import EnterPassword from './src/components/EnterPassword';
+import Profile from './src/components/Profile';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Index from './src/components/Index';
 // import OTP from './src/components/OTP';
@@ -44,7 +45,12 @@ import EnterPassword from './src/components/EnterPassword';
 const Stack = createStackNavigator();
 
 const App = () => {
-  // const [loggedIn, setLoggedIn] = useState(() => null);
+  const [loggedIn, setLoggedIn] = useState(() => null);
+  
+const loginHandler = (value: any) => {
+    setLoggedIn(value);
+};
+
   return (
     <View style={styles.container}>
       <NavigationContainer>
@@ -65,7 +71,12 @@ const App = () => {
                   name="forgot-password"
                   component={ForgotPassword}
                 />
-                <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen
+                  name="profile"
+                  component={Profile}
+                  initialParams={{ loginHandler: loginHandler }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       {/* {loggedIn != null ? (
