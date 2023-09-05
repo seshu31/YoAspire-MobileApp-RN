@@ -4,10 +4,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import {useNavigation} from '@react-navigation/native';
 
-const DashboardArticle = ({item, navigation}) => {
-  const [liked, setLiked] = useState(() => (item.Active === 1 ? true : false));
-  const [likeCount, setLikeCount] = useState(() => item.No_of_Likes);
+const DashboardArticle = ({articles}) => {
+  const navigation = useNavigation();
+  const [liked, setLiked] = useState(() =>
+    articles?.Active === 1 ? true : false,
+  );
+  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
 
   const likeHandler = () => {
     // Toggle the liked state locally
@@ -18,7 +22,7 @@ const DashboardArticle = ({item, navigation}) => {
   };
 
   const fetchArticle = () => {
-    if (item.Category_Type === 'article') {
+    if (articles?.Category_Type === 'article') {
       return (
         <View style={styles.articleItem}>
           <View style={styles.writerInfo}>
@@ -26,8 +30,8 @@ const DashboardArticle = ({item, navigation}) => {
               <Image
                 style={styles.writeImage}
                 source={
-                  item.img_file_name
-                    ? {uri: item.img_file_name}
+                  articles.img_file_name
+                    ? {uri: articles.img_file_name}
                     : require('../../assets/male.png')
                 }
               />
@@ -37,7 +41,7 @@ const DashboardArticle = ({item, navigation}) => {
                 style={styles.writerName}
                 numberOfLines={1}
                 ellipsizeMode={'tail'}>
-                {item.First_Name} {item.Last_Name}
+                {articles.First_Name} {articles.Last_Name}
               </Text>
             </View>
           </View>
@@ -46,7 +50,7 @@ const DashboardArticle = ({item, navigation}) => {
               style={styles.titleText}
               numberOfLines={1}
               ellipsizeMode={'tail'}>
-              {item.Title}
+              {articles.Title}
             </Text>
           </View>
           <View style={styles.articleDesc}>
@@ -54,53 +58,55 @@ const DashboardArticle = ({item, navigation}) => {
               style={styles.descriptionText}
               numberOfLines={3}
               ellipsizeMode={'tail'}>
-              {item.Description}
+              {articles.Description}
             </Text>
           </View>
           <View style={styles.articleImage}>
             <Image
               style={{width: '100%', height: 150, resizeMode: 'cover'}}
               source={
-                item.Image
-                  ? {uri: item.Image}
+                articles.Image
+                  ? {uri: articles.Image}
                   : require('../../assets/pic2.png')
               }
             />
           </View>
         </View>
       );
-    } else if (item.Category_Type === 'job') {
+    } else if (articles?.Category_Type === 'job') {
       return (
         <View style={styles.jobItem}>
           <View>
             <Image
               style={{width: 100, height: 100, resizeMode: 'contain'}}
               source={
-                item.Image
-                  ? {uri: item.Image}
+                articles.Image
+                  ? {uri: articles.Image}
                   : require('../../assets/pic2.png')
               }
             />
           </View>
           <View style={styles.jobDetails}>
-            <Text style={styles.jobTitle}>{item.Title}</Text>
-            <Text style={styles.jobType}>{item.Job_Type}</Text>
-            <Text style={styles.jobOrganiser}>{item.Organiser}</Text>
-            <Text style={styles.jobLocation}>{item.Location}</Text>
+            <Text style={styles.jobTitle}>{articles.Title}</Text>
+            <Text style={styles.jobType}>{articles.Job_Type}</Text>
+            <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
+            <Text style={styles.jobLocation}>{articles.Location}</Text>
           </View>
         </View>
       );
-    } else if (item.Category_Type === 'webinar') {
+    } else if (articles?.Category_Type === 'webinar') {
       return (
         <View style={styles.webinarItem}>
           <Text style={styles.webinarText}>Webinar</Text>
-          <Text style={styles.webinarTitle}>{item.Title}</Text>
-          <Text style={styles.webinarOrganiser}>{item.Organiser}</Text>
-          <Text style={styles.webinarBrief}>{item.Brief}</Text>
+          <Text style={styles.webinarTitle}>{articles.Title}</Text>
+          <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
+          <Text style={styles.webinarBrief}>{articles.Brief}</Text>
           <Image
             style={styles.webinarImage}
             source={
-              item.Image ? {uri: item.Image} : require('../../assets/pic3.jpg')
+              articles.Image
+                ? {uri: articles.Image}
+                : require('../../assets/pic3.jpg')
             }
           />
         </View>
@@ -114,7 +120,7 @@ const DashboardArticle = ({item, navigation}) => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('article', {
-              PostId: item.PostId,
+              articles: articles,
             })
           }
           activeOpacity={0.5}>
@@ -143,14 +149,16 @@ const DashboardArticle = ({item, navigation}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('article', {
-                  PostId: item.PostId,
+                  PostId: articles.PostId,
                   addComment: true,
                 })
               }
               activeOpacity={0.5}>
               <FontAwesome name="comment" size={24} color="lightgrey" />
             </TouchableOpacity>
-            <Text style={styles.likeText}>{item.No_of_Comments} Comments</Text>
+            <Text style={styles.likeText}>
+              {articles?.No_of_Comments} Comments
+            </Text>
           </View>
         </View>
       </View>
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
   writerInfo: {
     flexDirection: 'row',
     borderBottomWidth: normalize(3),
-    borderBottomColor: '#ddd',
+    borderBottomColor: theme.colors.border,
     paddingVertical: normalize(10),
     paddingHorizontal: normalize(5),
     width: '100%',
@@ -190,10 +198,10 @@ const styles = StyleSheet.create({
     borderRadius: normalize(100),
   },
   writerName: {
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
     fontSize: normalize(16),
     paddingLeft: normalize(5),
-    color: '#000',
+    color: theme.colors.black,
   },
   category: {
     backgroundColor: '#74d848',
@@ -205,7 +213,7 @@ const styles = StyleSheet.create({
   },
   articleTitle: {
     borderBottomWidth: normalize(3),
-    borderBottomColor: '#ddd',
+    borderBottomColor: theme.colors.border,
     justifyContent: 'center',
   },
   titleText: {
@@ -239,7 +247,7 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: normalize(16),
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
   },
   jobType: {
     paddingVertical: normalize(5),
@@ -262,14 +270,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#74d848',
     color: theme.colors.white,
     fontSize: normalize(16),
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
     borderRadius: normalize(10),
     alignSelf: 'flex-start',
     marginBottom: normalize(5),
   },
   webinarTitle: {
     fontSize: normalize(17),
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
     paddingVertical: normalize(3),
   },
   webinarOrganiser: {
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
   },
   likeSection: {
     flexDirection: 'row',
-    borderTopColor: '#ddd',
+    borderTopColor: theme.colors.border,
     borderTopWidth: normalize(3),
   },
   likeButton: {

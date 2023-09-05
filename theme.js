@@ -4,6 +4,7 @@ const theme = {
     white: '#fff',
     black: '#000',
     red: 'red',
+    border: '#ddd',
   },
   fontWeight: {
     light: '300',

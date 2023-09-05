@@ -7,12 +7,8 @@ import DashboardArticle from '../shared/DashboardArticle';
 
 const Dashboard = () => {
   const navigation = useNavigation();
-  const [articles, setArticles] = useState(() => []);
-  const [isLoading, setIsLoading] = useState(() => true);
-  const [fetching, setFetching] = useState(() => false);
-
-  //Sending sample data instead of api call
-  const dummyData = [
+  const [articles, setArticles] = useState(() => [
+    // Initial state with sample data
     {
       PostId: 1,
       Active: 1,
@@ -27,27 +23,32 @@ const Dashboard = () => {
       PostId: 2,
       Active: 1,
       No_of_Likes: 2,
-      Category_Type: 'article',
+      Category_Type: 'webinar',
       First_Name: 'sraz',
       Last_Name: 'vadlamanu',
       Title: 'Web Developer',
       Description: 'current working tool Java',
+      Organiser: 'Aspire',
+      Brief: 'This is sravani working as a developer in aspire',
     },
     {
       PostId: 3,
-      Active: 1,
+      Active: 0,
       No_of_Likes: 3,
-      Category_Type: 'article',
-      First_Name: 'ram',
-      Last_Name: 'ponnana',
+      Category_Type: 'job',
       Title: 'Backend Developer',
       Description: 'Current working tool Nodejs, mongodb ',
+      Organiser: 'Aspire',
+      Location: 'Vijayawada',
+      Job_Type: 'Full time',
     },
-  ];
+  ]);
+  const [isLoading, setIsLoading] = useState(() => true);
+  const [fetching, setFetching] = useState(() => false);
 
   useEffect(() => {
-    setArticles(dummyData);
-  }, []);
+    setArticles(articles);
+  }, [articles]);
 
   // const renderFooter = () => {
   //   if (!loading) {
@@ -57,7 +58,8 @@ const Dashboard = () => {
   // };
 
   const renderItem = ({item}) => (
-    <DashboardArticle item={item} navigation={navigation} />
+    // Render each item using the DashboardArticle component
+    <DashboardArticle articles={item} navigation={navigation} />
   );
 
   return (
@@ -69,6 +71,7 @@ const Dashboard = () => {
         },
       ]}>
       {articles.length ? (
+        // Render a FlatList with the articles data
         <FlatList
           data={articles}
           keyExtractor={item => item.PostId.toString()}
