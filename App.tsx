@@ -69,6 +69,12 @@ const App = () => {
           <Stack.Screen name="otp-verification" component={OTP} />
           <Stack.Screen name="forgot-password" component={ForgotPassword} />
           <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="otp-verification" component={OTP} />
+          <Stack.Screen
+                  name="forgot-password"
+                  component={ForgotPassword}
+                />
+                <Stack.Screen name="enter-password" component={EnterPassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
