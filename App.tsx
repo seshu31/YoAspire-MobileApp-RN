@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, StatusBar} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Register from './src/components/Register';
@@ -61,11 +61,8 @@ const App = () => {
             // initialParams={{loginHandler: loginHandler}}
           />
           <Stack.Screen name="otp-verification" component={OTP} />
-          <Stack.Screen
-                  name="forgot-password"
-                  component={ForgotPassword}
-                />
-                <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="forgot-password" component={ForgotPassword} />
+          <Stack.Screen name="enter-password" component={EnterPassword} />
         </Stack.Navigator>
       </NavigationContainer>
       {/* {loggedIn != null ? (
