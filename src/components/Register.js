@@ -7,36 +7,32 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Button,
 } from 'react-native';
-// import axios from 'axios';
-// import backend_url from '../config';
 import AccountImage from './AccountImage';
-// import {Ionicons} from '@expo/vector-icons';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Register = ({navigation}) => {
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-    watch,
-    reset,
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-      cnfmpassword: '',
-      firstname: '',
-      lastname: '',
-      username: '',
-    },
-  });
   const [loading, setLoading] = useState(() => false);
   const [isSecureEntry, setIsSecureEntry] = useState(() => true);
   const [isSecureEntryConfirm, setIsSecureEntryConfirm] = useState(() => true);
   const [isChecked, setIsChecked] = useState(() => false);
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      username: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      cnfmpassword: '',
+    },
+  });
 
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
@@ -52,68 +48,11 @@ const Register = ({navigation}) => {
     setIsChecked(prevIsChecked => !prevIsChecked);
   };
 
-  const validateUsername = async value => {
-    // const response = await axios.get(
-    //   `${backend_url}/auth/checkusername/${value}`,
-    // );
-    // if (response.data.statuscode !== -1) return true;
-    // return false;
-  };
-
-  const validateEmail = async value => {
-    // const response = await axios.get(`${backend_url}/auth/checkemail/${value}`);
-    // console.log(value);
-    // if (response.data.statuscode !== -1) return true;
-    // return false;
-  };
-
-  const handleRegister = ({email, password, firstname, lastname, username}) => {
-    setLoading(true);
-    const payload = {
-      email,
-      password,
-      first_name: firstname,
-      last_name: lastname,
-      username,
-    };
-    // axios
-    //   .post(`${backend_url}/auth/register`, payload, {
-    //     headers: {
-    //       'Content-type': 'application/json; charset=UTF-8',
-    //     },
-    //   })
-    //   .then(response => {
-    //     setLoading(false);
-    //     if (response.data.statuscode === 1) {
-    //       navigation.navigate('otp-verification', {
-    //         email: email,
-    //       });
-    //       reset({
-    //         email: '',
-    //         password: '',
-    //         cnfmpassword: '',
-    //         firstname: '',
-    //         lastname: '',
-    //         username: '',
-    //       });
-    //     } else if (response.data.statuscode === -2) {
-    //       navigation.navigate('otp-verification', {
-    //         email: email,
-    //       });
-    //       reset({
-    //         email: '',
-    //         password: '',
-    //         cnfmpassword: '',
-    //         firstname: '',
-    //         lastname: '',
-    //         username: '',
-    //       });
-    //     }
-    //   })
-    //   .catch(err => {
-    //     setLoading(false);
-    //     alert('Somthing went wrong. Please, try again.');
-    //   });
+  const onSubmit = data => {
+    console.log(data);
+    navigation.navigate('otp-verification', {
+      email: data.email,
+    });
   };
 
   return (
@@ -124,20 +63,21 @@ const Register = ({navigation}) => {
           control={control}
           name="username"
           defaultValue=""
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               placeholder="Username"
               style={styles.inputField}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              placeholderTextColor={'lightgrey'}
             />
           )}
           rules={{
             required: true,
             minLength: 6,
             maxLength: 30,
-            validate: validateUsername,
+            // validate: validateUsername,
           }}
         />
         {errors.username && errors.username.type === 'required' && (
@@ -153,27 +93,27 @@ const Register = ({navigation}) => {
             Username should consists maximum of 30 characters.
           </Text>
         )}
-        {errors.username && errors.username.type === 'validate' && (
+        {/* {errors.username && errors.username.type === 'validate' && (
           <Text style={{color: 'red'}}>Username already exists!</Text>
-        )}
+        )} */}
         <Controller
           control={control}
-          name="firstname"
-          defaultValue=""
-          render={({onChange, onBlur, value}) => (
-            <TextInput
-              placeholder="Firstname"
-              style={styles.inputField}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
           rules={{
             required: true,
             minLength: 3,
             maxLength: 30,
           }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              placeholder="First name"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              style={styles.inputField}
+              placeholderTextColor={'lightgrey'}
+            />
+          )}
+          name="firstname"
         />
         {errors.firstname && errors.firstname.type === 'required' && (
           <Text style={{color: 'red'}}>Firstname Field is required.</Text>
@@ -190,22 +130,22 @@ const Register = ({navigation}) => {
         )}
         <Controller
           control={control}
-          name="lastname"
-          defaultValue=""
-          render={({onChange, onBlur, value}) => (
-            <TextInput
-              placeholder="Lastname"
-              style={styles.inputField}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
           rules={{
             required: true,
             minLength: 3,
             maxLength: 30,
           }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              placeholder="Last name"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              style={styles.inputField}
+              placeholderTextColor={'lightgrey'}
+            />
+          )}
+          name="lastname"
         />
         {errors.lastname && errors.lastname.type === 'required' && (
           <Text style={{color: 'red'}}>Lastname Field is required.</Text>
@@ -224,7 +164,7 @@ const Register = ({navigation}) => {
           control={control}
           name="email"
           defaultValue=""
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               placeholder="Email"
               autoCapitalize="none"
@@ -233,13 +173,14 @@ const Register = ({navigation}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              placeholderTextColor={'lightgrey'}
             />
           )}
           rules={{
             required: true,
             pattern:
               /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-            validate: validateEmail,
+            // validate: validateEmail,
           }}
         />
         {errors.email && errors.email.type === 'required' && (
@@ -256,7 +197,7 @@ const Register = ({navigation}) => {
             control={control}
             name="password"
             defaultValue=""
-            render={({onChange, onBlur, value}) => (
+            render={({field: {onChange, onBlur, value}}) => (
               <TextInput
                 placeholder="Password"
                 autoCapitalize="none"
@@ -265,6 +206,7 @@ const Register = ({navigation}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                placeholderTextColor={'lightgrey'}
               />
             )}
             rules={{required: true, minLength: 8}}
@@ -298,7 +240,7 @@ const Register = ({navigation}) => {
             control={control}
             name="cnfmpassword"
             defaultValue=""
-            render={({onChange, onBlur, value}) => (
+            render={({field: {onChange, onBlur, value}}) => (
               <TextInput
                 placeholder="Confirm Password"
                 autoCapitalize="none"
@@ -307,11 +249,13 @@ const Register = ({navigation}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                placeholderTextColor={'lightgrey'}
               />
             )}
             rules={{
               required: true,
-              validate: value => value === watch('password'),
+              minLength: 8,
+              // validate: value => value === watch('password'),
             }}
           />
           {isSecureEntryConfirm ? (
@@ -332,9 +276,9 @@ const Register = ({navigation}) => {
           {errors.cnfmpassword && errors.cnfmpassword.type === 'required' && (
             <Text style={{color: 'red'}}>Password Field is required.</Text>
           )}
-          {errors.cnfmpassword && errors.cnfmpassword.type === 'validate' && (
+          {/* {errors.cnfmpassword && errors.cnfmpassword.type === 'validate' && (
             <Text style={{color: 'red'}}>Passwords didn't matched.</Text>
-          )}
+          )} */}
         </View>
         <View style={styles.termsRow}>
           <TouchableOpacity
@@ -342,17 +286,17 @@ const Register = ({navigation}) => {
             onPress={toggleCheckbox}
             activeOpacity={0.5}>
             {isChecked ? (
-              <Ionicons
+              <Entypo
                 style={styles.checkMark}
-                name="checkmark"
-                size={18}
+                name="check"
+                size={20}
                 color="#2196f3"
               />
             ) : // <Text>checkMark</Text>
             null}
           </TouchableOpacity>
           <View style={styles.textRow}>
-            <Text> I agree with Yo!Aspire </Text>
+            <Text style={{color: '#000'}}> I agree with Yo!Aspire </Text>
             <Text style={styles.termsText}> Terms and Conditions </Text>
           </View>
         </View>
@@ -364,7 +308,7 @@ const Register = ({navigation}) => {
               backgroundColor: loading ? '#cce4f7' : '#2196f3',
             },
           ]}
-          onPress={handleSubmit(handleRegister)}
+          onPress={handleSubmit(onSubmit)}
           disabled={!isChecked}
           activeOpacity={0.5}>
           <ActivityIndicator
@@ -416,6 +360,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: '#fff',
     fontSize: 16,
+    color: '#000',
   },
   signInBlock: {
     width: '100%',
@@ -470,6 +415,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  checkMark: {
+    fontWeight: 'bold',
   },
 });
 
