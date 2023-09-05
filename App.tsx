@@ -9,6 +9,7 @@ import Index from './src/components/Index';
 import OTP from './src/components/OTP';
 import ForgotPassword from './src/components/ForgotPassword';
 import EnterPassword from './src/components/EnterPassword';
+import EditProfile from './src/shared/EditProfile';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Index from './src/components/Index';
 // import OTP from './src/components/OTP';
@@ -49,7 +50,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="login"
+          initialRouteName="user-profile"
           screenOptions={{
             headerShown: false,
           }}>
@@ -65,7 +66,8 @@ const App = () => {
                   name="forgot-password"
                   component={ForgotPassword}
                 />
-                <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="user-profile" component={EditProfile} initialParams={{user: {}}} />
         </Stack.Navigator>
       </NavigationContainer>
       {/* {loggedIn != null ? (
