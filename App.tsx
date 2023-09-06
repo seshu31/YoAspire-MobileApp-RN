@@ -12,7 +12,6 @@ import EnterPassword from './src/components/EnterPassword';
 import DetailedArticle from './src/shared/DetailedArticle';
 import GroupDetailsCard from './src/shared/GroupDetailsCard.js';
 import CreateGroup from './src/components/CreateGroup.js';
-import Profile from './src/components/Profile.js';
 import theme from './theme';
 
 const Stack = createStackNavigator();
@@ -23,7 +22,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="user-profile"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
@@ -40,12 +39,6 @@ const App = () => {
           <Stack.Screen name="article" component={DetailedArticle} />
           <Stack.Screen name="group" component={GroupDetailsCard} />
           <Stack.Screen name="create-group" component={CreateGroup} />
-          <Stack.Screen
-                  name="forgot-password"
-                  component={ForgotPassword}
-                />
-          <Stack.Screen name="enter-password" component={EnterPassword} />
-          <Stack.Screen name="user-profile" component={EditProfile} initialParams={{user: {}}} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
