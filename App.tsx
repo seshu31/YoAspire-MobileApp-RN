@@ -13,6 +13,7 @@ import DetailedArticle from './src/shared/DetailedArticle';
 import GroupDetailsCard from './src/shared/GroupDetailsCard.js';
 import CreateGroup from './src/components/CreateGroup.js';
 import theme from './theme';
+import EditProfile from './src/shared/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="edit-profile"
           screenOptions={{
             headerShown: false,
           }}>
@@ -39,6 +40,11 @@ const App = () => {
           <Stack.Screen name="article" component={DetailedArticle} />
           <Stack.Screen name="group" component={GroupDetailsCard} />
           <Stack.Screen name="create-group" component={CreateGroup} />
+          <Stack.Screen
+            name="edit-profile"
+            component={EditProfile}
+            initialParams={{user: {}}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
