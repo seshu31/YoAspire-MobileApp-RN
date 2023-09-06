@@ -322,7 +322,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   body: {
     padding: 20,
