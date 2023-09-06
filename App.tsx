@@ -23,7 +23,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="login"
+          initialRouteName="user-profile"
           screenOptions={{
             headerShown: false,
           }}>
@@ -41,10 +41,11 @@ const App = () => {
           <Stack.Screen name="group" component={GroupDetailsCard} />
           <Stack.Screen name="create-group" component={CreateGroup} />
           <Stack.Screen
-            name="profile"
-            component={Profile}
-            // initialParams={{loginHandler: loginHandler}}
-          />
+                  name="forgot-password"
+                  component={ForgotPassword}
+                />
+          <Stack.Screen name="enter-password" component={EnterPassword} />
+          <Stack.Screen name="user-profile" component={EditProfile} initialParams={{user: {}}} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
