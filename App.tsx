@@ -23,7 +23,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="edit-profile"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
