@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useForm, Controller} from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
 
 const EditProfile = ({navigation, route}) => {
   const {user} = route.params;
@@ -33,7 +34,7 @@ const EditProfile = ({navigation, route}) => {
     console.log(data);
   };
 
-  const onChange = (event, selectedDate) => {
+  const onChange = selectedDate => {
     const currentDate = new Date(selectedDate);
     const requiredDate =
       currentDate.getDate().toString().length === 1
@@ -48,10 +49,41 @@ const EditProfile = ({navigation, route}) => {
     setShow(false);
   };
 
+  const onDateChange = selectedDate => {
+    const currentDate = new Date(selectedDate);
+    const requiredDate =
+      currentDate.getDate().toString().length === 1
+        ? '0' + currentDate.getDate()
+        : currentDate.getDate();
+    const requiredMonth =
+      (currentDate.getMonth() + 1).toString().length === 1
+        ? '0' + (currentDate.getMonth() + 1)
+        : currentDate.getMonth() + 1;
+    const requiredYear = currentDate.getFullYear();
+    setDob(requiredDate + '-' + requiredMonth + '-' + requiredYear);
+    setShow(false);
+  };
+
+  const deltaDate = (input, days, months, years) => {
+    return new Date(
+      input.getFullYear() + years,
+      input.getMonth() + months,
+      Math.min(
+        input.getDate() + days,
+        new Date(
+          input.getFullYear() + years,
+          input.getMonth() + months + 1,
+          0,
+        ).getDate(),
+      ),
+    );
+  };
+
   const showDatepicker = () => {
     setShow(true);
   };
 
+  const maximumDOB = deltaDate(new Date(), 0, 0, 0);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
@@ -274,16 +306,23 @@ const EditProfile = ({navigation, route}) => {
             <Ionicons name="calendar" size={30} color="#999" />
           </TouchableOpacity>
         </View>
-        {show && (
-          <DateTimePicker
-            value={date}
-            mode={date}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-            maximumDate={new Date()}
-          />
-        )}
+        {/* {show && ( */}
+        <DatePicker
+          date={maximumDOB}
+          format="DD/MM/YYYY"
+          // onDateChange={onDateChange}
+          androidVariant="nativeAndroid"
+          value={date}
+          mode="date"
+          // textColor="#000"
+          style={styles.picker}
+          maximumDate={maximumDOB}
+          modal={true}
+          open={show}
+          onConfirm={onDateChange}
+          onCancel={() => setShow(false)}
+        />
+        {/* )} */}
         <Controller
           control={control}
           name="location"
@@ -414,6 +453,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 10,
   },
+  picker: {},
 });
 
 export default EditProfile;
