@@ -14,6 +14,13 @@ import GroupDetailsCard from './src/shared/GroupDetailsCard.js';
 import CreateGroup from './src/components/CreateGroup.js';
 import theme from './theme';
 import EditProfile from './src/shared/EditProfile';
+import UserProject from './src/shared/UserProject';
+import UserPublication from './src/shared/UserPublication';
+import UserSkill from './src/shared/UserSkill';
+import UserEducation from './src/shared/UserEducation';
+import UserExperience from './src/shared/UserExperience';
+import UserDetails from './src/shared/UserDetails';
+import UserCourse from './src/shared/UserCourse';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +30,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="edit-profile"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
@@ -45,6 +52,20 @@ const App = () => {
             component={EditProfile}
             initialParams={{user: {}}}
           />
+          <Stack.Screen name="user-project" component={UserProject}  initialParams={{user: 213}} />
+          <Stack.Screen
+                  name="user-publication"
+                  component={UserPublication}
+                  initialParams={{user: 213}}
+                />
+          <Stack.Screen name="user-skill" component={UserSkill} initialParams={{skills: []}} />
+          <Stack.Screen name="user-education" component={UserEducation} />
+          <Stack.Screen
+                  name="user-experience"
+                  component={UserExperience}
+                />
+                <Stack.Screen name="user-details" component={UserDetails} initialParams={{user: 213}} />
+                <Stack.Screen name="user-course" component={UserCourse} initialParams={{user: 213}}/>
         </Stack.Navigator>
       </NavigationContainer>
     </View>
