@@ -21,6 +21,7 @@ import UserEducation from './src/shared/UserEducation';
 import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
+import EditSkill from './src/shared/EditSkill';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="edit-skill"
           screenOptions={{
             headerShown: false,
           }}>
@@ -52,20 +53,34 @@ const App = () => {
             component={EditProfile}
             initialParams={{user: {}}}
           />
-          <Stack.Screen name="user-project" component={UserProject}  initialParams={{user: 213}} />
           <Stack.Screen
-                  name="user-publication"
-                  component={UserPublication}
-                  initialParams={{user: 213}}
-                />
-          <Stack.Screen name="user-skill" component={UserSkill} initialParams={{skills: []}} />
+            name="user-project"
+            component={UserProject}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen
+            name="user-publication"
+            component={UserPublication}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen
+            name="user-skill"
+            component={UserSkill}
+            initialParams={{skills: []}}
+          />
           <Stack.Screen name="user-education" component={UserEducation} />
+          <Stack.Screen name="user-experience" component={UserExperience} />
           <Stack.Screen
-                  name="user-experience"
-                  component={UserExperience}
-                />
-                <Stack.Screen name="user-details" component={UserDetails} initialParams={{user: 213}} />
-                <Stack.Screen name="user-course" component={UserCourse} initialParams={{user: 213}}/>
+            name="user-details"
+            component={UserDetails}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen
+            name="user-course"
+            component={UserCourse}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen name="edit-skill" component={EditSkill} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

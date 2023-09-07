@@ -25,10 +25,9 @@ const UserSkill = ({navigation, route}) => {
         <Text style={styles.profileTitle}>Skills</Text>
         <TouchableOpacity
           onPress={() =>
-            // navigation.navigate('edit-skill', {
-            //   skills: skills,
-            // })
-            {}
+            navigation.navigate('edit-skill', {
+              skills: skills,
+            })
           }
           activeOpacity={0.5}>
           <Ionicons name="add" size={32} color="#fff" />
@@ -41,12 +40,12 @@ const UserSkill = ({navigation, route}) => {
               <View key={index} style={styles.couseItem}>
                 <Text style={styles.skillItem}>{el}</Text>
                 <TouchableOpacity
-                  // onPress={() =>
-                  //   navigation.navigate('edit-skill', {
-                  //     skill: el,
-                  //     skills: skills,
-                  //   })
-                  // }
+                  onPress={() =>
+                    navigation.navigate('edit-skill', {
+                      skill: el,
+                      skills: skills,
+                    })
+                  }
                   activeOpacity={0.5}>
                   <Ionicons name="create" color={'#376eb3'} size={24} />
                 </TouchableOpacity>
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
     fontSize: 24,

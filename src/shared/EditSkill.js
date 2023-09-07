@@ -1,0 +1,199 @@
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useForm, Controller} from 'react-hook-form';
+import Loader from '../reusables/Loader';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
+
+const EditSkill = ({navigation, route}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      skill: '',
+    },
+  });
+  const [skill, setSkill] = useState(null);
+
+  const skillHandler = async data => {
+    // setIsLoading(true);
+    // getToken().then(async ({userid, token}) => {
+    //   skills.map((el, index) => {
+    //     if (el === skill) skills[index] = data.skill;
+    //     else skills.push(data.skill);
+    //   });
+    //   const skillArr = [...new Set(skills)];
+    //   const response = await axios.put(
+    //     `${backend_url}/profiles/${userid}`,
+    //     {Skills: skillArr.length ? skillArr.join(',') : data.skill},
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         'Content-type': 'application/json; charset=UTF-8',
+    //       },
+    //     },
+    //   );
+    //   if (response.data.statuscode === 1) {
+    //     setIsLoading(false);
+    //     navigation.navigate('profile');
+    //   } else {
+    //     setIsLoading(false);
+    //     alert('Something went wrong. Please, Try again');
+    //   }
+    // });
+  };
+
+  const deleteHanlder = async () => {
+    const confirmed = await new Promise(resolve => {
+      Alert.alert(
+        'Confirm Deletion',
+        'Are you sure you want to delete this skill?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => resolve(false),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => resolve(true),
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+    if (confirmed) {
+      console.log('skill deleted');
+    } else {
+      console.log('skill not deleted');
+    }
+    // setIsLoading(true);
+    // getToken().then(async ({userid, token}) => {
+    //   const skillArr = skills.filter(el => el !== skill);
+    //   const response = await axios.put(
+    //     `${backend_url}/profiles/${userid}`,
+    //     {Skills: skillArr.join(',')},
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         'Content-type': 'application/json; charset=UTF-8',
+    //       },
+    //     },
+    //   );
+    //   if (response.data.statuscode === 1) {
+    //     setIsLoading(false);
+    //     navigation.navigate('profile');
+    //   } else {
+    //     setIsLoading(false);
+    //     alert('Something went wrong. Please, Try again');
+    //   }
+    // });
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.profileHeader}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.5}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.profileTitle}>
+          {/* {skill ? 'Edit Skill' : 'Add Skill'} */}
+          Edit Skill
+        </Text>
+        <TouchableOpacity
+          onPress={handleSubmit(skillHandler)}
+          activeOpacity={0.5}>
+          <Ionicons name="save" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+      {/* <Loader /> */}
+      <View style={styles.body}>
+        <Controller
+          control={control}
+          name="skill"
+          defaultValue=""
+          render={({field: {onChange, onBlur, value}}) => (
+            <TextInput
+              style={styles.inputField}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Skill"
+              placeholderTextColor={'lightgrey'}
+            />
+          )}
+          rules={{
+            required: true,
+            maxLength: 30,
+          }}
+        />
+        {errors.skill && errors.skill.type === 'required' && (
+          <Text style={styles.alertText}>Skill Field is required.</Text>
+        )}
+        {errors.skill && errors.skill.type === 'maxLength' && (
+          <Text style={styles.alertText}>
+            Skill should consists maximum of 30 characters.
+          </Text>
+        )}
+        {skill ? (
+          <Text style={styles.deleteButton} onPress={deleteHanlder}>
+            Delete this skill
+          </Text>
+        ) : null}
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.white,
+  },
+  profileHeader: {
+    height: normalize(60),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: normalize(10),
+    backgroundColor: theme.colors.primary,
+    alignItems: 'center',
+  },
+  profileTitle: {
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
+  },
+  inputField: {
+    width: '100%',
+    height: normalize(50),
+    marginBottom: normalize(20),
+    alignItems: 'center',
+    borderColor: theme.colors.primary,
+    borderBottomWidth: normalize(3),
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
+  body: {
+    padding: normalize(theme.spacing.large),
+  },
+  deleteButton: {
+    color: theme.colors.red,
+    alignSelf: 'center',
+    fontSize: normalize(18),
+    marginVertical: normalize(10),
+  },
+  alertText: {color: theme.colors.red},
+});
+
+export default EditSkill;
