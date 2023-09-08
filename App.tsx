@@ -31,7 +31,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="edit-skill"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
