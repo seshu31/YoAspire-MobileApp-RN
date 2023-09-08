@@ -29,7 +29,7 @@ const Header = ({navigation, createPost}) => {
         token: await AsyncStorage.getItem('userToken'),
       };
     } catch (error) {
-      Alert.alert('Something went wrong', 'userId, token are undefined');
+      // Alert.alert('Something went wrong', 'userId, token are undefined');
     }
   };
 
