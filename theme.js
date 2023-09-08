@@ -6,6 +6,7 @@ const theme = {
     red: '#FF0000',
     border: '#ddd',
     grey: '#ccc',
+    placeholdercolor: '#c7c7c7',
   },
   fontWeight: {
     light: '300',

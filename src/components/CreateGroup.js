@@ -13,29 +13,34 @@ import Loader from '../reusables/Loader';
 import {useForm, Controller} from 'react-hook-form';
 import Textarea from 'react-native-textarea';
 import {Picker} from '@react-native-picker/picker';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
-const CreatePost = ({navigation, route}) => {
-  const staticGroup = {
-    groupid: 1,
-    name: 'Sample Group',
-    image: null, // Replace with an image URL or null
-  };
+const CreateGroup = ({navigation, route}) => {
+  // Initialize variables and states
   var group = false;
   const [loading, setLoading] = useState(() => false);
   const [image, setImage] = useState(() => (group ? group.image : null));
-  const {control, handleSubmit, errors} = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
   const [visibility, setVisibility] = useState(() =>
     group ? group.group_type.toString() : 0,
   );
 
+  // Function to handle visibility change
   const handeleVisibility = data => {
     setVisibility(data);
   };
 
+  // Function to handle image selection
   const imageHandler = async () => {
     console.log('imageHandler');
   };
 
+  // Function to handle group deletion confirmation dialog
   const dialogHandler = () =>
     Alert.alert(
       'Are you sure?',
@@ -50,8 +55,14 @@ const CreatePost = ({navigation, route}) => {
       {cancelable: false},
     );
 
+  // Function to handle group deletion
   const deleteHandler = () => {
     console.log('deleteHandler');
+  };
+
+  // Function to handle form submission
+  const handleSubmitPost = data => {
+    console.log('handleSubmitPost', data);
   };
 
   return (
@@ -67,8 +78,7 @@ const CreatePost = ({navigation, route}) => {
             <Text style={styles.title}>Edit Group </Text>
             <Text
               style={styles.postButton}
-              // onPress={handleSubmit(handleSubmitPost)}
-            >
+              onPress={handleSubmit(handleSubmitPost)}>
               Save
             </Text>
           </>
@@ -82,8 +92,7 @@ const CreatePost = ({navigation, route}) => {
             <Text style={styles.title}>Create New Group </Text>
             <Text
               style={styles.postButton}
-              // onPress={handleSubmit(handleSubmitPost)}
-            >
+              onPress={handleSubmit(handleSubmitPost)}>
               Create
             </Text>
           </>
@@ -110,13 +119,14 @@ const CreatePost = ({navigation, route}) => {
           control={control}
           name="name"
           defaultValue={group ? group.name : ''}
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              placeholder="Name"
+              placeholder="name"
               style={[styles.textField, {marginTop: 0}]}
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -124,19 +134,19 @@ const CreatePost = ({navigation, route}) => {
             maxLength: 50,
           }}
         />
-        {/* {errors.name && errors.name.type === 'required' && (
-          <Text style={{color: 'red'}}>Title field is required.</Text>
+        {errors.name && errors.name.type === 'required' && (
+          <Text style={styles.textFieldError}>Title field is required.</Text>
         )}
         {errors.name && errors.name.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.textFieldError}>
             Title should consists maximum of 50 characters.
           </Text>
-        )} */}
+        )}
         <Controller
           control={control}
           name="description"
           defaultValue={group ? group.description : ''}
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <Textarea
               containerStyle={styles.textareaContainer}
               style={styles.textareaField}
@@ -144,7 +154,7 @@ const CreatePost = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder={'Say Something'}
-              placeholderTextColor={'#c7c7c7'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -152,28 +162,30 @@ const CreatePost = ({navigation, route}) => {
             maxLength: 500,
           }}
         />
-        {/* {errors.description && errors.description.type === 'required' && (
-          <Text style={{color: 'red'}}>Description field is required.</Text>
+        {errors.description && errors.description.type === 'required' && (
+          <Text style={styles.textFieldError}>
+            Description field is required.
+          </Text>
         )}
         {errors.description && errors.description.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.textFieldError}>
             Description should consists maximum of 500 characters.
           </Text>
-        )} */}
+        )}
         <Text style={styles.dropdownLabel}>Visibility</Text>
         <Picker
-          // selectedValue={visibility}
-          // onValueChange={handeleVisibility}
+          selectedValue={visibility}
+          onValueChange={handeleVisibility}
           prompt="Visibility Status"
           style={styles.picker}>
           <Picker.Item label="Public" value="0" />
           <Picker.Item label="Private" value="1" />
         </Picker>
-        <TouchableOpacity onPress={dialogHandler} activeOpacity={0.5}>
-          <Text style={styles.groupDelete}>Delete the Group</Text>
-        </TouchableOpacity>
-        {/* {group ? (
-        ) : null} */}
+        {group ? (
+          <TouchableOpacity onPress={dialogHandler} activeOpacity={0.5}>
+            <Text style={styles.groupDelete}>Delete the Group</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
@@ -182,24 +194,24 @@ const CreatePost = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   header: {
-    borderBottomWidth: 1,
-    height: 50,
+    borderBottomWidth: normalize(3),
+    height: normalize(50),
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#ddd',
+    borderColor: theme.colors.border,
     justifyContent: 'space-between',
     paddingHorizontal: '5%',
   },
   title: {
-    fontSize: 20,
+    fontSize: normalize(theme.fontSizes.large),
     paddingLeft: '10%',
   },
   postButton: {
-    color: '#376eb3',
-    fontSize: 20,
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.large),
   },
   postForm: {
     paddingHorizontal: '5%',
@@ -208,19 +220,19 @@ const styles = StyleSheet.create({
   photoSection: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
   },
   photoText: {
-    fontSize: 18,
-    marginVertical: 10,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
   photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 5,
-    borderColor: '#376eb3',
-    marginVertical: 10,
+    width: normalize(100),
+    height: normalize(100),
+    borderRadius: normalize(50),
+    borderWidth: normalize(5),
+    borderColor: theme.colors.primary,
+    marginVertical: normalize(theme.spacing.small),
   },
 
   photoDiv: {
@@ -233,47 +245,50 @@ const styles = StyleSheet.create({
   },
   photoEdit: {
     position: 'absolute',
-    right: -10,
-    bottom: 25,
-    backgroundColor: '#fff',
-    elevation: 5,
-    borderRadius: 50,
-    paddingLeft: 10,
-    paddingRight: 8,
-    paddingVertical: 7,
+    right: normalize(-8),
+    bottom: normalize(25),
+    backgroundColor: theme.colors.white,
+    elevation: normalize(5),
+    borderRadius: normalize(50),
+    paddingLeft: normalize(theme.spacing.small),
+    paddingRight: normalize(8),
+    paddingVertical: normalize(8),
   },
   textareaContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
   },
   textareaField: {
     textAlignVertical: 'top', // hack android
-    paddingVertical: 10,
-    fontSize: 17,
-    color: 'black',
+    paddingVertical: normalize(theme.spacing.small),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    color: theme.colors.black,
   },
   dropdownLabel: {
     paddingTop: '5%',
-    fontSize: 14,
+    fontSize: normalize(theme.fontSizes.small),
   },
   picker: {
     marginLeft: '-2%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
   },
   textField: {
     marginTop: '3%',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    fontSize: 16,
+    paddingVertical: normalize(theme.spacing.small),
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
+    fontSize: normalize(theme.fontSizes.medium),
   },
   groupDelete: {
-    color: 'red',
-    fontSize: 17,
+    color: theme.colors.red,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     alignSelf: 'center',
-    marginVertical: 10,
+    marginVertical: normalize(11),
+  },
+  textFieldError: {
+    color: theme.colors.red,
   },
 });
 
-export default CreatePost;
+export default CreateGroup;
