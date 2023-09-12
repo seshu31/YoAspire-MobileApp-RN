@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.grey,
     alignItems: 'center',
     marginLeft: '6.5%',
-    marginBottom: normalize(theme.spacing.mediumLarge),
+    marginBottom: normalize(theme.spacing.extraLarge),
   },
   imageSection: {
     backgroundColor: theme.colors.primary,

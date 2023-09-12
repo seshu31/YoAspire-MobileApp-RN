@@ -23,8 +23,8 @@ const theme = {
     extraSmall: 5,
     small: 10,
     medium: 16,
-    mediumLarge: 20,
-    large: 24,
+    large: 20,
+    extraLarge: 24,
   },
 };
 

@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   userInfo: {
     alignItems: 'center',
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.mediumLarge),
+    paddingHorizontal: normalize(theme.spacing.extraLarge),
   },
   userNameDetails: {
     flexDirection: 'row',
