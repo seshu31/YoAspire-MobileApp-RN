@@ -74,7 +74,7 @@ const UserCourse = ({navigation, route}) => {
         <Text style={styles.profileTitle}>Courses</Text>
         {owner ? (
           <TouchableOpacity
-            // onPress={() => navigation.navigate('edit-course')}
+            onPress={() => navigation.navigate('edit-course')}
             activeOpacity={0.5}>
             <Ionicons name="add" size={32} color="#fff" />
           </TouchableOpacity>
@@ -91,11 +91,11 @@ const UserCourse = ({navigation, route}) => {
                   <Text style={styles.courseText}>{el.title}</Text>
                   {owner ? (
                     <TouchableOpacity
-                      // onPress={() =>
-                      //   navigation.navigate('edit-course', {
-                      //     course: el,
-                      //   })
-                      // }
+                      onPress={() =>
+                        navigation.navigate('edit-course', {
+                          course: el,
+                        })
+                      }
                       activeOpacity={0.5}>
                       <Ionicons name="create" color={'#376eb3'} size={24} />
                     </TouchableOpacity>

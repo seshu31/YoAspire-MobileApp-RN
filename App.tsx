@@ -23,6 +23,7 @@ import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
 import EditProject from './src/shared/EditProject';
+import EditCourse from './src/shared/EditCource';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +33,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="user-course"
           screenOptions={{
             headerShown: false,
           }}>
@@ -58,7 +59,7 @@ const App = () => {
             name="user-project"
             component={UserProject}
             initialParams={{user: 213}}
-          /> 
+          />
           <Stack.Screen
             name="edit-project"
             component={EditProject}
@@ -86,6 +87,7 @@ const App = () => {
             component={UserCourse}
             initialParams={{user: 213}}
           />
+          <Stack.Screen name="edit-course" component={EditCourse} />
           <Stack.Screen name="edit-skill" component={EditSkill} />
         </Stack.Navigator>
       </NavigationContainer>
