@@ -291,7 +291,8 @@ const GroupDetailsCard = ({navigation, route}) => {
       <TouchableOpacity
         style={styles.createPost}
         onPress={() =>
-          navigation.navigate('CreatePost', {
+          navigation.navigate('index', {
+            screen: 'CreatePost',
             group: group.name,
             id: group.groupid,
           })
