@@ -3,8 +3,10 @@ const theme = {
     primary: '#376eb3',
     white: '#fff',
     black: '#000',
-    red: 'red',
+    red: '#FF0000',
+    border: '#ddd',
     grey: '#ccc',
+    placeholdercolor: '#c7c7c7',
   },
   fontWeight: {
     light: '300',
@@ -13,9 +15,10 @@ const theme = {
     bold: '700',
   },
   fontSizes: {
-    extraSmall:5, 
+    extraSmall: 5,
     small: 14,
     medium: 16,
+    mediumLarge: 18,
     large: 20,
     extraLarge: 24,
   },
