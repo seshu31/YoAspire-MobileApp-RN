@@ -61,6 +61,7 @@ const EditProfile = ({navigation, route}) => {
         : currentDate.getMonth() + 1;
     const requiredYear = currentDate.getFullYear();
     setDob(requiredDate + '-' + requiredMonth + '-' + requiredYear);
+    setDate(selectedDate);
     setShow(false);
   };
 
@@ -308,7 +309,7 @@ const EditProfile = ({navigation, route}) => {
         </View>
         {/* {show && ( */}
         <DatePicker
-          date={maximumDOB}
+          date={date}
           format="DD/MM/YYYY"
           // onDateChange={onDateChange}
           androidVariant="nativeAndroid"

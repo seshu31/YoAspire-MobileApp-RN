@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(52, 52, 52, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    width: normalize(Dimensions.get('window').width),
-    height: normalize(Dimensions.get('window').height),
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     zIndex: 1,
   },
   loaderArea: {

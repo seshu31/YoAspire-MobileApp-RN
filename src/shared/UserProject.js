@@ -97,7 +97,7 @@ const UserProject = ({navigation, route}) => {
         <Text style={styles.profileTitle}>Projects</Text>
         {owner ? (
           <TouchableOpacity
-            // onPress={() => navigation.navigate('edit-project')}
+            onPress={() => navigation.navigate('edit-project')}
             activeOpacity={0.5}>
             <Ionicons name="add" size={32} color="#fff" />
           </TouchableOpacity>
@@ -120,10 +120,9 @@ const UserProject = ({navigation, route}) => {
                   {owner ? (
                     <TouchableOpacity
                       onPress={() =>
-                        // navigation.navigate('edit-project', {
-                        //   project: el,
-                        // })
-                        {}
+                        navigation.navigate('edit-project', {
+                          project: el,
+                        })
                       }
                       style={styles.editIcon}
                       activeOpacity={0.5}>
@@ -149,7 +148,6 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
     paddingHorizontal: 20,

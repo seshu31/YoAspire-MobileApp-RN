@@ -22,6 +22,7 @@ import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
+import EditProject from './src/shared/EditProject';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,11 @@ const App = () => {
           <Stack.Screen
             name="user-project"
             component={UserProject}
+            initialParams={{user: 213}}
+          /> 
+          <Stack.Screen
+            name="edit-project"
+            component={EditProject}
             initialParams={{user: 213}}
           />
           <Stack.Screen
