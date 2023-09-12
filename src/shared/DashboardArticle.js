@@ -4,10 +4,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
-import {useNavigation} from '@react-navigation/native';
 
-const DashboardArticle = ({articles}) => {
-  const navigation = useNavigation();
+const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
     articles?.Active === 1 ? true : false,
   );

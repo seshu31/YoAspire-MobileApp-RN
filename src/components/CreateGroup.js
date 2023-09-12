@@ -32,6 +32,11 @@ const CreateGroup = ({navigation, route}) => {
 
   // Function to handle visibility change
   const handeleVisibility = data => {
+    if (data === '0') {
+      console.log('Visibility label: Public');
+    } else {
+      console.log('Visibility label: Private');
+    }
     setVisibility(data);
   };
 

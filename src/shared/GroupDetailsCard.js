@@ -6,13 +6,14 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
   LogBox,
 } from 'react-native';
 import DashboardArticle from './DashboardArticle';
 import Moment from 'react-moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../reusables/Loader';
+import normalize from 'react-native-normalize';
+import theme from '../../theme';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
@@ -20,29 +21,54 @@ const GroupDetailsCard = ({navigation, route}) => {
     id: 1,
     name: 'Sample Group',
     description:
-      'This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      'This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     image: 'https://example.com/sample-image.jpg',
     created_on: '2023-01-15T10:30:00Z',
     total_members: 20,
-    admin_flag: false,
-    created_by: 123,
+    admin_flag: true, //Boolean value change according data
+    created_by: null, //This is will take int value
     joined: false,
-    req_sent: false,
-    group_type: false,
+    req_sent: false, //Boolean value change according data
+    group_type: true, //Boolean value change according data
   };
-
   const staticArticlesData = [
     {
       PostId: 1,
-      // Add other article properties as needed
+      Active: 1,
+      No_of_Likes: 3,
+      Category_Type: 'article',
+      First_Name: 'venu',
+      Last_Name: 'makaraju',
+      Title: 'Web Developer',
+      Description: 'Current working tool React Native',
     },
     {
       PostId: 2,
-      // Add other article properties as needed
+      Active: 1,
+      No_of_Likes: 2,
+      Category_Type: 'webinar',
+      First_Name: 'sraz',
+      Last_Name: 'vadlamanu',
+      Title: 'Web Developer',
+      Description: 'current working tool Java',
+      Organiser: 'Aspire',
+      Brief: 'This is sravani working as a developer in aspire',
+    },
+    {
+      PostId: 3,
+      Active: 0,
+      No_of_Likes: 3,
+      Category_Type: 'job',
+      Title: 'Backend Developer',
+      Description: 'Current working tool Nodejs, mongodb ',
+      Organiser: 'Aspire',
+      Location: 'Vijayawada',
+      Job_Type: 'Full time',
     },
     // Add more static article data as needed
   ];
 
+  const {id, item} = route.params || {id: null, item: null};
   const [group, setGroup] = useState(groupData);
   const [admin, setAdmin] = useState(groupData.admin_flag);
   const [creator, setCreator] = useState(groupData.created_by);
@@ -52,7 +78,6 @@ const GroupDetailsCard = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
   const [allLoaded, setAllLoaded] = useState(false);
   const [load, setLoad] = useState(false);
 
@@ -65,6 +90,9 @@ const GroupDetailsCard = ({navigation, route}) => {
   };
 
   useEffect(() => {
+    console.log(staticArticlesData, 'static articles');
+  });
+  useEffect(() => {
     const mount = navigation.addListener('focus', () => {
       LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
       fetchGroup();
@@ -73,6 +101,149 @@ const GroupDetailsCard = ({navigation, route}) => {
     fetchPosts();
     return mount;
   });
+
+  const loadHandler = () => {
+    setLoad(prevValue => !prevValue);
+  };
+
+  const renderItem = ({item}) => (
+    <DashboardArticle
+      articles={item}
+      navigation={navigation}
+      loadHandler={loadHandler}
+    />
+  );
+
+  const lineHandler = () => {
+    setLineLength(lines);
+  };
+
+  const leaveHandler = () => {
+    console.log(
+      'method: DELETE,  ${backend_url}/group/delmember/${userid}/${id}',
+    );
+  };
+  const cancelHandler = () => {
+    console.log(
+      'method: DELETE, ${backend_url}/group/reject/${userid}/${group.groupid}',
+    );
+  };
+
+  const joinHandler = () => {
+    console.log(
+      'method: POST, group_type ? ${backend_url}/group/sendreq/${userid}/${id} : ${backend_url}/group/addmember/${userid}/${id}',
+    );
+  };
+
+  const renderFooter = () => {
+    if (!loading) {
+      return null;
+    }
+    return <Loader />;
+  };
+
+  const loadTopPosts = () => {
+    setFetching(true);
+    fetchPosts();
+    fetchGroup();
+  };
+
+  const loadEndPosts = () => {
+    if (!allLoaded) {
+      setLoading(true);
+    }
+    if (loading) {
+      fetchPosts();
+    }
+  };
+
+  const renderHeader = () => {
+    return group ? (
+      <>
+        <View style={styles.groupImageSection}>
+          <View style={styles.groupImageBlock}>
+            <Image
+              style={styles.groupImage}
+              // source={
+              //   group.image
+              //     ? {uri: group.image}
+              //     : require('../../assets/male.png')
+              // }
+              source={require('../../assets/male.png')}
+            />
+          </View>
+        </View>
+        <View style={styles.groupInfo}>
+          <Text style={styles.groupName}>{group.name}</Text>
+          <Text
+            style={styles.groupDesc}
+            numberOfLines={lineLength}
+            onTextLayout={event => setLines(event.nativeEvent.lines.length)}>
+            {group.description}
+          </Text>
+          {lines > lineLength ? (
+            <TouchableOpacity onPress={lineHandler} activeOpacity={0.5}>
+              <Text style={styles.showMore}>Show more</Text>
+            </TouchableOpacity>
+          ) : null}
+          <Text style={styles.groupDesc}>
+            created on{' '}
+            <Moment element={Text} format="YYYY-MM-DD">
+              {new Date(group.created_on)}
+            </Moment>{' '}
+            at{' '}
+            <Moment element={Text} format="hh.mm">
+              {new Date(group.created_on)}
+            </Moment>
+          </Text>
+          <TouchableOpacity
+            style={styles.membersItem}
+            onPress={() =>
+              navigation.navigate('group-members', {
+                id: id,
+                admin: admin,
+                creator: group.created_by,
+              })
+            }
+            activeOpacity={0.5}>
+            <Text style={styles.membersText}>
+              {group.total_members} Members
+            </Text>
+            <Ionicons name="arrow-forward" size={22} color="#376eb3" />
+          </TouchableOpacity>
+          <View style={styles.groupButtons}>
+            {creator ? null : group.joined ? (
+              <TouchableOpacity onPress={leaveHandler} activeOpacity={0.5}>
+                <Text style={styles.groupButton}>Leave</Text>
+              </TouchableOpacity>
+            ) : group.req_sent ? (
+              <TouchableOpacity onPress={cancelHandler} activeOpacity={0.5}>
+                <Text style={styles.groupButton}>Requested</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={joinHandler} activeOpacity={0.5}>
+                <Text style={styles.groupButton}>
+                  {group.group_type ? 'Request' : 'Join'}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {admin && group.group_type ? (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('manage-requests', {
+                    id: id,
+                  })
+                }
+                activeOpacity={0.5}>
+                <Text style={styles.groupButtonrequest}>Requests</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+        </View>
+      </>
+    ) : null;
+  };
+
   return (
     <View
       style={[
@@ -90,20 +261,47 @@ const GroupDetailsCard = ({navigation, route}) => {
         <Text style={styles.groupTitle}>Group</Text>
         {admin ? (
           <TouchableOpacity
-            style={{marginLeft: '5%'}}
+            style={styles.creategroup}
             onPress={() =>
               navigation.navigate('create-group', {
                 group: group,
               })
             }
             activeOpacity={0.5}>
-            <Ionicons name="md-create" color={'#376eb3'} size={26} />
+            <Ionicons name="create" color={'#376eb3'} size={26} />
           </TouchableOpacity>
         ) : (
-          <Ionicons color={'#fff'} style={{marginLeft: '5%'}} />
+          <Ionicons color={'#fff'} marginRight={26} />
         )}
       </View>
       {/* <Loader /> */}
+      <FlatList
+        data={articles}
+        keyExtractor={item => item.PostId.toString()}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+        ListHeaderComponentStyle={styles.headercomponent}
+        ListFooterComponent={renderFooter}
+        ListFooterComponentStyle={styles.footer}
+        refreshing={fetching}
+        onRefresh={loadTopPosts}
+        onEndReached={loadEndPosts}
+        style={{opacity: isLoading ? 0 : 1}}
+      />
+      <TouchableOpacity
+        style={styles.createPost}
+        onPress={() =>
+          navigation.navigate('index', {
+            screen: 'CreatePost',
+            group: group.name,
+            id: group.groupid,
+          })
+        }
+        activeOpacity={0.5}>
+        <Ionicons name="create" size={28} color="white" />
+      </TouchableOpacity>
+      {/* {group && group.joined ? (
+      ) : null} */}
     </View>
   );
 };
@@ -113,60 +311,60 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupHeader: {
-    height: 50,
+    height: normalize(50),
     flexDirection: 'row',
     paddingHorizontal: '5%',
-    borderBottomWidth: 1,
-    borderColor: '#376eb3',
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.primary,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   groupTitle: {
-    fontSize: 24,
+    fontSize: normalize(25),
     textTransform: 'uppercase',
-    paddingLeft: 20,
-    color: '#376eb3',
+    paddingLeft: normalize(theme.spacing.large),
+    color: theme.colors.primary,
   },
   groupImageSection: {
-    height: 100,
-    backgroundColor: '#376eb3',
+    height: normalize(100),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
     position: 'relative',
-    marginBottom: 50,
+    marginBottom: normalize(50),
   },
   groupImageBlock: {
-    backgroundColor: 'white',
-    borderRadius: 100,
-    height: 100,
-    width: 100,
+    backgroundColor: theme.colors.white,
+    borderRadius: normalize(100),
+    height: normalize(98),
+    width: normalize(95),
     position: 'absolute',
     top: '50%',
     alignItems: 'center',
   },
   groupImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    borderWidth: 3,
-    borderColor: '#376eb3',
+    width: normalize(100),
+    height: normalize(100),
+    borderRadius: normalize(100),
+    borderWidth: normalize(6),
+    borderColor: theme.colors.primary,
   },
   groupInfo: {
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: '5%',
   },
   groupName: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: normalize(21),
+    fontWeight: theme.fontWeight.bold,
   },
   groupDesc: {
-    fontSize: 15,
-    paddingTop: 5,
+    fontSize: normalize(theme.fontSizes.medium),
+    paddingTop: normalize(6),
   },
   showMore: {
-    fontSize: 15,
-    color: '#376eb3',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.primary,
     alignSelf: 'flex-start',
   },
   membersItem: {
@@ -174,41 +372,64 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10,
+    paddingVertical: normalize(11),
   },
   membersText: {
-    fontSize: 16,
-    color: '#376eb3',
+    fontSize: normalize(17),
+    color: theme.colors.primary,
   },
   groupButtons: {
     flexDirection: 'row',
     width: '100%',
     alignItems: 'flex-end',
   },
+  footer: {
+    paddingBottom: normalize(6),
+  },
+  groupButtonrequest: {
+    backgroundColor: theme.colors.white,
+    color: theme.colors.primary,
+    borderColor: theme.colors.primary,
+    borderWidth: normalize(3),
+    paddingVertical: normalize(7),
+    paddingHorizontal: normalize(20),
+    fontSize: normalize(theme.fontSizes.medium),
+    borderRadius: normalize(theme.spacing.medium),
+    marginTop: normalize(5),
+    marginBottom: normalize(10),
+    marginRight: normalize(10),
+  },
   groupButton: {
-    paddingVertical: 5,
-    paddingHorizontal: 20,
-    backgroundColor: '#376eb3',
-    borderColor: '#376eb3',
-    borderWidth: 1,
-    color: '#fff',
-    fontSize: 16,
-    borderRadius: 15,
-    marginTop: 5,
-    marginBottom: 10,
-    marginRight: 10,
+    paddingVertical: normalize(7),
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+    borderWidth: normalize(3),
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+    borderRadius: normalize(theme.spacing.medium),
+    marginTop: normalize(theme.spacing.extraSmall),
+    marginBottom: normalize(theme.spacing.small),
+    marginRight: normalize(theme.spacing.small),
   },
   createPost: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: '#376eb3',
-    borderRadius: 100,
-    elevation: 5,
-    paddingTop: 10,
-    paddingBottom: 12,
-    paddingLeft: 14,
-    paddingRight: 11,
+    bottom: normalize(11),
+    right: normalize(11),
+    backgroundColor: theme.colors.primary,
+    borderRadius: normalize(100),
+    elevation: normalize(5),
+    paddingTop: normalize(12),
+    paddingBottom: normalize(13),
+    paddingLeft: normalize(15),
+    paddingRight: normalize(12),
+  },
+  creategroup: {
+    marginLeft: '5%',
+  },
+  headercomponent: {
+    backgroundColor: theme.colors.white,
+    marginBottom: normalize(6),
   },
 });
 
