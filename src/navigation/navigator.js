@@ -41,7 +41,7 @@ const Navigator = ({handleCreatePost}) => {
         }}
       />
       <Tab.Screen
-        name="Network"
+        name="Home"
         component={Network}
         options={{
           tabBarLabel: 'Network',
