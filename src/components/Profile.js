@@ -9,6 +9,7 @@ import {
   Image,
   LogBox,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import theme from '../../theme';
@@ -25,10 +26,14 @@ const Profile = ({navigation, route}) => {
   const [owner, setOwner] = useState(true);
   const [following, setFollowing] = useState(false);
   const [connectionLevel, setConnectionLevel] = useState(0);
+  const [showAll, setShowAll] = useState({
+    isShownAllExperience: false,
+    isShownAllEducation: false,
+    isShownAllSkills: false,
+  });
 
   useEffect(() => {
-    setUser({profile: route.params?.user});
-    console.log({profile: route.params?.user}, 'experience', user);
+    setUser(route.params?.user);
     const mount = navigation.addListener('focus', () => {
       LogBox.ignoreLogs([
         'Non-serializable values were found in the navigation state',
@@ -45,7 +50,7 @@ const Profile = ({navigation, route}) => {
       if (
         route.params &&
         route.params.userID &&
-        (await AsyncStorage.getItem('userId')) != route.params.userID
+        (await AsyncStorage.getItem('userId')) !== route.params.userID
       ) {
         userid = route.params.userID;
         setOwner(false);
@@ -98,6 +103,7 @@ const Profile = ({navigation, route}) => {
   };
 
   const dateConvert = value => {
+    console.log(value);
     const monthNames = [
       'Jan',
       'Feb',
@@ -141,13 +147,9 @@ const Profile = ({navigation, route}) => {
       {user.profile && user.profile != null ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.userProfileImage}>
-            <View style={styles.profileImage}>
+            <View style={styles.profileImageContainer}>
               <Image
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 100,
-                }}
+                style={styles.profileImage}
                 source={
                   user.profile.img_file_name
                     ? {uri: user.profile.img_file_name}
@@ -169,7 +171,7 @@ const Profile = ({navigation, route}) => {
                     {'   '}
                     {'\u2B24'}
                   </Text>
-                  <Text> {connectionLevel}</Text>
+                  <Text style={styles.details}> {connectionLevel}</Text>
                 </>
               ) : null}
             </View>
@@ -201,63 +203,315 @@ const Profile = ({navigation, route}) => {
               </View>
             )}
           </View>
-          <View style={styles.infoBox}>
-            <View style={styles.boxHeader}>
-              <Text style={styles.infoHeader}>Personal Info</Text>
-              {owner ? (
-                <TouchableOpacity
-                  onPress={
-                    () => console.log('navigate to user-profile')
-                    // navigation.navigate('user-profile', {
-                    //   user: user.profile,
-                    // })
-                  }
-                  activeOpacity={0.5}>
-                  <Ionicons
-                    name="create"
-                    color={theme.colors.primary}
-                    size={normalize(24)}
-                  />
-                </TouchableOpacity>
-              ) : null}
-            </View>
-          </View>
-
-          {user.experience?.length ? (
+          <View style={styles.userDetailesContainer}>
             <View style={styles.infoBox}>
               <View style={styles.boxHeader}>
-                <Text style={styles.infoHeader}>Experience</Text>
+                <Text style={styles.infoHeader}>Personal Info</Text>
                 {owner ? (
                   <TouchableOpacity
-                    onPress={() => console.log('navigate to user-experience')}
+                    onPress={
+                      () => console.log('navigate to user-profile')
+                      // navigation.navigate('user-profile', {
+                      //   user: user.profile,
+                      // })
+                    }
                     activeOpacity={0.5}>
                     <Ionicons
-                      name="create"
+                      name="create-outline"
                       color={theme.colors.primary}
                       size={normalize(24)}
                     />
                   </TouchableOpacity>
                 ) : null}
               </View>
-              {user.experience.map((el, index) => {
-                return (
-                  <View key={index} style={styles.userEducationItem}>
-                    <Text style={styles.organisationName}>
-                      {el.Company_name}
+              <View style={styles.userInfoBox}>
+                <View style={styles.personalInfoItem}>
+                  <Text style={styles.details}>Date Of Birth :</Text>
+                  {user.profile.DOB != null ? (
+                    <Text style={styles.details}>
+                      {`${
+                        dob.getDate().toString().length === 1
+                          ? '0' + dob.getDate()
+                          : dob.getDate()
+                      } - ${
+                        (dob.getMonth() + 1).toString().length === 1
+                          ? '0' + (dob.getMonth() + 1)
+                          : dob.getMonth() + 1
+                      } - ${dob.getFullYear()}`}
                     </Text>
-                    <Text style={styles.role}>{el.Role}</Text>
-                    {el.To ? (
-                      <Text>
-                        {dateConvert(el.From)} - {dateConvert(el.To)}
-                      </Text>
-                    ) : (
-                      <Text>{dateConvert(el.From)} - Present</Text>
-                    )}
-                  </View>
-                );
-              })}
+                  ) : (
+                    <Text style={styles.details}>----</Text>
+                  )}
+                </View>
+                <View style={styles.personalInfoItem}>
+                  <Text style={styles.details}>Email :</Text>
+                  <Text style={styles.details}>{user.profile.Email}</Text>
+                </View>
+                <View style={styles.personalInfoItem}>
+                  <Text style={styles.details}>Phone :</Text>
+                  {user.profile.phone_no !== '' ? (
+                    <Text style={styles.details}>{user.profile.phone_no}</Text>
+                  ) : (
+                    <Text style={styles.details}>----</Text>
+                  )}
+                </View>
+                <View style={styles.personalInfoItem}>
+                  <Text style={styles.details}>Location :</Text>
+                  {user.profile.Location != null ? (
+                    <Text style={styles.details}>{user.profile.Location}</Text>
+                  ) : (
+                    <Text style={styles.details}>----</Text>
+                  )}
+                </View>
+              </View>
             </View>
-          ) : null}
+
+            {user.experience?.length ? (
+              <View style={styles.infoBox}>
+                <View style={styles.boxHeader}>
+                  <Text style={styles.infoHeader}>Experience</Text>
+                  {owner ? (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('user-experience')}
+                      activeOpacity={0.5}>
+                      <Ionicons
+                        name="create-outline"
+                        color={theme.colors.primary}
+                        size={normalize(24)}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                {user.experience
+                  ? user.experience
+                      .slice(
+                        0,
+                        showAll.isShownAllExperience
+                          ? user.experience.length
+                          : 3,
+                      )
+                      .map((experienceElement, index) => {
+                        return (
+                          <View key={index} style={styles.userEducationItem}>
+                            <Text style={styles.organisationName}>
+                              {experienceElement.Company_name}
+                            </Text>
+                            <Text style={styles.role}>
+                              {experienceElement.Role}
+                            </Text>
+                            {experienceElement.To ? (
+                              <Text style={styles.dateStyle}>
+                                {dateConvert(experienceElement.From)} -{' '}
+                                {dateConvert(experienceElement.To)}
+                              </Text>
+                            ) : (
+                              <Text style={styles.dateStyle}>
+                                {dateConvert(experienceElement.From)} - Present
+                              </Text>
+                            )}
+                          </View>
+                        );
+                      })
+                  : null}
+                {user.experience.length > 3 ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      setShowAll({
+                        ...showAll,
+                        isShownAllExperience: !showAll.isShownAllExperience,
+                      })
+                    }>
+                    {showAll.isShownAllExperience ? (
+                      <Text style={styles.showMore}>show less</Text>
+                    ) : (
+                      <Text style={styles.showMore}>show more</Text>
+                    )}
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+            ) : null}
+
+            {user.education?.length ? (
+              <View style={styles.infoBox}>
+                <View style={styles.boxHeader}>
+                  <Text style={styles.infoHeader}>Education</Text>
+                  {owner ? (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('user-education')}
+                      activeOpacity={0.5}>
+                      <Ionicons
+                        name="create-outline"
+                        color={theme.colors.primary}
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                {user.education
+                  ? user.education
+                      .slice(
+                        0,
+                        showAll.isShownAllEducation
+                          ? user.experience.length
+                          : 3,
+                      )
+                      .map((educationElement, index) => {
+                        return (
+                          <View key={index} style={styles.userEducationItem}>
+                            <Text style={styles.organisationName}>
+                              {educationElement.college_name}
+                            </Text>
+                            {educationElement.To ? (
+                              <Text style={styles.dateStyle}>
+                                {dateConvert(educationElement.From)} -{' '}
+                                {dateConvert(educationElement.To)}
+                              </Text>
+                            ) : (
+                              <Text style={styles.dateStyle}>
+                                {dateConvert(educationElement.From)} - Present
+                              </Text>
+                            )}
+                          </View>
+                        );
+                      })
+                  : null}
+                <TouchableOpacity
+                  onPress={() =>
+                    setShowAll({
+                      ...showAll,
+                      isShownAllEducation: !showAll.isShownAllEducation,
+                    })
+                  }>
+                  {showAll.isShownAllEducation ? (
+                    <Text style={styles.showMore}>show less</Text>
+                  ) : (
+                    <Text style={styles.showMore}>show more</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            ) : null}
+
+            {user.skills.length ? (
+              <View style={styles.infoBox}>
+                <View style={styles.boxHeader}>
+                  <Text style={styles.infoHeader}>Skills</Text>
+                  {owner ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('user-skill', {
+                          skills: user.skills,
+                        })
+                      }
+                      activeOpacity={0.5}>
+                      <Ionicons
+                        name="create-outline"
+                        color={theme.colors.primary}
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+                <View style={styles.skillsContainer}>
+                  {user.skills
+                    ? user.skills
+                        .slice(
+                          0,
+                          showAll.isShownAllSkills ? user.experience.length : 3,
+                        )
+                        .map((skillElement, index) => {
+                          console.log(skillElement);
+                          return (
+                            <Text key={index} style={styles.skillItem}>
+                              {skillElement}
+                            </Text>
+                          );
+                        })
+                    : null}
+                  <TouchableOpacity
+                    onPress={() =>
+                      setShowAll({
+                        ...showAll,
+                        isShownAllSkills: !showAll.isShownAllSkills,
+                      })
+                    }>
+                    {showAll.isShownAllSkills ? (
+                      <Text style={styles.showMore}>show less</Text>
+                    ) : (
+                      <Text style={styles.showMore}>show more</Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : null}
+
+            {/* <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('user-details', {
+                  userid: userID,
+                  skills: user.skills,
+                })
+              }
+              activeOpacity={0.5}>
+              <Text style={styles.showMore}>SHOW MORE</Text>
+            </TouchableOpacity> */}
+            <View style={styles.infoBox}>
+              <Text style={styles.infoHeader}>Achievements</Text>
+              <TouchableOpacity
+                style={styles.achivementItem}
+                disabled={!(user.projects || owner)}
+                onPress={() =>
+                  navigation.navigate('user-project', {
+                    userid: userID,
+                  })
+                }
+                activeOpacity={0.5}>
+                <Text style={styles.achievementText}>
+                  Projects ({user.projects?.length})
+                </Text>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={20}
+                  color="#376eb3"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.achivementItem}
+                disabled={!(user.courses || owner)}
+                onPress={() =>
+                  navigation.navigate('user-course', {
+                    userid: userID,
+                  })
+                }
+                activeOpacity={0.5}>
+                <Text style={styles.achievementText}>
+                  Courses ({user.courses?.length})
+                </Text>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={20}
+                  color="#376eb3"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.achivementItem}
+                disabled={!(user.publications || owner)}
+                onPress={() =>
+                  navigation.navigate('user-publication', {
+                    userid: userID,
+                  })
+                }
+                activeOpacity={0.5}>
+                <Text style={styles.achievementText}>
+                  Publications ({user.publications?.length})
+                </Text>
+                <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={20}
+                  color="#376eb3"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
       ) : null}
     </View>
@@ -290,7 +544,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: normalize(50),
   },
-  profileImage: {
+  profileImageContainer: {
     backgroundColor: theme.colors.white,
     borderRadius: normalize(100),
     height: normalize(100),
@@ -298,7 +552,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     alignItems: 'center',
-    borderColor: theme.colors.primary,
+  },
+  profileImage: {
+    width: normalize(100),
+    height: normalize(100),
+    borderRadius: normalize(100),
   },
   userInfo: {
     alignItems: 'center',
@@ -310,9 +568,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userName: {
-    fontSize: normalize(theme.fontSizes.large),
+    fontSize: normalize(theme.fontSizes.extraLarge),
     fontWeight: 'bold',
     color: theme.colors.black,
+    textTransform: 'capitalize',
   },
   connectionLevel: {
     fontSize: normalize(theme.fontSizes.extraSmall),
@@ -321,7 +580,7 @@ const styles = StyleSheet.create({
   userDesc: {
     fontSize: normalize(theme.fontSizes.medium),
     paddingTop: normalize(theme.spacing.extraSmall),
-    color: theme.colors.black,
+    color: '#787878',
   },
   followSection: {
     flexDirection: 'row',
@@ -345,8 +604,7 @@ const styles = StyleSheet.create({
   infoBox: {
     padding: normalize(theme.spacing.small),
     marginVertical: normalize(theme.spacing.extraSmall),
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: theme.colors.grey,
     borderBottomWidth: 0,
   },
   infoHeader: {
@@ -359,6 +617,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+  },
+  personalInfoItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: normalize(theme.spacing.extraSmall),
+    fontSize: normalize(theme.fontSizes.medium),
+  },
+  details: {
+    color: theme.colors.black,
+  },
+  userEducationItem: {
+    paddingVertical: normalize(theme.spacing.small),
+    borderBottomColor: theme.colors.grey,
+    borderBottomWidth: 1,
+  },
+  organisationName: {
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginBottom: normalize(theme.spacing.extraSmall),
+    textTransform: 'capitalize',
+    color: theme.colors.black,
+  },
+  role: {
+    marginBottom: 5,
+    color: '#787878',
+  },
+  dateStyle: {
+    color: '#787878',
+  },
+  userInfoBox: {
+    marginTop: normalize(theme.spacing.small),
+  },
+  skillsContainer: {
+    marginVertical: normalize(theme.spacing.small),
+  },
+  skillItem: {
+    borderBottomWidth: 1,
+    height: normalize(50),
+    lineHeight: normalize(50),
+    borderColor: theme.colors.grey,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
+  },
+  showMore: {
+    color: theme.colors.primary,
+    alignSelf: 'center',
+    marginBottom: normalize(theme.spacing.small),
+  },
+  achivementItem: {
+    height: normalize(50),
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderColor: theme.colors.grey,
+    flexDirection: 'row',
+  },
+  achievementText: {
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.primary,
+  },
+  userDetailesContainer: {
+    marginHorizontal: normalize(theme.spacing.small),
   },
 });
 export default Profile;

@@ -54,8 +54,8 @@ const ProfileCard = ({item, navigation}) => {
         <Image
           style={styles.profileImage}
           source={
-            item.img_file_name
-              ? {uri: item.img_file_name}
+            item.profile.img_file_name
+              ? {uri: item.profile.img_file_name}
               : require('../../assets/male.png')
           }
         />
@@ -63,7 +63,7 @@ const ProfileCard = ({item, navigation}) => {
       <View style={styles.detailsSection}>
         <View style={styles.userNameDetails}>
           <Text style={styles.profileName}>
-            {item.First_Name} {item.Last_Name}
+            {item.profile.First_Name} {item.profile.Last_Name}
           </Text>
           {connectionLevel ? (
             <>
@@ -75,7 +75,7 @@ const ProfileCard = ({item, navigation}) => {
             </>
           ) : null}
         </View>
-        <Text style={styles.profileTitle}>{item.heading}</Text>
+        <Text style={styles.profileTitle}>{item.profile.heading}</Text>
         <TouchableOpacity onPress={connectionHandler} activeOpacity={0.5}>
           {connected ? (
             <Text style={[styles.connectedButton, styles.buttonStyle]}>
