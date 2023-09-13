@@ -7,6 +7,7 @@ const theme = {
     border: '#ddd',
     grey: '#ccc',
     placeholdercolor: '#c7c7c7',
+    darkgrey: '#999',
   },
   fontWeight: {
     light: '300',
