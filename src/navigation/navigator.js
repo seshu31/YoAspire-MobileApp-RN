@@ -24,7 +24,7 @@ const Navigator = ({handleCreatePost}) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Network"
+      initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {backgroundColor: theme.colors.white},
         headerShown: false,
@@ -41,7 +41,7 @@ const Navigator = ({handleCreatePost}) => {
         }}
       />
       <Tab.Screen
-        name="Home"
+        name="Network"
         component={Network}
         options={{
           tabBarLabel: 'Network',
