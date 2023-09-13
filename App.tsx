@@ -24,6 +24,8 @@ import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
 import EditProject from './src/shared/EditProject';
 import EditCourse from './src/shared/EditCource';
+import GroupMembers from './src/shared/GroupMembers.js';
+import GroupRequests from './src/shared/GroupRequests.js';
 
 const Stack = createStackNavigator();
 
@@ -33,7 +35,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="user-course"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
@@ -89,6 +91,8 @@ const App = () => {
           />
           <Stack.Screen name="edit-course" component={EditCourse} />
           <Stack.Screen name="edit-skill" component={EditSkill} />
+          <Stack.Screen name="group-members" component={GroupMembers} />
+          <Stack.Screen name="manage-requests" component={GroupRequests} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
