@@ -24,6 +24,7 @@ import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
 import EditProject from './src/shared/EditProject';
 import EditCourse from './src/shared/EditCource';
+import EditPublication from './src/shared/EditPublications';
 import GroupMembers from './src/shared/GroupMembers.js';
 import GroupRequests from './src/shared/GroupRequests.js';
 
@@ -35,7 +36,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="user-publication"
           screenOptions={{
             headerShown: false,
           }}>
@@ -70,6 +71,11 @@ const App = () => {
           <Stack.Screen
             name="user-publication"
             component={UserPublication}
+            initialParams={{user: 213}}
+          /> 
+          <Stack.Screen
+            name="edit-publication"
+            component={EditPublication}
             initialParams={{user: 213}}
           />
           <Stack.Screen

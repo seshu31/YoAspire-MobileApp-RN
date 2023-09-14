@@ -94,7 +94,7 @@ const UserPublication = ({navigation, route}) => {
         <Text style={styles.profileTitle}>Publications</Text>
         {owner ? (
           <TouchableOpacity
-            // onPress={() => navigation.navigate('edit-publication')}
+            onPress={() => navigation.navigate('edit-publication')}
             activeOpacity={0.5}>
             <Ionicons name="add" size={32} color="#fff" />
           </TouchableOpacity>
@@ -115,10 +115,9 @@ const UserPublication = ({navigation, route}) => {
                   {owner ? (
                     <TouchableOpacity
                       onPress={() =>
-                        // navigation.navigate('edit-publication', {
-                        //   publication: el,
-                        // })
-                        {}
+                        navigation.navigate('edit-publication', {
+                          publication: el,
+                        })
                       }
                       style={styles.editIcon}
                       activeOpacity={0.5}>
@@ -144,7 +143,6 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
     paddingHorizontal: 20,

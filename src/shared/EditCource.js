@@ -28,14 +28,14 @@ const EditCourse = ({navigation, route}) => {
     formState: {errors},
   } = useForm();
   const [dateErr, setDateErr] = useState(() => false);
-  const [date1, setDate1] = useState(() =>
-    course.From ? new Date(course.From) : null,
+  const [courseStartDate, setCourseStartDate] = useState(() =>
+    course?.From ? new Date(course.From) : null,
   );
-  const [date2, setDate2] = useState(() =>
-    course.To ? new Date(course.To) : null,
+  const [courseEndDate, setCourseEndDate] = useState(() =>
+    course?.To ? new Date(course.To) : null,
   );
-  const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
+  const [showFromDatePicker, setShowFromDatePicker] = useState(false);
+  const [showToDatePicker, setShowToDatePicker] = useState(false);
 
   const getToken = async () => {
     console.log('get token function');
@@ -47,35 +47,35 @@ const EditCourse = ({navigation, route}) => {
   };
 
   const onChange1 = selectedDate => {
-    const currentDate = selectedDate || date1;
-    setShow1(Platform.OS === 'ios');
-    setDate1(currentDate);
+    const currentDate = selectedDate || courseStartDate;
+    setShowFromDatePicker(Platform.OS === 'ios');
+    setCourseStartDate(currentDate);
   };
   const onChange2 = selectedDate => {
-    const currentDate = selectedDate || date2;
-    setShow2(Platform.OS === 'ios');
-    setDate2(currentDate);
+    const currentDate = selectedDate || courseEndDate;
+    setShowToDatePicker(Platform.OS === 'ios');
+    setCourseEndDate(currentDate);
   };
 
   const showDatepicker = value => {
     if (value === 1) {
-      setShow1(true);
+      setShowFromDatePicker(true);
     } else {
-      setShow2(true);
+      setShowToDatePicker(true);
     }
   };
 
   const courseHandler = data => {
-    if (date1 == null || date2 == null) {
+    if (courseStartDate == null || courseEndDate == null) {
       setIsLoading(false);
       setDateErr(true);
     }
 
-    if (date1 != null && date2 != null) {
+    if (courseStartDate != null && courseEndDate != null) {
       const payload = {
         title: data.title,
-        From: date1.toISOString(),
-        To: date2.toISOString(),
+        From: courseStartDate.toISOString(),
+        To: courseEndDate.toISOString(),
       };
       if (data.description) payload['Description'] = data.description;
       if (course) {
@@ -97,13 +97,18 @@ const EditCourse = ({navigation, route}) => {
       'deleteHandler function , method:delete , url:${backend_url}/profiles/courses/${course.Cou_id}',
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons
+            name="arrow-back"
+            size={normalize(24)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
           {course ? 'Edit Course' : 'Add Course'}
@@ -111,7 +116,11 @@ const EditCourse = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(courseHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={24} color="#fff" />
+          <Ionicons
+            name="save"
+            size={normalize(24)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}
@@ -148,35 +157,37 @@ const EditCourse = ({navigation, route}) => {
             <Text
               style={[styles.inputField, styles.projectDuration]}
               onPress={() => showDatepicker(1)}>
-              {date1 != null ? (
+              {courseStartDate != null ? (
                 `${
-                  date1.getDate().toString().length === 1
-                    ? '0' + date1.getDate()
-                    : date1.getDate()
+                  courseStartDate.getDate().toString().length === 1
+                    ? '0' + courseStartDate.getDate()
+                    : courseStartDate.getDate()
                 } - ${
-                  (date1.getMonth() + 1).toString().length === 1
-                    ? '0' + (date1.getMonth() + 1)
-                    : date1.getMonth() + 1
-                } - ${date1.getFullYear()}`
+                  (courseStartDate.getMonth() + 1).toString().length === 1
+                    ? '0' + (courseStartDate.getMonth() + 1)
+                    : courseStartDate.getMonth() + 1
+                } - ${courseStartDate.getFullYear()}`
               ) : (
-                <Text style={styles.projectDurationText}>Start Year</Text>
+                <Text style={styles.projectDurationPlaceholder}>
+                  Start Year
+                </Text>
               )}
             </Text>
-            {show1 && (
+            {showFromDatePicker && (
               <DatePicker
                 modal={true}
-                open={show1}
-                date={date1}
-                mode="date"
+                open={showFromDatePicker}
+                date={courseStartDate ? courseStartDate : new Date()}
                 format="DD/MM/YYYY"
+                mode="date"
                 androidVariant="nativeAndroid"
-                value={date1}
+                value={courseStartDate}
                 onConfirm={onChange1}
                 onCancel={onChange1}
                 maximumDate={new Date()}
               />
             )}
-            {dateErr && date1 == null ? (
+            {dateErr && courseStartDate == null ? (
               <Text style={styles.errorText}>Start Year Field is required</Text>
             ) : null}
           </View>
@@ -184,32 +195,37 @@ const EditCourse = ({navigation, route}) => {
             <Text
               style={[styles.inputField, styles.projectDuration]}
               onPress={() => showDatepicker(2)}>
-              {date2 != null ? (
+              {courseEndDate != null ? (
                 `${
-                  date2.getDate().toString().length === 1
-                    ? '0' + date2.getDate()
-                    : date2.getDate()
+                  courseEndDate.getDate().toString().length === 1
+                    ? '0' + courseEndDate.getDate()
+                    : courseEndDate.getDate()
                 } - ${
-                  (date2.getMonth() + 1).toString().length === 1
-                    ? '0' + (date2.getMonth() + 1)
-                    : date2.getMonth() + 1
-                } - ${date2.getFullYear()}`
+                  (courseEndDate.getMonth() + 1).toString().length === 1
+                    ? '0' + (courseEndDate.getMonth() + 1)
+                    : courseEndDate.getMonth() + 1
+                } - ${courseEndDate.getFullYear()}`
               ) : (
-                <Text style={styles.projectDurationText}>Final Year</Text>
+                <Text style={styles.projectDurationPlaceholder}>
+                  Final Year
+                </Text>
               )}
             </Text>
-            {show2 && (
+            {showToDatePicker && (
               <DatePicker
-                value={date2}
+                modal={true}
+                open={showToDatePicker}
+                date={courseEndDate ? courseEndDate : new Date()}
                 mode="date"
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange2}
-                minimumDate={date1}
+                format="DD/MM/YYYY"
+                androidVariant="nativeAndroid"
+                value={courseEndDate}
+                onConfirm={onChange2}
+                onCancel={onChange2}
                 maximumDate={new Date()}
               />
             )}
-            {dateErr && date2 == null ? (
+            {dateErr && courseEndDate == null ? (
               <Text style={styles.errorText}>Final Year Field is required</Text>
             ) : null}
           </View>
@@ -218,7 +234,7 @@ const EditCourse = ({navigation, route}) => {
           control={control}
           name="description"
           defaultValue={course ? course.Description : ''}
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <Textarea
               containerStyle={styles.initialBody}
               style={styles.textarea}
@@ -226,7 +242,7 @@ const EditCourse = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder={'Description'}
-              placeholderTextColor={styles.projectDurationText}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -252,41 +268,41 @@ const styles = StyleSheet.create({
   errorText: {
     color: theme.colors.red,
   },
-  projectDurationText: {
+  projectDurationPlaceholder: {
     color: theme.colors.placeholdercolor,
   },
   projectDuration: {
-    paddingTop: 15,
+    paddingTop: normalize(theme.spacing.medium),
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#376eb3',
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: normalize(theme.spacing.large),
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.large),
+    color: theme.colors.white,
   },
   inputField: {
     width: '100%',
-    height: 50,
-    marginBottom: 20,
+    height: normalize(50),
+    marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    color: 'black',
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   body: {
-    padding: 20,
+    padding: normalize(theme.spacing.large),
   },
   yearRow: {
     flexDirection: 'row',
@@ -296,21 +312,21 @@ const styles = StyleSheet.create({
     width: '49%',
   },
   textarea: {
-    textAlignVertical: 'top', // hack android
+    textAlignVertical: 'top',
     fontSize: 16,
     color: '#333',
   },
   initialBody: {
-    paddingVertical: 5,
-    borderColor: '#376eb3',
-    marginBottom: 10,
+    paddingVertical: normalize(theme.spacing.extraSmall),
+    borderColor: theme.colors.primary,
+    marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
   },
   deleteButton: {
-    color: 'red',
+    color: theme.colors.red,
     alignSelf: 'center',
-    fontSize: 18,
-    marginVertical: 10,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
 });
 export default EditCourse;

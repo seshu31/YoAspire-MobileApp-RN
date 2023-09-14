@@ -103,7 +103,11 @@ const EditProject = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons
+            name="arrow-back"
+            size={normalize(24)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
           {project ? 'Edit Project' : 'Add Project'}
@@ -111,7 +115,11 @@ const EditProject = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(projectHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={24} color="#fff" />
+          <Ionicons
+            name="save"
+            size={normalize(24)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       <View style={[styles.body, {opacity: isLoading ? 0.25 : 1}]}>
@@ -185,14 +193,16 @@ const EditProject = ({navigation, route}) => {
                     : projectStartDate.getMonth() + 1
                 } - ${projectStartDate.getFullYear()}`
               ) : (
-                <Text style={styles.projectDurationText}>Start Year</Text>
+                <Text style={styles.projectDurationPlaceholder}>
+                  Start Year
+                </Text>
               )}
             </Text>
             {showFromDatePicker && (
               <DatePicker
                 modal={true}
                 open={showFromDatePicker}
-                date={projectStartDate}
+                date={projectStartDate ? projectStartDate : new Date()}
                 format="DD/MM/YYYY"
                 mode="date"
                 androidVariant="nativeAndroid"
@@ -221,14 +231,16 @@ const EditProject = ({navigation, route}) => {
                     : projectEndDate.getMonth() + 1
                 } - ${projectEndDate.getFullYear()}`
               ) : (
-                <Text style={styles.projectDurationText}>Final Year</Text>
+                <Text style={styles.projectDurationPlaceholder}>
+                  Final Year
+                </Text>
               )}
             </Text>
             {showToDatePicker && (
               <DatePicker
                 modal={true}
                 open={showToDatePicker}
-                date={projectEndDate}
+                date={projectEndDate ? projectEndDate : new Date()}
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
@@ -287,6 +299,9 @@ const styles = StyleSheet.create({
   projectDurationText: {
     color: theme.colors.placeholdercolor,
   },
+  projectDurationPlaceholder: {
+    color: theme.colors.placeholdercolor,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -325,7 +340,7 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   textarea: {
-    textAlignVertical: 'top', // hack android
+    textAlignVertical: 'top',
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
