@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -22,15 +22,20 @@ import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
-import GroupMembers from './src/shared/GroupMembers.js';
-import GroupRequests from './src/shared/GroupRequests.js';
+import GroupMembers from './src/shared/GroupMembers';
+import GroupRequests from './src/shared/GroupRequests';
 import Profile from './src/components/Profile';
 import ChatSection from './src/shared/ChatSection';
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  // const [loggedIn, setLoggedIn] = useState(() => null);
+  const [loggedIn, setLoggedIn] = useState(() => null);
+
+  const loginHandler = (value: any) => {
+    setLoggedIn(value);
+  };
+
   return (
     <View style={styles.container}>
       <NavigationContainer>
@@ -52,6 +57,11 @@ const App = () => {
           <Stack.Screen name="article" component={DetailedArticle} />
           <Stack.Screen name="group" component={GroupDetailsCard} />
           <Stack.Screen name="create-group" component={CreateGroup} />
+          <Stack.Screen
+            name="profile"
+            component={Profile}
+            initialParams={{loginHandler: loginHandler}}
+          />
           <Stack.Screen
             name="edit-profile"
             component={EditProfile}
@@ -87,11 +97,6 @@ const App = () => {
           <Stack.Screen name="edit-skill" component={EditSkill} />
           <Stack.Screen name="group-members" component={GroupMembers} />
           <Stack.Screen name="manage-requests" component={GroupRequests} />
-          <Stack.Screen
-            name="profile"
-            component={Profile}
-            // initialParams={{loginHandler: loginHandler}}
-          />
           <Stack.Screen name="chat-section" component={ChatSection} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
-import articles from '../PostProfilesData';
+import articles from '../PostProfileData';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
