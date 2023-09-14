@@ -29,6 +29,8 @@ import EditExperience from './src/shared/EditExperience';
 import EditEducation from './src/shared/EditEducation';
 import GroupMembers from './src/shared/GroupMembers.js';
 import GroupRequests from './src/shared/GroupRequests.js';
+import Profile from './src/components/Profile';
+import ChatSection from './src/shared/ChatSection';
 
 const Stack = createStackNavigator();
 
@@ -103,6 +105,12 @@ const App = () => {
           <Stack.Screen name="edit-skill" component={EditSkill} />
           <Stack.Screen name="group-members" component={GroupMembers} />
           <Stack.Screen name="manage-requests" component={GroupRequests} />
+          <Stack.Screen
+            name="profile"
+            component={Profile}
+            // initialParams={{loginHandler: loginHandler}}
+          />
+          <Stack.Screen name="chat-section" component={ChatSection} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
