@@ -19,7 +19,7 @@ import theme from '../../theme';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useNavigation, useRoute} from '@react-navigation/native';
 
-const DetailedArticle = ({item, navigation}) => {
+const DetailedArticle = ({navigation}) => {
   const [article, setArticle] = useState(() => []);
   const [comments, setComments] = useState(() => [
     {id: '1', text: 'This is comment 1'},
