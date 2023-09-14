@@ -17,7 +17,6 @@ const UserExperience = ({navigation}) => {
       Company_name: 'title 1',
       role: 'role1',
       From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
     },
     {
       Company_name: 'title 2',
@@ -97,7 +96,7 @@ const UserExperience = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Experience</Text>
         <TouchableOpacity
-          // onPress={() => navigation.navigate('edit-experience')}
+          onPress={() => navigation.navigate('edit-experience')}
           activeOpacity={0.5}>
           <Ionicons name="add" size={32} color="#fff" />
         </TouchableOpacity>
@@ -124,14 +123,18 @@ const UserExperience = ({navigation}) => {
                     )}
                   </View>
                   <TouchableOpacity
-                    // onPress={() =>
-                    //   navigation.navigate('edit-experience', {
-                    //     experience: el,
-                    //   })
-                    // }
+                    onPress={() =>
+                      navigation.navigate('edit-experience', {
+                        experience: el,
+                      })
+                    }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons name="create" color={'#376eb3'} size={24} />
+                    <Ionicons
+                      name="create-outline"
+                      color={'#376eb3'}
+                      size={24}
+                    />
                   </TouchableOpacity>
                 </View>
               );

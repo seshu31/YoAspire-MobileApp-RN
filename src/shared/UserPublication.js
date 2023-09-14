@@ -121,7 +121,11 @@ const UserPublication = ({navigation, route}) => {
                       }
                       style={styles.editIcon}
                       activeOpacity={0.5}>
-                      <Ionicons name="create" color={'#376eb3'} size={24} />
+                      <Ionicons
+                        name="create-outline"
+                        color={'#376eb3'}
+                        size={24}
+                      />
                     </TouchableOpacity>
                   ) : null}
                 </View>

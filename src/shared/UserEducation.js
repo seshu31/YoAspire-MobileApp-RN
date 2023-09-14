@@ -17,11 +17,13 @@ const UserEducation = ({navigation}) => {
       title: 'title 1',
       From: new Date('2022-03-25'),
       To: new Date('2023-03-25'),
+      college_name: 'Rgukt',
     },
     {
       title: 'title 2',
       From: new Date('2022-03-25'),
       To: new Date('2023-03-25'),
+      college_name: 'Rgukt',
     },
     {
       title: 'title 3',
@@ -94,7 +96,7 @@ const UserEducation = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Education</Text>
         <TouchableOpacity
-          // onPress={() => navigation.navigate('edit-education')}
+          onPress={() => navigation.navigate('edit-education')}
           activeOpacity={0.5}>
           <Ionicons name="add" size={32} color="#fff" />
         </TouchableOpacity>
@@ -118,14 +120,18 @@ const UserEducation = ({navigation}) => {
                     )}
                   </View>
                   <TouchableOpacity
-                    // onPress={() =>
-                    //   navigation.navigate('edit-education', {
-                    //     education: el,
-                    //   })
-                    // }
+                    onPress={() =>
+                      navigation.navigate('edit-education', {
+                        education: el,
+                      })
+                    }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons name="create" color={'#376eb3'} size={24} />
+                    <Ionicons
+                      name="create-outline"
+                      color={'#376eb3'}
+                      size={24}
+                    />
                   </TouchableOpacity>
                 </View>
               );

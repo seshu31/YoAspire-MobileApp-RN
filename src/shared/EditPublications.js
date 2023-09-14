@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator,
   Platform,
 } from 'react-native';
 import Textarea from 'react-native-textarea';
@@ -14,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
-import axios from 'axios';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import Loader from '../reusables/Loader';
@@ -23,7 +21,6 @@ const EditPublication = ({navigation, route}) => {
   const publication = route.params?.publication
     ? route.params.publication
     : null;
-
   const [isLoading, setIsLoading] = useState(() => false);
   const {
     control,
@@ -31,7 +28,7 @@ const EditPublication = ({navigation, route}) => {
     formState: {errors},
   } = useForm();
   const [dateErr, setDateErr] = useState(() => false);
-  const [date, setDate] = useState(() =>
+  const [publicationDate, setPublicationDate] = useState(() =>
     publication?.year ? new Date(publication.year) : null,
   );
   const [show, setShow] = useState(false);
@@ -45,27 +42,26 @@ const EditPublication = ({navigation, route}) => {
   };
 
   const onChange = selectedDate => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || publicationDate;
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setPublicationDate(currentDate);
   };
 
   const showDatepicker = () => {
-    setDate(new Date());
     setShow(true);
   };
 
   const publicationHandler = data => {
-    if (date == null) {
+    if (publicationDate == null) {
       setIsLoading(false);
       setDateErr(true);
     }
-    if (date != null) {
+    if (publicationDate != null) {
       const payload = {
         title: data.title,
         Link: data.link,
         Journal: data.journal,
-        Year: date.toISOString(),
+        Year: publicationDate.toISOString(),
       };
       if (publication) {
         console.log(
@@ -76,11 +72,12 @@ const EditPublication = ({navigation, route}) => {
     }
   };
 
-  const deleteHanlder = () => {
+  const deleteHandler = () => {
     console.log(
       'deleteHandler function, method:delete, url:${backend_url}/profiles/publications/${publication.Pub_id}',
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
@@ -183,18 +180,18 @@ const EditPublication = ({navigation, route}) => {
         )}
         <View style={styles.yearField}>
           <Text
-            style={[styles.inputField, {paddingTop: 15}]}
+            style={[styles.inputField, styles.projectDuration]}
             onPress={showDatepicker}>
-            {date != null ? (
+            {publicationDate != null ? (
               `${
-                date.getDate().toString().length === 1
-                  ? '0' + date.getDate()
-                  : date.getDate()
+                publicationDate.getDate().toString().length === 1
+                  ? '0' + publicationDate.getDate()
+                  : publicationDate.getDate()
               } - ${
-                (date.getMonth() + 1).toString().length === 1
-                  ? '0' + (date.getMonth() + 1)
-                  : date.getMonth() + 1
-              } - ${date.getFullYear()}`
+                (publicationDate.getMonth() + 1).toString().length === 1
+                  ? '0' + (publicationDate.getMonth() + 1)
+                  : publicationDate.getMonth() + 1
+              } - ${publicationDate.getFullYear()}`
             ) : (
               <Text style={styles.projectDurationPlaceholder}>Year</Text>
             )}
@@ -203,17 +200,17 @@ const EditPublication = ({navigation, route}) => {
             <DatePicker
               modal={true}
               open={show}
-              date={date ? date : new Date()}
+              date={publicationDate ? publicationDate : new Date()}
               mode="date"
               format="DD/MM/YYYY"
               androidVariant="nativeAndroid"
-              value={date}
+              value={publicationDate}
               onConfirm={onChange}
               onCancel={onChange}
               maximumDate={new Date()}
             />
           )}
-          {dateErr && date == null ? (
+          {dateErr && publicationDate == null ? (
             <Text style={styles.errorText}>Year Field is required</Text>
           ) : null}
         </View>
@@ -221,7 +218,7 @@ const EditPublication = ({navigation, route}) => {
           control={control}
           name="description"
           defaultValue={publication ? publication.Description : ''}
-          render={({onChange, onBlur, value}) => (
+          render={({field: {onChange, onBlur, value}}) => (
             <Textarea
               containerStyle={styles.initialBody}
               style={styles.textarea}
@@ -229,7 +226,7 @@ const EditPublication = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder={'Description'}
-              placeholderTextColor={'#999'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -242,7 +239,7 @@ const EditPublication = ({navigation, route}) => {
           </Text>
         )}
         {publication ? (
-          <Text style={styles.deleteButton} onPress={deleteHanlder}>
+          <Text style={styles.deleteButton} onPress={deleteHandler}>
             Delete this publication
           </Text>
         ) : null}
@@ -258,55 +255,58 @@ const styles = StyleSheet.create({
   projectDurationPlaceholder: {
     color: theme.colors.placeholdercolor,
   },
+  projectDuration: {
+    paddingTop: normalize(theme.spacing.medium),
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#376eb3',
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: normalize(theme.spacing.large),
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   inputField: {
     width: '100%',
-    height: 50,
-    marginBottom: 20,
+    height: normalize(50),
+    marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    fontSize: 16,
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
   body: {
-    padding: 20,
+    padding: normalize(theme.spacing.large),
   },
   yearField: {
     width: '100%',
   },
   textarea: {
     textAlignVertical: 'top',
-    fontSize: 16,
-    color: '#333',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   initialBody: {
-    paddingVertical: 5,
-    borderColor: '#376eb3',
-    marginBottom: 10,
+    paddingVertical: normalize(theme.spacing.extrasmall),
+    borderColor: theme.colors.primary,
+    marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
   },
   deleteButton: {
-    color: 'red',
+    color: theme.colors.red,
     alignSelf: 'center',
-    fontSize: 18,
-    marginVertical: 10,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
 });
 export default EditPublication;
