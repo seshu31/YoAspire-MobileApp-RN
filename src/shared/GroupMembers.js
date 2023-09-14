@@ -4,13 +4,13 @@ import {Provider} from 'react-native-paper';
 import Loader from '../reusables/Loader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GroupMemberCard from './GroupMemberCard';
-import Profiles from '../PostProfilesData';
+import articles from '../PostProfilesData';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 
 const GroupMembers = ({navigation, route}) => {
   const {id, admin, creator} = route.params;
-  const [profiles, setProfiles] = useState(Profiles);
+  const [profiles, setProfiles] = useState(articles);
   const [user, setUser] = useState(() => 0);
   const [fetching, setFetching] = useState(() => false);
   useEffect(() => {

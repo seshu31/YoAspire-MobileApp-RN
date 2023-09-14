@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
-import Profiles from '../PostProfilesData';
+import articles from '../PostProfilesData';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
@@ -39,7 +39,7 @@ const GroupDetailsCard = ({navigation, route}) => {
   const [creator, setCreator] = useState(groupData.created_by);
   const [lineLength, setLineLength] = useState(3);
   const [lines, setLines] = useState(0);
-  const [articles, setArticles] = useState(Profiles);
+  const [profiles, setProfiles] = useState(articles);
   const [isLoading, setIsLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const GroupDetailsCard = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    console.log('static articles', articles);
+    console.log('static articles', profiles);
   });
   useEffect(() => {
     const mount = navigation.addListener('focus', () => {
