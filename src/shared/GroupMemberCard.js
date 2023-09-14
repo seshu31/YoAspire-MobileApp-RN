@@ -22,6 +22,7 @@ const GroupMemberCard = ({
   const profileHandler = UserId => {
     navigation.navigate('profile', {
       userID: UserId,
+      user: item,
     });
   };
 

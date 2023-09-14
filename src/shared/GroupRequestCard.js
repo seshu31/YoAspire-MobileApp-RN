@@ -20,6 +20,7 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
   const profileHandler = () => {
     navigation.navigate('profile', {
       userID: item.userid,
+      user: item,
     });
   };
 

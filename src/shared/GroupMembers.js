@@ -4,7 +4,7 @@ import {Provider} from 'react-native-paper';
 import Loader from '../reusables/Loader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GroupMemberCard from './GroupMemberCard';
-import articles from '../PostProfilesData';
+import articles from '../PostProfileData';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 
