@@ -5,11 +5,11 @@ import normalize from 'react-native-normalize';
 import GroupRequestCard from './GroupRequestCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../reusables/Loader';
-import Profiles from '../PostProfileData';
+import articles from '../PostProfileData';
 
 const GroupRequests = ({navigation, route}) => {
   const {id} = route.params;
-  const [profiles, setProfiles] = useState(Profiles);
+  const [profiles, setProfiles] = useState(articles);
   const [fetching, setFetching] = useState(() => false);
   const [fetch, setFetch] = useState(() => false);
 
