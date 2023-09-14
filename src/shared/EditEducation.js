@@ -34,16 +34,17 @@ const EditEducation = ({navigation, route}) => {
     education.To ? new Date(education.To) : null,
   );
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
-  const [show2, setShow2] = useState(false);
+  const [showToDatePicker, setShowToDatePicker] = useState(false);
 
-  const onChange1 = (event, selectedDate) => {
+  const onChangeFromDate = selectedDate => {
     const currentDate = selectedDate || educationStartDate;
     setShowFromDatePicker(Platform.OS === 'ios');
     setEducationStartDate(currentDate);
   };
-  const onChange2 = (event, selectedDate) => {
+  const onChangeToDate = selectedDate => {
+    console.log('experience', selectedDate);
     const currentDate = selectedDate || educationEndDate;
-    setShow2(Platform.OS === 'ios');
+    setShowToDatePicker(Platform.OS === 'ios');
     setEducationEndDate(currentDate);
   };
   const [dateErr, setDateErr] = useState(() => false);
@@ -55,7 +56,7 @@ const EditEducation = ({navigation, route}) => {
     if (value === 1) {
       setShowFromDatePicker(true);
     } else {
-      setShow2(true);
+      setShowToDatePicker(true);
     }
   };
   const toggleCheckbox = () => {
@@ -71,7 +72,7 @@ const EditEducation = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <Ionicons name="arrow-back" size={24} color={theme.colors.white} />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
           {education ? 'Edit Education' : 'Edit Education'}
@@ -79,7 +80,7 @@ const EditEducation = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(educationHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={24} color="#fff" />
+          <Ionicons name="save" size={24} color={theme.colors.white} />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}
@@ -171,7 +172,7 @@ const EditEducation = ({navigation, route}) => {
               <Ionicons
                 style={styles.checkMark}
                 name="checkmark"
-                size={16}
+                size={normalize(16)}
                 color={theme.colors.primary}
               />
             ) : null}
@@ -205,11 +206,15 @@ const EditEducation = ({navigation, route}) => {
             </Text>
             {showFromDatePicker && (
               <DatePicker
-                value={educationStartDate}
+                modal={true}
+                open={showFromDatePicker}
+                date={educationStartDate ? educationStartDate : new Date()}
+                format="DD/MM/YYYY"
                 mode="date"
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange1}
+                androidVariant="nativeAndroid"
+                value={educationStartDate}
+                onConfirm={onChangeFromDate}
+                onCancel={onChangeFromDate}
                 maximumDate={new Date()}
               />
             )}
@@ -241,14 +246,17 @@ const EditEducation = ({navigation, route}) => {
                 )}
               </Text>
             )}
-            {show2 && (
+            {showToDatePicker && (
               <DatePicker
-                value={educationEndDate}
+                modal={true}
+                open={showToDatePicker}
+                date={educationEndDate ? educationEndDate : new Date()}
                 mode="date"
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange2}
-                minimumDate={educationStartDate}
+                format="DD/MM/YYYY"
+                androidVariant="nativeAndroid"
+                value={educationEndDate}
+                onConfirm={onChangeToDate}
+                onCancel={onChangeToDate}
                 maximumDate={new Date()}
               />
             )}
@@ -259,10 +267,10 @@ const EditEducation = ({navigation, route}) => {
         </View>
 
         {education ? (
-          <TouchableOpacity style={styles.deleteButtonContainer}>
-            <Text style={styles.deleteButton} onPress={deleteHanlder}>
-              Delete this education
-            </Text>
+          <TouchableOpacity
+            style={styles.deleteButtonContainer}
+            onPress={deleteHanlder}>
+            <Text style={styles.deleteButton}>Delete this education</Text>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -279,12 +287,12 @@ const styles = StyleSheet.create({
     height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: normalize(20),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
   profileTitle: {
-    fontSize: normalize(24),
+    fontSize: normalize(theme.fontSizes.extraLarge),
     color: theme.colors.white,
   },
   inputField: {
@@ -293,23 +301,24 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
-    fontSize: normalize(17),
+    fontSize: normalize(theme.fontSizes.large),
   },
   yearInputField: {
     width: '100%',
     height: normalize(50),
-    marginBottom: normalize(20),
+    marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
-    fontSize: normalize(17),
-    paddingTop: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    paddingTop: normalize(theme.spacing.medium),
+    color: theme.colors.black,
   },
   body: {
-    padding: normalize(20),
+    padding: normalize(theme.spacing.large),
   },
   yearRow: {
     flexDirection: 'row',
@@ -333,7 +342,7 @@ const styles = StyleSheet.create({
   checkbox: {
     width: normalize(theme.spacing.large),
     height: normalize(theme.spacing.large),
-    borderWidth: normalize(3),
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -346,8 +355,8 @@ const styles = StyleSheet.create({
   deleteButtonContainer: {
     backgroundColor: theme.colors.red,
     borderRadius: 6,
-    shadowOpacity: 0.4, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
     elevation: 6,
   },
   errorText: {

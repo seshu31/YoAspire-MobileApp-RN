@@ -30,14 +30,14 @@ const EditExperience = ({navigation, route}) => {
     experience ? (experience.To ? false : true) : false,
   );
   const [dateErr, setDateErr] = useState(() => false);
-  const [date1, setDate1] = useState(() =>
+  const [experienceFromDate, setExperienceFromDate] = useState(() =>
     experience?.From ? new Date(experience.From) : null,
   );
-  const [date2, setDate2] = useState(() =>
+  const [experienceToDate, setExperienceToDate] = useState(() =>
     experience?.To ? new Date(experience.To) : null,
   );
-  const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
+  const [showFromDatePicker, setShowFromDatePicker] = useState(false);
+  const [showToDatePicker, setShowToDatePicker] = useState(false);
 
   const getToken = async () => {
     try {
@@ -51,39 +51,39 @@ const EditExperience = ({navigation, route}) => {
     setIsChecked(prevIsChecked => !prevIsChecked);
   };
 
-  const onChange1 = selectedDate => {
-    const currentDate = selectedDate || date1;
-    setShow1(Platform.OS === 'ios');
-    setDate1(currentDate);
+  const onFromDateChange = selectedDate => {
+    const currentDate = selectedDate || experienceFromDate;
+    setShowFromDatePicker(Platform.OS === 'ios');
+    setExperienceFromDate(currentDate);
   };
-  const onChange2 = selectedDate => {
-    const currentDate = selectedDate || date2;
-    setShow2(Platform.OS === 'ios');
-    setDate2(currentDate);
+  const onToDateChange = selectedDate => {
+    const currentDate = selectedDate || experienceToDate;
+    setShowToDatePicker(Platform.OS === 'ios');
+    setExperienceToDate(currentDate);
   };
 
   const showDatepicker = value => {
     if (value === 1) {
-      setShow1(true);
+      setShowFromDatePicker(true);
     } else {
-      setShow2(true);
+      setShowToDatePicker(true);
     }
   };
 
   const experienceHandler = data => {
-    if (date1 == null || date2 == null) {
+    if (experienceFromDate == null || experienceToDate == null) {
       setIsLoading(false);
       setDateErr(true);
     }
-    if (date1 != null && (date2 != null || isChecked)) {
+    if (experienceFromDate != null && (experienceToDate != null || isChecked)) {
       const payload = {
         role: data.role,
         Company_name: data.company,
-        From: date1.toISOString(),
+        From: experienceFromDate.toISOString(),
         City: data.city,
         State: data.state,
       };
-      if (!isChecked) payload['To'] = date2.toISOString();
+      if (!isChecked) payload['To'] = experienceToDate.toISOString();
       if (data.description) payload['Description'] = data.description;
       if (experience) {
         console.log(
@@ -252,37 +252,37 @@ const EditExperience = ({navigation, route}) => {
             <Text
               style={[styles.inputField, styles.projectDuration]}
               onPress={() => showDatepicker(1)}>
-              {date1 != null ? (
+              {experienceFromDate != null ? (
                 `${
-                  date1.getDate().toString().length === 1
-                    ? '0' + date1.getDate()
-                    : date1.getDate()
+                  experienceFromDate.getDate().toString().length === 1
+                    ? '0' + experienceFromDate.getDate()
+                    : experienceFromDate.getDate()
                 } - ${
-                  (date1.getMonth() + 1).toString().length === 1
-                    ? '0' + (date1.getMonth() + 1)
-                    : date1.getMonth() + 1
-                } - ${date1.getFullYear()}`
+                  (experienceFromDate.getMonth() + 1).toString().length === 1
+                    ? '0' + (experienceFromDate.getMonth() + 1)
+                    : experienceFromDate.getMonth() + 1
+                } - ${experienceFromDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
                   Start Year
                 </Text>
               )}
             </Text>
-            {show1 && (
+            {showFromDatePicker && (
               <DatePicker
                 modal={true}
-                open={show1}
-                date={date1 ? date1 : new Date()}
+                open={showFromDatePicker}
+                date={experienceFromDate ? experienceFromDate : new Date()}
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
-                value={date1}
-                onConfirm={onChange1}
-                onCancel={onChange1}
+                value={experienceFromDate}
+                onConfirm={onFromDateChange}
+                onCancel={onFromDateChange}
                 maximumDate={new Date()}
               />
             )}
-            {dateErr && date1 == null ? (
+            {dateErr && experienceFromDate == null ? (
               <Text style={styles.errorText}>Start Year Field is required</Text>
             ) : null}
           </View>
@@ -295,16 +295,16 @@ const EditExperience = ({navigation, route}) => {
               <Text
                 style={[styles.inputField, styles.projectDuration]}
                 onPress={() => showDatepicker(2)}>
-                {date2 != null ? (
+                {experienceToDate != null ? (
                   `${
-                    date2.getDate().toString().length === 1
-                      ? '0' + date2.getDate()
-                      : date2.getDate()
+                    experienceToDate.getDate().toString().length === 1
+                      ? '0' + experienceToDate.getDate()
+                      : experienceToDate.getDate()
                   } - ${
-                    (date2.getMonth() + 1).toString().length === 1
-                      ? '0' + (date2.getMonth() + 1)
-                      : date2.getMonth() + 1
-                  } - ${date2.getFullYear()}`
+                    (experienceToDate.getMonth() + 1).toString().length === 1
+                      ? '0' + (experienceToDate.getMonth() + 1)
+                      : experienceToDate.getMonth() + 1
+                  } - ${experienceToDate.getFullYear()}`
                 ) : (
                   <Text style={styles.projectDurationPlaceholder}>
                     Final Year
@@ -312,21 +312,21 @@ const EditExperience = ({navigation, route}) => {
                 )}
               </Text>
             )}
-            {show2 && (
+            {showToDatePicker && (
               <DatePicker
                 modal={true}
-                open={show2}
-                date={date2 ? date2 : new Date()}
+                open={showToDatePicker}
+                date={experienceToDate ? experienceToDate : new Date()}
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
-                value={date2}
-                onConfirm={onChange2}
-                onCancel={onChange2}
+                value={experienceToDate}
+                onConfirm={onToDateChange}
+                onCancel={onToDateChange}
                 maximumDate={new Date()}
               />
             )}
-            {dateErr && date2 == null && !isChecked ? (
+            {dateErr && experienceToDate == null && !isChecked ? (
               <Text style={styles.errorText}>Final Year Field is required</Text>
             ) : null}
           </View>
@@ -356,9 +356,11 @@ const EditExperience = ({navigation, route}) => {
           </Text>
         )}
         {experience ? (
-          <Text style={styles.deleteButton} onPress={deleteHanlder}>
-            Delete this experience
-          </Text>
+          <TouchableOpacity
+            style={styles.deleteButtonContainer}
+            onPress={deleteHanlder}>
+            <Text style={styles.deleteButton}>Delete this experience</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -366,6 +368,19 @@ const EditExperience = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    color: theme.colors.white,
+    alignSelf: 'center',
+    fontSize: normalize(theme.fontSizes.large),
+    marginVertical: normalize(theme.spacing.small),
+  },
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 6,
+  },
   errorText: {
     color: theme.colors.red,
   },
@@ -441,12 +456,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  deleteButton: {
-    color: theme.colors.red,
-    alignSelf: 'center',
-    fontSize: normalize(theme.fontSizes.mediumLarge),
-    marginVertical: normalize(theme.spacing.small),
   },
 });
 

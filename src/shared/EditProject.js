@@ -280,9 +280,13 @@ const EditProject = ({navigation, route}) => {
           </Text>
         )}
         {project ? (
-          <Text style={styles.deleteButton} onPress={deleteHanlder}>
-            Delete this project
-          </Text>
+          <TouchableOpacity
+            onPress={deleteHanlder}
+            style={styles.deleteButtonContainer}>
+            <Text style={styles.deleteButton} onPress={deleteHanlder}>
+              Delete this project
+            </Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -290,6 +294,13 @@ const EditProject = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 6,
+  },
   errorText: {
     color: theme.colors.red,
   },
@@ -351,7 +362,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   deleteButton: {
-    color: theme.colors.red,
+    color: theme.colors.white,
     alignSelf: 'center',
     fontSize: normalize(theme.fontSizes.mediumLarge),
     marginVertical: normalize(theme.spacing.small),

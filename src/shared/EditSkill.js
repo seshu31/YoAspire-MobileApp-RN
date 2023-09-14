@@ -148,9 +148,11 @@ const EditSkill = ({navigation, route}) => {
           </Text>
         )}
         {skill ? (
-          <Text style={styles.deleteButton} onPress={deleteHanlder}>
-            Delete this skill
-          </Text>
+          <TouchableOpacity>
+            <Text style={styles.deleteButton} onPress={deleteHanlder}>
+              Delete this skill
+            </Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -158,6 +160,13 @@ const EditSkill = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 6,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,

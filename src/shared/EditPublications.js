@@ -239,9 +239,11 @@ const EditPublication = ({navigation, route}) => {
           </Text>
         )}
         {publication ? (
-          <Text style={styles.deleteButton} onPress={deleteHandler}>
-            Delete this publication
-          </Text>
+          <TouchableOpacity
+            style={styles.deleteButtonContainer}
+            onPress={deleteHandler}>
+            <Text style={styles.deleteButton}>Delete this publication</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -249,6 +251,13 @@ const EditPublication = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 6,
+  },
   errorText: {
     color: theme.colors.red,
   },
@@ -297,13 +306,13 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   initialBody: {
-    paddingVertical: normalize(theme.spacing.extrasmall),
+    paddingVertical: normalize(theme.spacing.extraSmall),
     borderColor: theme.colors.primary,
     marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
   },
   deleteButton: {
-    color: theme.colors.red,
+    color: theme.colors.white,
     alignSelf: 'center',
     fontSize: normalize(theme.fontSizes.mediumLarge),
     marginVertical: normalize(theme.spacing.small),

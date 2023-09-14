@@ -38,7 +38,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="login"
+          initialRouteName="index"
           screenOptions={{
             headerShown: false,
           }}>
@@ -74,7 +74,7 @@ const App = () => {
             name="user-publication"
             component={UserPublication}
             initialParams={{user: 213}}
-          /> 
+          />
           <Stack.Screen
             name="edit-publication"
             component={EditPublication}

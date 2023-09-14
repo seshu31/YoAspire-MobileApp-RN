@@ -46,12 +46,12 @@ const EditCourse = ({navigation, route}) => {
     }
   };
 
-  const onChange1 = selectedDate => {
+  const onChangeFromDate = selectedDate => {
     const currentDate = selectedDate || courseStartDate;
     setShowFromDatePicker(Platform.OS === 'ios');
     setCourseStartDate(currentDate);
   };
-  const onChange2 = selectedDate => {
+  const onChangeToDate = selectedDate => {
     const currentDate = selectedDate || courseEndDate;
     setShowToDatePicker(Platform.OS === 'ios');
     setCourseEndDate(currentDate);
@@ -182,8 +182,8 @@ const EditCourse = ({navigation, route}) => {
                 mode="date"
                 androidVariant="nativeAndroid"
                 value={courseStartDate}
-                onConfirm={onChange1}
-                onCancel={onChange1}
+                onConfirm={onChangeFromDate}
+                onCancel={onChangeFromDate}
                 maximumDate={new Date()}
               />
             )}
@@ -220,8 +220,8 @@ const EditCourse = ({navigation, route}) => {
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
                 value={courseEndDate}
-                onConfirm={onChange2}
-                onCancel={onChange2}
+                onConfirm={onChangeToDate}
+                onCancel={onChangeToDate}
                 maximumDate={new Date()}
               />
             )}
@@ -255,9 +255,11 @@ const EditCourse = ({navigation, route}) => {
           </Text>
         )}
         {course ? (
-          <Text style={styles.deleteButton} onPress={deleteHandler}>
-            Delete this course
-          </Text>
+          <TouchableOpacity
+            style={styles.deleteButtonContainer}
+            onPress={deleteHandler}>
+            <Text style={styles.deleteButton}>Delete this course</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -265,6 +267,19 @@ const EditCourse = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    color: theme.colors.white,
+    alignSelf: 'center',
+    fontSize: normalize(theme.fontSizes.large),
+    marginVertical: normalize(theme.spacing.small),
+  },
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 6,
+  },
   errorText: {
     color: theme.colors.red,
   },
@@ -321,12 +336,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
-  },
-  deleteButton: {
-    color: theme.colors.red,
-    alignSelf: 'center',
-    fontSize: normalize(theme.fontSizes.mediumLarge),
-    marginVertical: normalize(theme.spacing.small),
   },
 });
 export default EditCourse;
