@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import articles from '../PostProfileData';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
@@ -31,42 +32,6 @@ const GroupDetailsCard = ({navigation, route}) => {
     req_sent: false, //Boolean value change according data
     group_type: true, //Boolean value change according data
   };
-  const staticArticlesData = [
-    {
-      PostId: 1,
-      Active: 1,
-      No_of_Likes: 3,
-      Category_Type: 'article',
-      First_Name: 'venu',
-      Last_Name: 'makaraju',
-      Title: 'Web Developer',
-      Description: 'Current working tool React Native',
-    },
-    {
-      PostId: 2,
-      Active: 1,
-      No_of_Likes: 2,
-      Category_Type: 'webinar',
-      First_Name: 'sraz',
-      Last_Name: 'vadlamanu',
-      Title: 'Web Developer',
-      Description: 'current working tool Java',
-      Organiser: 'Aspire',
-      Brief: 'This is sravani working as a developer in aspire',
-    },
-    {
-      PostId: 3,
-      Active: 0,
-      No_of_Likes: 3,
-      Category_Type: 'job',
-      Title: 'Backend Developer',
-      Description: 'Current working tool Nodejs, mongodb ',
-      Organiser: 'Aspire',
-      Location: 'Vijayawada',
-      Job_Type: 'Full time',
-    },
-    // Add more static article data as needed
-  ];
 
   const {id, item} = route.params || {id: null, item: null};
   const [group, setGroup] = useState(groupData);
@@ -74,7 +39,7 @@ const GroupDetailsCard = ({navigation, route}) => {
   const [creator, setCreator] = useState(groupData.created_by);
   const [lineLength, setLineLength] = useState(3);
   const [lines, setLines] = useState(0);
-  const [articles, setArticles] = useState(staticArticlesData);
+  const [profiles, setProfiles] = useState(articles);
   const [isLoading, setIsLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -90,7 +55,7 @@ const GroupDetailsCard = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    console.log(staticArticlesData, 'static articles');
+    console.log('static articles', profiles);
   });
   useEffect(() => {
     const mount = navigation.addListener('focus', () => {
@@ -346,8 +311,6 @@ const styles = StyleSheet.create({
     width: normalize(100),
     height: normalize(100),
     borderRadius: normalize(100),
-    borderWidth: normalize(6),
-    borderColor: theme.colors.primary,
   },
   groupInfo: {
     alignItems: 'center',

@@ -22,9 +22,11 @@ import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
-import GroupMembers from './src/shared/GroupMembers.js';
-import GroupRequests from './src/shared/GroupRequests.js';
+import GroupMembers from './src/shared/GroupMembers';
+import GroupRequests from './src/shared/GroupRequests';
 import Profile from './src/components/Profile';
+import ChatSection from './src/shared/ChatSection';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -95,6 +97,7 @@ const App = () => {
           <Stack.Screen name="edit-skill" component={EditSkill} />
           <Stack.Screen name="group-members" component={GroupMembers} />
           <Stack.Screen name="manage-requests" component={GroupRequests} />
+          <Stack.Screen name="chat-section" component={ChatSection} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
