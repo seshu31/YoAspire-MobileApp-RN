@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import Loader from '../reusables/Loader';
@@ -147,7 +147,7 @@ const Profile = ({navigation, route}) => {
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}
-      {user?.profile && user.profile != null ? (
+      {user && user != null ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.userProfileImage}>
             <View style={styles.profileImageContainer}>
@@ -213,13 +213,13 @@ const Profile = ({navigation, route}) => {
                 {owner ? (
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('profile', {
+                      navigation.navigate('edit-profile', {
                         user: user,
                       })
                     }
                     activeOpacity={0.5}>
-                    <Ionicons
-                      name="create-outline"
+                    <AntDesign
+                      name="edit"
                       color={theme.colors.primary}
                       size={normalize(24)}
                     />
@@ -247,11 +247,15 @@ const Profile = ({navigation, route}) => {
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Email :</Text>
-                  <Text style={styles.details}>{user.profile.Email}</Text>
+                  {user.profile.Email !== '' && null ? (
+                    <Text style={styles.details}>{user.profile.Email}</Text>
+                  ) : (
+                    <Text style={styles.details}>----</Text>
+                  )}
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Phone :</Text>
-                  {user.profile.phone_no !== '' ? (
+                  {user.profile.phone_no !== '' && null ? (
                     <Text style={styles.details}>{user.profile.phone_no}</Text>
                   ) : (
                     <Text style={styles.details}>----</Text>
@@ -268,22 +272,27 @@ const Profile = ({navigation, route}) => {
               </View>
             </View>
 
+            <View style={styles.boxHeader}>
+              <Text style={styles.infoHeader}>Experience</Text>
+              {owner ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('user-experience', {
+                      experience: user?.experience,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <AntDesign
+                    name="edit"
+                    color={theme.colors.primary}
+                    size={normalize(24)}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+
             {user.experience?.length ? (
               <View style={styles.infoBox}>
-                <View style={styles.boxHeader}>
-                  <Text style={styles.infoHeader}>Experience</Text>
-                  {owner ? (
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('user-experience')}
-                      activeOpacity={0.5}>
-                      <Ionicons
-                        name="create-outline"
-                        color={theme.colors.primary}
-                        size={normalize(24)}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
                 {user.experience
                   ? user.experience
                       .slice(
@@ -331,24 +340,36 @@ const Profile = ({navigation, route}) => {
                   </TouchableOpacity>
                 ) : null}
               </View>
-            ) : null}
+            ) : (
+              <View style={styles.NoProjectContainer}>
+                <Text style={styles.NoProject}>No experience to display.</Text>
+                <Text style={styles.NoProject}>
+                  Click on 'edit' icon to add your experience.
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.boxHeader}>
+              <Text style={styles.infoHeader}>Education</Text>
+              {owner ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('user-education', {
+                      education: user?.education,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <AntDesign
+                    name="edit"
+                    color={theme.colors.primary}
+                    size={normalize(24)}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
 
             {user.education?.length ? (
               <View style={styles.infoBox}>
-                <View style={styles.boxHeader}>
-                  <Text style={styles.infoHeader}>Education</Text>
-                  {owner ? (
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('user-education')}
-                      activeOpacity={0.5}>
-                      <Ionicons
-                        name="create-outline"
-                        color={theme.colors.primary}
-                        size={24}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
                 {user.education
                   ? user.education
                       .slice(
@@ -377,42 +398,52 @@ const Profile = ({navigation, route}) => {
                         );
                       })
                   : null}
+                {user.education.length > 3 ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      setShowAll({
+                        ...showAll,
+                        isShownAllEducation: !showAll.isShownAllEducation,
+                      })
+                    }>
+                    {showAll.isShownAllEducation ? (
+                      <Text style={styles.showMore}>show less</Text>
+                    ) : (
+                      <Text style={styles.showMore}>show more</Text>
+                    )}
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+            ) : (
+              <View style={styles.NoProjectContainer}>
+                <Text style={styles.NoProject}>No education to display.</Text>
+                <Text style={styles.NoProject}>
+                  Click on 'edit' icon to add your education details.
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.boxHeader}>
+              <Text style={styles.infoHeader}>Skills</Text>
+              {owner ? (
                 <TouchableOpacity
                   onPress={() =>
-                    setShowAll({
-                      ...showAll,
-                      isShownAllEducation: !showAll.isShownAllEducation,
+                    navigation.navigate('user-skill', {
+                      skills: user.skills,
                     })
-                  }>
-                  {showAll.isShownAllEducation ? (
-                    <Text style={styles.showMore}>show less</Text>
-                  ) : (
-                    <Text style={styles.showMore}>show more</Text>
-                  )}
+                  }
+                  activeOpacity={0.5}>
+                  <AntDesign
+                    name="edit"
+                    color={theme.colors.primary}
+                    size={normalize(24)}
+                  />
                 </TouchableOpacity>
-              </View>
-            ) : null}
+              ) : null}
+            </View>
 
-            {user.skills.length ? (
+            {user.skills?.length ? (
               <View style={styles.infoBox}>
-                <View style={styles.boxHeader}>
-                  <Text style={styles.infoHeader}>Skills</Text>
-                  {owner ? (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('user-skill', {
-                          skills: user.skills,
-                        })
-                      }
-                      activeOpacity={0.5}>
-                      <Ionicons
-                        name="create-outline"
-                        color={theme.colors.primary}
-                        size={24}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
                 <View style={styles.skillsContainer}>
                   {user.skills
                     ? user.skills
@@ -428,22 +459,31 @@ const Profile = ({navigation, route}) => {
                           );
                         })
                     : null}
-                  <TouchableOpacity
-                    onPress={() =>
-                      setShowAll({
-                        ...showAll,
-                        isShownAllSkills: !showAll.isShownAllSkills,
-                      })
-                    }>
-                    {showAll.isShownAllSkills ? (
-                      <Text style={styles.showMore}>show less</Text>
-                    ) : (
-                      <Text style={styles.showMore}>show more</Text>
-                    )}
-                  </TouchableOpacity>
+                  {user.skills.length > 3 ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        setShowAll({
+                          ...showAll,
+                          isShownAllSkills: !showAll.isShownAllSkills,
+                        })
+                      }>
+                      {showAll.isShownAllSkills ? (
+                        <Text style={styles.showMore}>show less</Text>
+                      ) : (
+                        <Text style={styles.showMore}>show more</Text>
+                      )}
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
               </View>
-            ) : null}
+            ) : (
+              <View style={styles.NoProjectContainer}>
+                <Text style={styles.NoProject}>No skills to display.</Text>
+                <Text style={styles.NoProject}>
+                  Click on 'edit' icon to add your skills.
+                </Text>
+              </View>
+            )}
 
             {/* <TouchableOpacity
               onPress={() =>
@@ -463,11 +503,12 @@ const Profile = ({navigation, route}) => {
                 onPress={() =>
                   navigation.navigate('user-project', {
                     userid: userID,
+                    projects: user.projects,
                   })
                 }
                 activeOpacity={0.5}>
                 <Text style={styles.achievementText}>
-                  Projects ({user.projects?.length})
+                  Projects ({user.projects?.length || 0})
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
@@ -481,11 +522,12 @@ const Profile = ({navigation, route}) => {
                 onPress={() =>
                   navigation.navigate('user-course', {
                     userid: userID,
+                    courses: user.courses,
                   })
                 }
                 activeOpacity={0.5}>
                 <Text style={styles.achievementText}>
-                  Courses ({user.courses?.length})
+                  Courses ({user.courses?.length || 0})
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
@@ -499,11 +541,12 @@ const Profile = ({navigation, route}) => {
                 onPress={() =>
                   navigation.navigate('user-publication', {
                     userid: userID,
+                    publications: user.publications,
                   })
                 }
                 activeOpacity={0.5}>
                 <Text style={styles.achievementText}>
-                  Publications ({user.publications?.length})
+                  Publications ({user.publications?.length || 0})
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
@@ -520,6 +563,16 @@ const Profile = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    margin: normalize(theme.spacing.extraSmall),
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.black,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -528,7 +581,7 @@ const styles = StyleSheet.create({
     height: normalize(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.large),
     borderBottomWidth: 1,
     borderColor: theme.colors.primary,
     alignItems: 'center',
@@ -581,7 +634,7 @@ const styles = StyleSheet.create({
   userDesc: {
     fontSize: normalize(theme.fontSizes.medium),
     paddingTop: normalize(theme.spacing.extraSmall),
-    color: '#787878',
+    color: theme.colors.level2,
   },
   followSection: {
     flexDirection: 'row',
@@ -615,6 +668,7 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   boxHeader: {
+    padding: normalize(theme.spacing.small),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -641,10 +695,10 @@ const styles = StyleSheet.create({
   },
   role: {
     marginBottom: 5,
-    color: '#787878',
+    color: theme.colors.level2,
   },
   dateStyle: {
-    color: '#787878',
+    color: theme.colors.level2,
   },
   userInfoBox: {
     marginTop: normalize(theme.spacing.small),

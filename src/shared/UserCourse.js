@@ -10,6 +10,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserCourse = ({navigation, route}) => {
   const [course, setCourse] = useState(() => []);
@@ -17,17 +21,7 @@ const UserCourse = ({navigation, route}) => {
   const [owner, setOwner] = useState(() => true);
   const [isLoading, setIsLoading] = useState(() => false);
 
-  let courseArr = [
-    {
-      title: 'course1',
-    },
-    {
-      title: 'course2',
-    },
-    {
-      title: 'course3',
-    },
-  ];
+  let courseArr = route.params?.courses ? route.params.courses : null;
 
   useEffect(() => fetchCourses(), []);
 
@@ -69,7 +63,11 @@ const UserCourse = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Courses</Text>
         {owner ? (
@@ -82,7 +80,7 @@ const UserCourse = ({navigation, route}) => {
           <Ionicons size={32} color="#376eb3" />
         )}
       </View>
-      {courseArr.length ? (
+      {courseArr && courseArr.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {courseArr.map((el, index) => {
@@ -97,10 +95,10 @@ const UserCourse = ({navigation, route}) => {
                         })
                       }
                       activeOpacity={0.5}>
-                      <Ionicons
-                        name="create-outline"
-                        color={'#376eb3'}
-                        size={24}
+                      <AntDesign
+                        name="edit"
+                        color={theme.colors.primary}
+                        size={normalize(24)}
                       />
                     </TouchableOpacity>
                   ) : null}
@@ -109,12 +107,28 @@ const UserCourse = ({navigation, route}) => {
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No projects to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add a project.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

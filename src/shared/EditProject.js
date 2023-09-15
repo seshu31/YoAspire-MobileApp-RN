@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../reusables/Loader';
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -103,9 +104,9 @@ const EditProject = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons
-            name="arrow-back"
-            size={normalize(24)}
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -116,8 +117,8 @@ const EditProject = ({navigation, route}) => {
           onPress={handleSubmit(projectHandler)}
           activeOpacity={0.5}>
           <Ionicons
-            name="save"
-            size={normalize(24)}
+            name="save-outline"
+            size={normalize(26)}
             color={theme.colors.white}
           />
         </TouchableOpacity>

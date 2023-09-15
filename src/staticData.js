@@ -4,6 +4,7 @@ const Profiles = [
     profile: {
       First_Name: 'durga',
       Last_Name: 'sravani',
+      User_Name: 'srazzz',
       heading: 'heading example',
       DOB: '2000-04-08T18:30:00.000Z',
       Title: 'Backend developer',
@@ -102,8 +103,9 @@ const Profiles = [
   {
     UserId: 3,
     profile: {
-      First_Name: 'durga1',
-      heading: 'heading example1',
+      First_Name: 'durga1 durga1 durga1 durga1durga1',
+      heading:
+        'heading example1 heading example1 heading example1 heading example1 heading example1 heading example1',
       Last_Name: 'sravani1',
       DOB: '2000-04-08T18:30:00.000Z',
       Title: 'frontend developer',

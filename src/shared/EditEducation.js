@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-date-picker';
 import {useForm, Controller} from 'react-hook-form';
 import Loader from '../reusables/Loader';
@@ -72,7 +73,11 @@ const EditEducation = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color={theme.colors.white} />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
           {education ? 'Edit Education' : 'Edit Education'}
@@ -80,7 +85,7 @@ const EditEducation = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(educationHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={24} color={theme.colors.white} />
+          <Ionicons name="save-outline" size={24} color={theme.colors.white} />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}

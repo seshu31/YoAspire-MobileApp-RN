@@ -10,27 +10,14 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import normalize from 'react-native-normalize';
 
-const UserExperience = ({navigation}) => {
-  const [experience, setExperience] = useState(() => [
-    {
-      Company_name: 'title 1',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-    },
-    {
-      Company_name: 'title 2',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-    {
-      Company_name: 'title 3',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-  ]);
+const UserExperience = ({navigation, route}) => {
+  const [experience, setExperience] = useState(
+    route.params?.experience ? route.params.experience : null,
+  );
   const [isLoading, setIsLoading] = useState(() => false);
 
   useEffect(() => fetchExperience(), []);
@@ -92,7 +79,11 @@ const UserExperience = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color="#fff"
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Experience</Text>
         <TouchableOpacity
@@ -101,7 +92,7 @@ const UserExperience = ({navigation}) => {
           <Ionicons name="add" size={32} color="#fff" />
         </TouchableOpacity>
       </View>
-      {experience.length ? (
+      {experience && experience.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {experience.map((el, index) => {
@@ -130,23 +121,35 @@ const UserExperience = ({navigation}) => {
                     }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons
-                      name="create-outline"
-                      color={'#376eb3'}
-                      size={24}
-                    />
+                    <AntDesign name="edit" color={'#376eb3'} size={24} />
                   </TouchableOpacity>
                 </View>
               );
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No experience to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add your experience.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -155,7 +158,6 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
     paddingHorizontal: 20,

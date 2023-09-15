@@ -11,6 +11,7 @@ import {
 import Textarea from 'react-native-textarea';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
 import normalize from 'react-native-normalize';
@@ -29,7 +30,7 @@ const EditPublication = ({navigation, route}) => {
   } = useForm();
   const [dateErr, setDateErr] = useState(() => false);
   const [publicationDate, setPublicationDate] = useState(() =>
-    publication?.year ? new Date(publication.year) : null,
+    publication?.date ? new Date(publication.date) : null,
   );
   const [show, setShow] = useState(false);
 
@@ -84,7 +85,11 @@ const EditPublication = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={normalize(24)} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
           {publication ? 'Edit Publication' : 'Add Publication'}
@@ -92,7 +97,7 @@ const EditPublication = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(publicationHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={normalize(24)} color="#fff" />
+          <Ionicons name="save-outline" size={normalize(24)} color="#fff" />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}

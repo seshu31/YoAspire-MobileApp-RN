@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -13,15 +13,47 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useForm, Controller} from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
+import normalize from 'react-native-normalize';
 
 const EditProfile = ({navigation, route}) => {
-  const {user} = route.params;
+  const user = route.params?.user ? route.params.user : null;
   const [photoLoaded, setPhotoLoaded] = useState(() => true);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(
+    route.params?.user?.profile?.DOB
+      ? new Date(route.params.user.profile.DOB)
+      : null,
+  );
   const [dob, setDob] = useState('');
+
+  useEffect(() => {
+    if (route.params.user.profile.DOB) {
+      onChange(route.params.user.profile.DOB);
+    }
+  }, []);
+
+  const onDateChange = selectedDate => {
+    console.log('check date', route.params?.user?.profile?.DOB);
+
+    const currentDate = new Date(selectedDate);
+    console.log('current date', currentDate);
+    const requiredDate =
+      currentDate.getDate().toString().length === 1
+        ? '0' + currentDate.getDate()
+        : currentDate.getDate();
+    const requiredMonth =
+      (currentDate.getMonth() + 1).toString().length === 1
+        ? '0' + (currentDate.getMonth() + 1)
+        : currentDate.getMonth() + 1;
+    const requiredYear = currentDate.getFullYear();
+    setDob(requiredDate + '-' + requiredMonth + '-' + requiredYear);
+    setDate(selectedDate);
+    setShow(false);
+  };
+
   const [show, setShow] = useState(false);
 
   const {
@@ -46,22 +78,6 @@ const EditProfile = ({navigation, route}) => {
         : currentDate.getMonth() + 1;
     const requiredYear = currentDate.getFullYear();
     setDob(requiredDate + '-' + requiredMonth + '-' + requiredYear);
-    setShow(false);
-  };
-
-  const onDateChange = selectedDate => {
-    const currentDate = new Date(selectedDate);
-    const requiredDate =
-      currentDate.getDate().toString().length === 1
-        ? '0' + currentDate.getDate()
-        : currentDate.getDate();
-    const requiredMonth =
-      (currentDate.getMonth() + 1).toString().length === 1
-        ? '0' + (currentDate.getMonth() + 1)
-        : currentDate.getMonth() + 1;
-    const requiredYear = currentDate.getFullYear();
-    setDob(requiredDate + '-' + requiredMonth + '-' + requiredYear);
-    setDate(selectedDate);
     setShow(false);
   };
 
@@ -91,13 +107,17 @@ const EditProfile = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(24)}
+            color="#fff"
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Edit Profile</Text>
         <TouchableOpacity
           onPress={handleSubmit(saveHandler)}
           activeOpacity={0.5}>
-          <MaterialIcons name="save" size={24} color="#fff" />
+          <Ionicons name="save-outline" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
@@ -120,14 +140,14 @@ const EditProfile = ({navigation, route}) => {
               style={styles.photoEdit}
               onPress={() => {}}
               activeOpacity={0.5}>
-              <Ionicons name="create" size={18} color="#376eb3" />
+              <AntDesign name="edit" size={18} color="#376eb3" />
             </TouchableOpacity>
           </View>
         </View>
         <Controller
           control={control}
           name="username"
-          defaultValue={user.User_Name}
+          defaultValue={user.profile.User_Name}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}
@@ -160,7 +180,7 @@ const EditProfile = ({navigation, route}) => {
         <Controller
           control={control}
           name="firstname"
-          defaultValue={user.First_Name}
+          defaultValue={user.profile.First_Name}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}
@@ -193,7 +213,7 @@ const EditProfile = ({navigation, route}) => {
         <Controller
           control={control}
           name="lastname"
-          defaultValue={user.First_Name}
+          defaultValue={user.profile.Last_Name}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}
@@ -227,7 +247,7 @@ const EditProfile = ({navigation, route}) => {
         <Controller
           control={control}
           name="email"
-          defaultValue={user.Email}
+          defaultValue={user.profile.Email}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               autoCapitalize="none"
@@ -256,7 +276,7 @@ const EditProfile = ({navigation, route}) => {
         <Controller
           control={control}
           name="phone"
-          defaultValue={user.phone_no}
+          defaultValue={user.profile.phone_no}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               autoCapitalize="none"
@@ -307,15 +327,12 @@ const EditProfile = ({navigation, route}) => {
             <Ionicons name="calendar" size={30} color="#999" />
           </TouchableOpacity>
         </View>
-        {/* {show && ( */}
         <DatePicker
-          date={date}
-          format="DD/MM/YYYY"
-          // onDateChange={onDateChange}
+          date={date ? date : new Date()}
+          format="MM/DD/YYYY"
           androidVariant="nativeAndroid"
           value={date}
           mode="date"
-          // textColor="#000"
           style={styles.picker}
           maximumDate={maximumDOB}
           modal={true}
@@ -323,11 +340,10 @@ const EditProfile = ({navigation, route}) => {
           onConfirm={onDateChange}
           onCancel={() => setShow(false)}
         />
-        {/* )} */}
         <Controller
           control={control}
           name="location"
-          defaultValue={user.Location}
+          defaultValue={user.profile.Location}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}

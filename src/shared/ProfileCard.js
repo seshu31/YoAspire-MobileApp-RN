@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileCard = ({item, navigation}) => {
   const [connected, setConnected] = useState(false);
@@ -51,18 +52,23 @@ const ProfileCard = ({item, navigation}) => {
       onPress={profileHandler}
       activeOpacity={0.5}>
       <View style={styles.imageSection}>
-        <Image
-          style={styles.profileImage}
-          source={
-            item.profile.img_file_name
-              ? {uri: item.profile.img_file_name}
-              : require('../../assets/male.png')
-          }
-        />
+        <View style={styles.profileImageContainer}>
+          <Image
+            style={styles.profileImage}
+            source={
+              item.profile.img_file_name
+                ? {uri: item.profile.img_file_name}
+                : require('../../assets/male.png')
+            }
+          />
+        </View>
       </View>
       <View style={styles.detailsSection}>
         <View style={styles.userNameDetails}>
-          <Text style={styles.profileName}>
+          <Text
+            style={styles.profileName}
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {item.profile.First_Name} {item.profile.Last_Name}
           </Text>
           {connectionLevel ? (
@@ -75,7 +81,12 @@ const ProfileCard = ({item, navigation}) => {
             </>
           ) : null}
         </View>
-        <Text style={styles.profileTitle}>{item.profile.heading}</Text>
+        <Text
+          style={styles.profileTitle}
+          numberOfLines={2}
+          ellipsizeMode="tail">
+          {item.profile.heading}
+        </Text>
         <TouchableOpacity onPress={connectionHandler} activeOpacity={0.5}>
           {connected ? (
             <Text style={[styles.connectedButton, styles.buttonStyle]}>
@@ -105,18 +116,23 @@ const styles = StyleSheet.create({
   imageSection: {
     backgroundColor: theme.colors.primary,
     height: normalize(75),
-    borderTopLeftRadius: normalize(5),
-    borderTopRightRadius: normalize(5),
-    width: '100%',
+    alignItems: 'center',
     position: 'relative',
+    width: '100%',
   },
   profileImage: {
     width: normalize(75),
     height: normalize(75),
-    alignSelf: 'center',
+    borderRadius: normalize(100),
+  },
+  profileImageContainer: {
+    backgroundColor: theme.colors.white,
+    borderRadius: normalize(100),
+    height: normalize(75),
+    width: normalize(75),
     position: 'absolute',
     top: '50%',
-    borderRadius: normalize(100),
+    alignItems: 'center',
   },
   detailsSection: {
     marginTop: normalize(50),
@@ -130,6 +146,7 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
+    textTransform: 'capitalize',
   },
   profileTitle: {
     fontSize: normalize(theme.fontSizes.small),

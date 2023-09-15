@@ -10,27 +10,15 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
-const UserEducation = ({navigation}) => {
-  const [education, setEducation] = useState(() => [
-    {
-      title: 'title 1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-      college_name: 'Rgukt',
-    },
-    {
-      title: 'title 2',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-      college_name: 'Rgukt',
-    },
-    {
-      title: 'title 3',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-  ]);
+const UserEducation = ({navigation, route}) => {
+  const [education, setEducation] = useState(
+    route.params?.education ? route.params.education : null,
+  );
   const [isLoading, setIsLoading] = useState(() => false);
 
   useEffect(() => fetchEducation(), []);
@@ -92,7 +80,11 @@ const UserEducation = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Education</Text>
         <TouchableOpacity
@@ -101,7 +93,7 @@ const UserEducation = ({navigation}) => {
           <Ionicons name="add" size={32} color="#fff" />
         </TouchableOpacity>
       </View>
-      {education.length ? (
+      {education && education.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {education.map((el, index) => {
@@ -127,10 +119,10 @@ const UserEducation = ({navigation}) => {
                     }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons
-                      name="create-outline"
-                      color={'#376eb3'}
-                      size={24}
+                    <AntDesign
+                      name="edit"
+                      color={theme.colors.primary}
+                      size={normalize(24)}
                     />
                   </TouchableOpacity>
                 </View>
@@ -138,12 +130,28 @@ const UserEducation = ({navigation}) => {
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No education details to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add education detail.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -152,7 +160,6 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
     backgroundColor: '#376eb3',
     alignItems: 'center',
     paddingHorizontal: 20,

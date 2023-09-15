@@ -12,6 +12,7 @@ import {
 import Textarea from 'react-native-textarea';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
 import axios from 'axios';
@@ -104,9 +105,9 @@ const EditCourse = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons
-            name="arrow-back"
-            size={normalize(24)}
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -117,7 +118,7 @@ const EditCourse = ({navigation, route}) => {
           onPress={handleSubmit(courseHandler)}
           activeOpacity={0.5}>
           <Ionicons
-            name="save"
+            name="save-outline"
             size={normalize(24)}
             color={theme.colors.white}
           />

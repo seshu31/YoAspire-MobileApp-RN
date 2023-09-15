@@ -10,22 +10,15 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserPublication = ({navigation, route}) => {
-  const [publication, setPublication] = useState(() => [
-    {
-      title: 'title 1',
-      date: new Date('2022-03-25'),
-    },
-    {
-      title: 'title 2',
-      date: new Date('2022-03-25'),
-    },
-    {
-      title: 'title 3',
-      date: new Date('2022-03-25'),
-    },
-  ]);
+  const [publication, setPublication] = useState(
+    route.params?.publications ? route.params.publications : null,
+  );
   const {userid} = route.params;
   const [owner, setOwner] = useState(() => true);
   const [isLoading, setIsLoading] = useState(() => false);
@@ -89,7 +82,11 @@ const UserPublication = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Publications</Text>
         {owner ? (
@@ -102,7 +99,7 @@ const UserPublication = ({navigation, route}) => {
           <Ionicons size={32} color="#376eb3" />
         )}
       </View>
-      {publication.length ? (
+      {publication && publication.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {publication.map((el, index) => {
@@ -121,10 +118,10 @@ const UserPublication = ({navigation, route}) => {
                       }
                       style={styles.editIcon}
                       activeOpacity={0.5}>
-                      <Ionicons
-                        name="create-outline"
-                        color={'#376eb3'}
-                        size={24}
+                      <AntDesign
+                        name="edit"
+                        color={theme.colors.primary}
+                        size={normalize(24)}
                       />
                     </TouchableOpacity>
                   ) : null}
@@ -133,12 +130,28 @@ const UserPublication = ({navigation, route}) => {
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No projects to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add a project.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

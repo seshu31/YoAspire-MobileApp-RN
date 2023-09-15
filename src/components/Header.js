@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
@@ -41,6 +42,13 @@ const Header = ({navigation, createPost}) => {
     );
   };
 
+  const dummyUser = {
+    UserId: 8,
+    profile: {
+      First_Name: 'durga1',
+      Last_Name: 'sravani1',
+    },
+  };
   return (
     <View>
       {createPost ? null : (
@@ -48,27 +56,37 @@ const Header = ({navigation, createPost}) => {
           <View style={[styles.iconHolder, styles.centerContainer]}>
             <TouchableOpacity
               style={styles.userLogo}
-              onPress={() => navigation.navigate('profile')}
+              onPress={() =>
+                navigation.navigate('profile', {
+                  user: dummyUser,
+                })
+              }
               activeOpacity={0.5}>
               <Ionicons
-                name="person"
+                name="person-outline"
                 size={normalize(30)}
-                color={theme.colors.white}
+                color={theme.colors.level2}
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.inputHolder}>
+          <Ionicons
+            name="search-outline"
+            style={styles.searchIcon}
+            size={normalize(30)}
+            color={theme.colors.level2}
+          />
+          {/* <View style={styles.inputHolder}>
             <TextInput
               style={styles.searchInput}
               onFocus={() => navigation.navigate('search')}
             />
             <Ionicons
-              name="search"
+              name="search-outline"
               style={styles.searchIcon}
-              size={normalize(32)}
-              color={theme.colors.primary}
+              size={normalize(30)}
+              color={theme.colors.black}
             />
-          </View>
+          </View> */}
           <View style={[styles.iconHolder, styles.centerContainer]}>
             {notificationCount ? (
               <Text style={styles.notificationCount}>{notificationCount}</Text>
@@ -78,9 +96,9 @@ const Header = ({navigation, createPost}) => {
               onPress={() => navigation.navigate('notifications')}
               activeOpacity={0.5}>
               <Ionicons
-                name="notifications"
+                name="notifications-outline"
                 size={normalize(30)}
-                color={theme.colors.white}
+                color={theme.colors.level2}
               />
             </TouchableOpacity>
           </View>
@@ -97,10 +115,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headerBar: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.white,
     height: normalize(50),
     color: theme.colors.white,
     paddingHorizontal: normalize(theme.spacing.small),
+    borderBottomColor: theme.colors.grey,
+    borderWidth: 1,
   },
   iconHolder: {
     width: '10%',
@@ -123,15 +143,23 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     height: normalize(40),
     paddingLeft: normalize(theme.spacing.small),
+    borderWidth: 1,
+    borderColor: theme.colors.black,
+    borderRadius: 16,
     // doubt
     paddingRight: normalize(40),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
+  // searchIcon: {
+  //   position: 'absolute',
+  //   right: normalize(15),
+  //   top: normalize(5),
+  // },
   searchIcon: {
     position: 'absolute',
-    right: normalize(15),
-    top: normalize(5),
+    right: '15%',
+    top: normalize(10),
   },
   notificationCount: {
     position: 'absolute',
