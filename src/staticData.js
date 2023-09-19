@@ -373,4 +373,78 @@ const Followees = [
     skills: ['C', 'python'],
   },
 ];
-export {Profiles, Followees};
+
+const ChatListData = [
+  {
+    UserId: 2,
+    flag: 'sender',
+    message: 'heyy sraz',
+    profile: {
+      First_Name: 'durga',
+      Last_Name: 'sravani',
+      User_Name: 'srazzz',
+      heading: 'heading example',
+      DOB: '2000-04-08T18:30:00.000Z',
+      Title: 'Backend developer',
+      Email: 'sravs.vadlamanu2@gmail.com',
+      phone_no: '9186572345',
+      Location: 'Nuzvid',
+    },
+  },
+  {
+    UserId: 3,
+    flag: 'sender',
+    message: 'heyy durga',
+    profile: {
+      First_Name: 'durga1durga1',
+      heading:
+        'heading example1 heading example1 heading example1 heading example1 heading example1 heading example1',
+      Last_Name: 's',
+      DOB: '2000-04-08T18:30:00.000Z',
+      Title: 'frontend developer',
+      Email: 'sravs.vadlamanu3@gmail.com',
+      phone_no: '9186572345',
+      Location: 'vijayawada',
+    },
+  },
+  {
+    UserId: 4,
+    flag: 'receiver',
+    message: 'heyy ram',
+    profile: {
+      First_Name: 'durga2',
+      Last_Name: 'sravani2',
+      heading: 'heading example2',
+      DOB: '2000-04-08T18:30:00.000Z',
+      Title: 'fullstack developer',
+      Email: 'sravs.vadlamanu4@gmail.com',
+      phone_no: '9186572345',
+      Location: 'hyderabad',
+    },
+  },
+  {
+    UserId: 5,
+    flag: 'receiver',
+    message: 'heyy venu',
+    profile: {
+      First_Name: 'durga3',
+      Last_Name: 'sravani3',
+      heading: 'heading example3',
+      Title: 'developer',
+      DOB: '2000-04-08T18:30:00.000Z',
+      Email: 'sravs.vadlamanu5@gmail.com',
+      phone_no: '9186572345',
+      Location: 'secundrabad',
+    },
+  },
+];
+
+const chatArray = [
+  {msgId: 1, message: 'hello'},
+  {msgId: 2, message: 'hi'},
+  {msgId: 3, message: 'what are you doing?'},
+  {msgId: 4, message: 'nothing'},
+  {msgId: 5, message: 'bye'},
+  {msgId: 6, message: 'bye'},
+];
+export {Profiles, Followees, ChatListData, chatArray};
