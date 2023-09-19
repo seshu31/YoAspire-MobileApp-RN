@@ -36,21 +36,25 @@ const Profiles = [
     ],
     education: [
       {
+        title: 'title1',
         college_name: 'RGUKT',
         From: '2000-04-08T18:30:00.000Z',
         To: '2000-04-08T18:30:00.000Z',
       },
       {
+        title: 'title2',
         college_name: 'RGUKT2',
         From: '2010-04-08T18:30:00.000Z',
         To: '2011-04-08T18:30:00.000Z',
       },
       {
+        title: 'title3',
         college_name: 'RGUKT3',
         From: '2011-04-08T18:30:00.000Z',
         To: '2012-04-08T18:30:00.000Z',
       },
       {
+        title: 'title4',
         college_name: 'RGUKT4',
         From: '2012-04-08T18:30:00.000Z',
         To: '2013-04-08T18:30:00.000Z',
@@ -122,6 +126,7 @@ const Profiles = [
     ],
     education: [
       {
+        title: 'title1',
         college_name: 'RGUKT',
         From: '2000-04-08T18:30:00.000Z',
         To: '2000-04-08T18:30:00.000Z',
@@ -150,6 +155,7 @@ const Profiles = [
     ],
     education: [
       {
+        title: 'title1',
         college_name: 'RGUKT',
         From: '2000-04-08T18:30:00.000Z',
         To: '2000-04-08T18:30:00.000Z',
@@ -178,6 +184,7 @@ const Profiles = [
     ],
     education: [
       {
+        title: 'title1',
         college_name: 'RGUKT',
         From: '2000-04-08T18:30:00.000Z',
         To: '2000-04-08T18:30:00.000Z',

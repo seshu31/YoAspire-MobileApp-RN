@@ -32,6 +32,7 @@ import GroupRequests from './src/shared/GroupRequests';
 import Profile from './src/components/Profile';
 import ChatSection from './src/shared/ChatSection';
 import ManageNetwork from './src/shared/ManageNetwork';
+import NotificationCard from './src/shared/NotificationCard';
 
 const Stack = createStackNavigator();
 

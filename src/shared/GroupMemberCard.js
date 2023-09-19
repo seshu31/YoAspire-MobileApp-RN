@@ -51,15 +51,15 @@ const GroupMemberCard = ({
         <Image
           style={styles.connectionImage}
           source={
-            item.img_file_name
-              ? {uri: item.img_file_name}
+            item.profile.img_file_name
+              ? {uri: item.image.img_file_name}
               : require('../../assets/male.png')
           }
         />
         <View style={styles.connectionDetails}>
           <View style={styles.userNameDetails}>
             <Text style={styles.connectionName}>
-              {item.First_Name} {item.Last_Name}
+              {item.profile.First_Name} {item.profile.Last_Name}
             </Text>
             {connectionLevel ? (
               <>
@@ -76,8 +76,8 @@ const GroupMemberCard = ({
           ) : item.admin_flag ? (
             <Text style={styles.connectionTitle}>Admin</Text>
           ) : null}
-          {item.heading ? (
-            <Text style={styles.connectionTitle}>{item.heading}</Text>
+          {item.profile.heading ? (
+            <Text style={styles.connectionTitle}>{item.profile.heading}</Text>
           ) : null}
         </View>
       </View>
@@ -94,7 +94,7 @@ const GroupMemberCard = ({
             style={styles.connectIcons}
             onPress={() =>
               navigation.navigate('chat-section', {
-                name: `${item.First_Name} ${item.Last_Name}`,
+                name: `${item.profile.First_Name} ${item.profile.Last_Name}`,
                 id: item.UserId,
               })
             }>
@@ -147,6 +147,9 @@ const styles = StyleSheet.create({
     width: normalize(50),
     height: normalize(50),
     borderRadius: normalize(100),
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.primary,
+    borderWidth: normalize(3),
   },
   connectionDetails: {
     paddingLeft: normalize(15),
@@ -157,6 +160,7 @@ const styles = StyleSheet.create({
   },
   connectionName: {
     fontSize: normalize(16),
+    color: theme.colors.black,
   },
   connectionTitle: {
     paddingTop: normalize(5),

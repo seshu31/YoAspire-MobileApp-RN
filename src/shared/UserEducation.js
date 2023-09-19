@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -19,6 +18,7 @@ const UserEducation = ({navigation, route}) => {
   const [education, setEducation] = useState(
     route.params?.education ? route.params.education : null,
   );
+  console.log(education);
   const [isLoading, setIsLoading] = useState(() => false);
 
   useEffect(() => fetchEducation(), []);
@@ -90,7 +90,11 @@ const UserEducation = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('edit-education')}
           activeOpacity={0.5}>
-          <Ionicons name="add" size={32} color="#fff" />
+          <Ionicons
+            name="add"
+            size={normalize(32)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       {education && education.length ? (
@@ -148,44 +152,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   NoProject: {
-    fontSize: 14,
-    color: 'black',
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.black,
     textAlign: 'center',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
   },
   organisationName: {
-    fontSize: 20,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.extraSmall),
+    color: theme.colors.black,
   },
   dateText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',

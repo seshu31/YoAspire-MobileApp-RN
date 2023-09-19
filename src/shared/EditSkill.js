@@ -112,8 +112,8 @@ const EditSkill = ({navigation, route}) => {
           />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
-          {/* {skill ? 'Edit Skill' : 'Add Skill'} */}
-          Edit Skill
+          {skill ? 'Edit Skill' : 'Add Skill'}
+          {/* Edit Skill */}
         </Text>
         <TouchableOpacity
           onPress={handleSubmit(skillHandler)}
@@ -121,7 +121,6 @@ const EditSkill = ({navigation, route}) => {
           <Ionicons name="save-outline" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
-      {/* <Loader /> */}
       <View style={styles.body}>
         <Controller
           control={control}
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: normalize(20),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
@@ -189,12 +188,13 @@ const styles = StyleSheet.create({
   inputField: {
     width: '100%',
     height: normalize(50),
-    marginBottom: normalize(20),
+    marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
     borderBottomWidth: normalize(3),
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   body: {
     padding: normalize(theme.spacing.large),
@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
   deleteButton: {
     color: theme.colors.white,
     alignSelf: 'center',
-    fontSize: normalize(18),
-    marginVertical: normalize(10),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
   alertText: {color: theme.colors.red},
 });

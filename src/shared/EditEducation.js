@@ -127,6 +127,7 @@ const EditEducation = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="Degree"
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -153,6 +154,7 @@ const EditEducation = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="Branch"
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -309,6 +311,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.large),
+    color: theme.colors.black,
   },
   yearInputField: {
     width: '100%',
@@ -369,6 +372,7 @@ const styles = StyleSheet.create({
   },
   checkboxText: {
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
 });
 

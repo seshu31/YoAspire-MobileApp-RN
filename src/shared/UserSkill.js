@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -38,7 +37,11 @@ const UserSkill = ({navigation, route}) => {
             })
           }
           activeOpacity={0.5}>
-          <Ionicons name="add" size={32} color="#fff" />
+          <Ionicons
+            name="add"
+            size={normalize(32)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       {skills && skills.length !== 0 ? (
@@ -86,42 +89,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   NoProject: {
-    fontSize: 14,
+    fontSize: normalize(theme.fontSizes.small),
     color: 'black',
     textAlign: 'center',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(15),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
-    height: 60,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
+    height: normalize(60),
     alignItems: 'center',
   },
   skillItem: {
-    fontSize: 20,
+    fontSize: normalize(theme.fontSizes.large),
     width: '90%',
-    color: '#000',
+    color: theme.colors.black,
   },
 });
 

@@ -163,7 +163,7 @@ const EditExperience = ({navigation, route}) => {
         <Controller
           control={control}
           name="role"
-          defaultValue={experience ? experience.role : ''}
+          defaultValue={experience ? experience.Role : ''}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}
@@ -420,6 +420,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   body: {
     padding: normalize(theme.spacing.large),

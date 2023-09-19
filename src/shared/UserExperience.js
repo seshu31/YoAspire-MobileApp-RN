@@ -5,13 +5,13 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../theme';
 import normalize from 'react-native-normalize';
 
 const UserExperience = ({navigation, route}) => {
@@ -102,7 +102,7 @@ const UserExperience = ({navigation, route}) => {
                     <Text style={styles.organisationName}>
                       {el.Company_name}
                     </Text>
-                    <Text style={styles.role}>{el.role}</Text>
+                    <Text style={styles.role}>{el.Role}</Text>
                     {el.To ? (
                       <Text style={styles.dateText}>
                         {dateConvert(el.From)} - {dateConvert(el.To)}
@@ -146,49 +146,49 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   NoProject: {
-    fontSize: 14,
-    color: 'black',
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.black,
     textAlign: 'center',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
   },
   organisationName: {
-    fontSize: 20,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.extraSmall),
+    color: theme.colors.black,
   },
   role: {
-    fontSize: 18,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginBottom: normalize(5),
+    color: theme.colors.level2,
   },
   dateText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',

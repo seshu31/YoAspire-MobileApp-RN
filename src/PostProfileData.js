@@ -1,4 +1,4 @@
-const articles = [
+const articlesData = [
   {
     id: 1,
     PostId: 1,
@@ -8,7 +8,8 @@ const articles = [
     First_Name: 'venu',
     Last_Name: 'makaraju',
     Title: 'Web Developer',
-    Description: 'Current working tool React Native',
+    Description:
+      'Current working tool React Native Current working tool React Native Current working tool React Native React Native Current working tool React Native Current working tool React Native',
     heading: 'Heading1',
   },
   {
@@ -43,4 +44,35 @@ const articles = [
   // Add more static article data as needed
 ];
 
-export default articles;
+const groupMembers = [
+  {
+    UserId: 1,
+    profile: {
+      First_Name: 'durga',
+      Last_Name: 'sravani',
+      User_Name: 'srazzz',
+      heading: 'heading example',
+    },
+    admin_flag: 1,
+  },
+  {
+    UserId: 2,
+    profile: {
+      First_Name: 'ram',
+      Last_Name: 'p',
+      User_Name: 'srazzz',
+      heading: 'heading example',
+    },
+  },
+  {
+    UserId: 3,
+    profile: {
+      First_Name: 'venu',
+      Last_Name: 'm',
+      User_Name: 'srazzz',
+      heading: 'heading example',
+    },
+  },
+  // Add more static article data as needed
+];
+export {articlesData, groupMembers};

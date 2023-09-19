@@ -62,9 +62,9 @@ const EditProfile = ({navigation, route}) => {
     formState: {errors},
   } = useForm();
 
-  const saveHandler = data => {
-    console.log(data);
-  };
+  // const saveHandler = data => {
+  //   console.log(data);
+  // };
 
   const onChange = selectedDate => {
     const currentDate = new Date(selectedDate);

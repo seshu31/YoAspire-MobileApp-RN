@@ -135,7 +135,7 @@ const DashboardArticle = ({articles, navigation}) => {
                 />
               ) : (
                 <AntDesign
-                  name="like1"
+                  name="like2"
                   size={24}
                   color="lightgrey" // Color when not liked
                 />
@@ -152,7 +152,7 @@ const DashboardArticle = ({articles, navigation}) => {
                 })
               }
               activeOpacity={0.5}>
-              <FontAwesome name="comment" size={24} color="lightgrey" />
+              <FontAwesome name="comment-o" size={24} color="lightgrey" />
             </TouchableOpacity>
             <Text style={styles.likeText}>
               {articles?.No_of_Comments} Comments
@@ -167,12 +167,13 @@ const DashboardArticle = ({articles, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.colors.whiteSmoke,
   },
   card: {
     borderRadius: normalize(theme.spacing.extraSmall),
     backgroundColor: theme.colors.white,
     marginVertical: normalize(theme.spacing.extraSmall),
-    marginHorizontal: normalize(theme.spacing.small),
+    paddingHorizontal: 10,
   },
   articleItem: {
     marginBottom: normalize(theme.spacing.extraSmall),
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: normalize(3),
     borderBottomColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
     width: '100%',
   },
   writerDesc: {
@@ -198,16 +199,8 @@ const styles = StyleSheet.create({
   writerName: {
     fontWeight: theme.fontWeight.bold,
     fontSize: normalize(theme.fontSizes.medium),
-    paddingLeft: normalize(theme.spacing.extraSmall),
+    paddingLeft: '5%',
     color: theme.colors.black,
-  },
-  category: {
-    backgroundColor: '#74d848',
-    color: theme.colors.white,
-    paddingHorizontal: normalize(theme.spacing.small),
-    paddingVertical: normalize(3),
-    borderRadius: normalize(theme.spacing.extraSmall),
-    alignSelf: 'center',
   },
   articleTitle: {
     borderBottomWidth: normalize(3),
@@ -217,50 +210,56 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
     lineHeight: normalize(theme.spacing.extraLarge),
+    color: theme.colors.level2,
   },
   articleDesc: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   descriptionText: {
     lineHeight: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.medium),
     width: '100%',
+    color: theme.colors.level2,
   },
   articleImage: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   jobItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(3),
+    paddingHorizontal: '3%',
   },
   jobDetails: {
     paddingLeft: normalize(theme.spacing.small),
   },
   jobTitle: {
     fontSize: normalize(theme.fontSizes.medium),
-    fontWeight: theme.fontWeight.bold,
+    fontWeight: '700',
+    color: theme.colors.black,
   },
   jobType: {
     paddingVertical: normalize(theme.spacing.extraSmall),
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   jobOrganiser: {
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   jobLocation: {
     paddingVertical: normalize(theme.spacing.extraSmall),
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarItem: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   webinarText: {
     paddingHorizontal: normalize(12),
@@ -274,16 +273,19 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.extraSmall),
   },
   webinarTitle: {
-    fontSize: normalize(17),
+    fontSize: normalize(theme.fontSizes.medium),
     fontWeight: theme.fontWeight.bold,
     paddingVertical: normalize(3),
+    color: theme.colors.black,
   },
   webinarOrganiser: {
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarBrief: {
     paddingVertical: normalize(3),
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarImage: {
     width: '100%',
@@ -300,10 +302,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: normalize(40),
-    paddingLeft: normalize(theme.spacing.extraSmall),
+    paddingLeft: '5%',
   },
   likeText: {
-    paddingLeft: normalize(theme.spacing.small),
+    paddingLeft: normalize(theme.spacing.extraSmall),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.grey,
   },

@@ -16,8 +16,10 @@ import axios from 'axios';
 import Textarea from 'react-native-textarea';
 import {useForm, Controller} from 'react-hook-form';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Picker} from '@react-native-picker/picker';
+import normalize from 'react-native-normalize';
+import theme from '../../theme';
 
 const CreatePost = () => {
   const navigation = useNavigation();
@@ -91,7 +93,11 @@ const CreatePost = () => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#376eb3" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.primary}
+          />
         </TouchableOpacity>
         {post ? (
           <>
