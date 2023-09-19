@@ -250,7 +250,11 @@ const UserDetails = ({navigation, route}) => {
                     // }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons name="create" color={'#376eb3'} size={24} />
+                    <Ionicons
+                      name="create"
+                      color={theme.colors.primary}
+                      size={normalize(24)}
+                    />
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -280,16 +284,16 @@ const styles = StyleSheet.create({
     paddingLeft: '30%',
   },
   titleHeader: {
-    marginHorizontal: normalize(-15),
-    padding: normalize(15),
+    marginHorizontal: normalize(-theme.spacing.medium),
+    padding: normalize(theme.spacing.medium),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: theme.colors.whiteSmoke,
   },
   coursesContainer: {
-    paddingHorizontal: normalize(15),
-    paddingBottom: normalize(15),
+    paddingHorizontal: normalize(theme.spacing.medium),
+    paddingBottom: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
@@ -319,7 +323,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: normalize(theme.fontSizes.medium),
-    color: '#444',
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',

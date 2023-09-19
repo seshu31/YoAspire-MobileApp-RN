@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   NoProject: {
     fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.black,
+    color: theme.colors.darkgrey,
     textAlign: 'center',
   },
   container: {

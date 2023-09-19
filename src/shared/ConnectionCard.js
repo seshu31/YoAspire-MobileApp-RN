@@ -84,9 +84,11 @@ const ConnectionCard = ({item, navigation}) => {
       </View>
       <TouchableOpacity onPress={connectionHandler} activeOpacity={0.5}>
         {connected ? (
-          <Text style={styles.followingButton}>Following</Text>
+          <Text style={[styles.followingButton, styles.buttonStyle]}>
+            Following
+          </Text>
         ) : (
-          <Text style={styles.followButton}>Follow</Text>
+          <Text style={[styles.followButton, styles.buttonStyle]}>Follow</Text>
         )}
       </TouchableOpacity>
     </TouchableOpacity>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   connectionName: {
-    fontSize: normalize(theme.fontSizes.medium),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     color: theme.colors.black,
   },
   connectionTitle: {
@@ -134,27 +136,24 @@ const styles = StyleSheet.create({
   followText: {
     color: theme.colors.level2,
     fontWeight: theme.fontWeight.bold,
+    fontSize: normalize(theme.fontSizes.small),
     paddingTop: normalize(theme.spacing.extraSmall),
   },
-  followingButton: {
-    backgroundColor: theme.colors.white,
+  buttonStyle: {
     borderWidth: 1,
     borderColor: theme.colors.primary,
-    color: theme.colors.primary,
-    borderRadius: normalize(5),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
-    paddingVertical: normalize(theme.spacing.extraSmall),
-    marginVertical: normalize(theme.spacing.small),
-  },
-  followButton: {
-    backgroundColor: theme.colors.primary,
-    borderWidth: 1,
-    borderColor: theme.colors.primary,
-    color: theme.colors.white,
     borderRadius: normalize(5),
     paddingHorizontal: normalize(theme.spacing.small),
     paddingVertical: normalize(theme.spacing.extraSmall),
     marginVertical: normalize(theme.spacing.small),
+  },
+  followingButton: {
+    backgroundColor: theme.colors.white,
+    color: theme.colors.primary,
+  },
+  followButton: {
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.white,
   },
 });
 

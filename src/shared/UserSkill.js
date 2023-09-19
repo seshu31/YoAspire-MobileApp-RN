@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   NoProject: {
     fontSize: normalize(theme.fontSizes.small),
-    color: 'black',
+    color: theme.colors.darkgrey,
     textAlign: 'center',
   },
   container: {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   coursesContainer: {
-    padding: normalize(15),
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',

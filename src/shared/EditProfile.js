@@ -15,9 +15,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useForm, Controller} from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
 import normalize from 'react-native-normalize';
+import theme from '../../theme';
 
 const EditProfile = ({navigation, route}) => {
   const user = route.params?.user ? route.params.user : null;
@@ -62,9 +62,9 @@ const EditProfile = ({navigation, route}) => {
     formState: {errors},
   } = useForm();
 
-  // const saveHandler = data => {
-  //   console.log(data);
-  // };
+  const saveHandler = data => {
+    console.log(data);
+  };
 
   const onChange = selectedDate => {
     const currentDate = new Date(selectedDate);
@@ -110,14 +110,18 @@ const EditProfile = ({navigation, route}) => {
           <MaterialIcons
             name="arrow-back-ios"
             size={normalize(24)}
-            color="#fff"
+            color={theme.colors.white}
           />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Edit Profile</Text>
         <TouchableOpacity
           onPress={handleSubmit(saveHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save-outline" size={24} color="#fff" />
+          <Ionicons
+            name="save-outline"
+            size={normalize(24)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
@@ -134,13 +138,17 @@ const EditProfile = ({navigation, route}) => {
               style={styles.photoIndicator}
               animating={photoLoaded}
               size="large"
-              color="#376eb3"
+              color={theme.colors.primary}
             />
             <TouchableOpacity
               style={styles.photoEdit}
               onPress={() => {}}
               activeOpacity={0.5}>
-              <AntDesign name="edit" size={18} color="#376eb3" />
+              <AntDesign
+                name="edit"
+                size={normalize(18)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -165,15 +173,15 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.username && errors.username.type === 'required' && (
-          <Text style={{color: 'red'}}>username Field is required.</Text>
+          <Text style={styles.errorText}>username Field is required.</Text>
         )}
         {errors.username && errors.username.type === 'minLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             username should consists minimum of 3 characters.
           </Text>
         )}
         {errors.username && errors.username.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             username should consists maximum of 30 characters.
           </Text>
         )}
@@ -198,15 +206,15 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.firstname && errors.firstname.type === 'required' && (
-          <Text style={{color: 'red'}}>Firstname Field is required.</Text>
+          <Text style={styles.errorText}>Firstname Field is required.</Text>
         )}
         {errors.firstname && errors.firstname.type === 'minLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Firstname should consists minimum of 3 characters.
           </Text>
         )}
         {errors.firstname && errors.firstname.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Firstname should consists maximum of 30 characters.
           </Text>
         )}
@@ -231,15 +239,15 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.lastname && errors.lastname.type === 'required' && (
-          <Text style={{color: 'red'}}>lastname Field is required.</Text>
+          <Text style={styles.errorText}>lastname Field is required.</Text>
         )}
         {errors.lastname && errors.lastname.type === 'minLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             lastname should consists minimum of 3 characters.
           </Text>
         )}
         {errors.lastname && errors.lastname.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             lastname should consists maximum of 30 characters.
           </Text>
         )}
@@ -268,10 +276,10 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.email && errors.email.type === 'required' && (
-          <Text style={{color: 'red'}}>Email Field is required.</Text>
+          <Text style={styles.errorText}>Email Field is required.</Text>
         )}
         {errors.email && errors.email.type === 'pattern' && (
-          <Text style={{color: 'red'}}>Enter valid EmailID</Text>
+          <Text style={styles.errorText}>Enter valid EmailID</Text>
         )}
         <Controller
           control={control}
@@ -295,10 +303,10 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.phone && errors.phone.type === 'required' && (
-          <Text style={{color: 'red'}}>Phone Field is required.</Text>
+          <Text style={styles.errorText}>Phone Field is required.</Text>
         )}
         {errors.phone && errors.phone.type === 'pattern' && (
-          <Text style={{color: 'red'}}>Enter valid Phone number</Text>
+          <Text style={styles.errorText}>Enter valid Phone number</Text>
         )}
         <View style={styles.dateTime}>
           {/* <Text style={styles.dateTimeText}>
@@ -324,7 +332,11 @@ const EditProfile = ({navigation, route}) => {
             style={styles.calendarButton}
             onPress={showDatepicker}
             activeOpacity={0.5}>
-            <Ionicons name="calendar" size={30} color="#999" />
+            <Ionicons
+              name="calendar"
+              size={normalize(30)}
+              color={theme.colors.darkgrey}
+            />
           </TouchableOpacity>
         </View>
         <DatePicker
@@ -359,7 +371,7 @@ const EditProfile = ({navigation, route}) => {
           }}
         />
         {errors.location && errors.location.type === 'required' && (
-          <Text style={{color: 'red'}}>Location Field is required.</Text>
+          <Text style={styles.errorText}>Location Field is required.</Text>
         )}
       </View>
     </ScrollView>
@@ -367,41 +379,44 @@ const EditProfile = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: theme.colors.red,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
   body: {
-    padding: 20,
+    padding: normalize(theme.spacing.large),
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   photoSection: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
   },
   photoText: {
-    fontSize: 18,
-    color: '#376eb3',
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    color: theme.colors.primary,
   },
   photo: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: '#376eb3',
-    marginVertical: 10,
+    width: normalize(100),
+    height: normalize(100),
+    borderRadius: normalize(50),
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    marginVertical: normalize(theme.spacing.small),
   },
 
   photoDiv: {
@@ -416,26 +431,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -10,
     bottom: 25,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     elevation: 5,
-    borderRadius: 50,
-    paddingLeft: 10,
-    paddingRight: 8,
-    paddingVertical: 7,
-  },
-  inputSection: {
-    // borderColor: '#376eb3',
-    // borderBottomWidth: 1,
+    borderRadius: normalize(50),
+    paddingLeft: normalize(theme.spacing.small),
+    paddingRight: normalize(theme.spacing.small),
+    paddingVertical: normalize(theme.spacing.small),
   },
   inputField: {
     width: '100%',
-    height: 50,
+    height: normalize(50),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    color: '#000',
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   dateTime: {
     flexDirection: 'row',
@@ -443,7 +454,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   dateTimeText: {
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
   },
   popup: {
     flex: 1,
@@ -452,25 +463,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageButton: {
-    color: '#376eb3',
-    fontSize: 18,
-    marginTop: 20,
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginTop: normalize(theme.spacing.large),
   },
   deleteButton: {
-    color: 'red',
-    fontSize: 18,
-    marginBottom: 20,
+    color: theme.colors.red,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginBottom: normalize(theme.spacing.large),
   },
   inputLabel: {
-    color: '#376eb3',
-    fontSize: 16,
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.medium),
   },
   calendarButton: {
     position: 'absolute',
     right: 0,
     top: 10,
   },
-  picker: {},
 });
 
 export default EditProfile;

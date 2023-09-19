@@ -207,25 +207,25 @@ const Profile = ({navigation, route}) => {
             )}
           </View>
           <View style={styles.userDetailesContainer}>
+            <View style={styles.boxHeader}>
+              <Text style={styles.infoHeader}>Personal Info</Text>
+              {owner ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('edit-profile', {
+                      user: user,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <AntDesign
+                    name="edit"
+                    color={theme.colors.primary}
+                    size={normalize(24)}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
             <View style={styles.infoBox}>
-              <View style={styles.boxHeader}>
-                <Text style={styles.infoHeader}>Personal Info</Text>
-                {owner ? (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('edit-profile', {
-                        user: user,
-                      })
-                    }
-                    activeOpacity={0.5}>
-                    <AntDesign
-                      name="edit"
-                      color={theme.colors.primary}
-                      size={normalize(24)}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-              </View>
               <View style={styles.userInfoBox}>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Date Of Birth :</Text>
@@ -247,7 +247,7 @@ const Profile = ({navigation, route}) => {
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Email :</Text>
-                  {user.profile.Email !== '' && null ? (
+                  {user.profile.Email !== '' || null ? (
                     <Text style={styles.details}>{user.profile.Email}</Text>
                   ) : (
                     <Text style={styles.details}>----</Text>
@@ -255,7 +255,7 @@ const Profile = ({navigation, route}) => {
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Phone :</Text>
-                  {user.profile.phone_no !== '' && null ? (
+                  {user.profile.phone_no !== '' || null ? (
                     <Text style={styles.details}>{user.profile.phone_no}</Text>
                   ) : (
                     <Text style={styles.details}>----</Text>
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
   },
   NoProject: {
     fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.black,
+    color: theme.colors.darkgrey,
     textAlign: 'center',
   },
   container: {

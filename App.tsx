@@ -33,6 +33,7 @@ import Profile from './src/components/Profile';
 import ChatSection from './src/shared/ChatSection';
 import ManageNetwork from './src/shared/ManageNetwork';
 import NotificationCard from './src/shared/NotificationCard';
+import Notification from './src/components/Notification';
 
 const Stack = createStackNavigator();
 
@@ -119,6 +120,7 @@ const App = () => {
           <Stack.Screen name="manage-requests" component={GroupRequests} />
           <Stack.Screen name="manage-network" component={ManageNetwork} />
           <Stack.Screen name="chat-section" component={ChatSection} />
+          <Stack.Screen name="notifications" component={Notification} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
