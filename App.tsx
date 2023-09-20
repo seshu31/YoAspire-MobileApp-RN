@@ -22,8 +22,9 @@ import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
-import GroupMembers from './src/shared/GroupMembers.js';
-import GroupRequests from './src/shared/GroupRequests.js';
+import GroupMembers from './src/shared/GroupMembers';
+import GroupRequests from './src/shared/GroupRequests';
+import Notification from './src/components/Notification';
 
 const Stack = createStackNavigator();
 
@@ -85,6 +86,7 @@ const App = () => {
           <Stack.Screen name="edit-skill" component={EditSkill} />
           <Stack.Screen name="group-members" component={GroupMembers} />
           <Stack.Screen name="manage-requests" component={GroupRequests} />
+          <Stack.Screen name="notifications" component={Notification} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

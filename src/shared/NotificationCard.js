@@ -4,7 +4,8 @@ import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import Moment from 'react-moment';
 
-const NotificationCard = item => {
+const NotificationCard = props => {
+  const {item} = props;
   const notificationHandler = () => {
     console.log(
       'method: Method, ${backend_url}/feed/useractivity/seen/${item.id}',
@@ -63,10 +64,11 @@ const styles = StyleSheet.create({
     paddingLeft: '5%',
   },
   notificationText: {
-    fontSize: normalize(17),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    color: theme.colors.black,
   },
   notificationTime: {
-    paddingTop: normalize(7),
+    paddingTop: normalize(theme.spacing.extraSmall),
     color: theme.colors.darkgrey,
   },
 });
