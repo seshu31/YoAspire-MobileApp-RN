@@ -147,6 +147,9 @@ const styles = StyleSheet.create({
     width: normalize(50),
     height: normalize(50),
     borderRadius: normalize(100),
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.primary,
+    borderWidth: normalize(3),
   },
   connectionDetails: {
     paddingLeft: normalize(15),
@@ -157,6 +160,7 @@ const styles = StyleSheet.create({
   },
   connectionName: {
     fontSize: normalize(16),
+    color: theme.colors.black,
   },
   connectionTitle: {
     paddingTop: normalize(5),

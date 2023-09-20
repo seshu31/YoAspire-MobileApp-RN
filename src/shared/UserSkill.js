@@ -5,9 +5,10 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserSkill = ({navigation, route}) => {
   const {skills} = route.params;
@@ -61,36 +62,36 @@ const UserSkill = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.small),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(15),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
-    height: 60,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
+    height: normalize(60),
     alignItems: 'center',
   },
   skillItem: {
-    fontSize: 20,
+    fontSize: normalize(theme.fontSizes.large),
     width: '90%',
-    color: '#000',
+    color: theme.colors.black,
   },
 });
 

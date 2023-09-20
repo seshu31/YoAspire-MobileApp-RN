@@ -15,7 +15,7 @@ import normalize from 'react-native-normalize';
 import Loader from '../reusables/Loader';
 import theme from '../../theme';
 
-const CommentCard = () => {
+const CommentCard = item => {
   const [liked, setLiked] = useState(() => true);
   const [likeCount, setLikeCount] = useState(5);
   const [visible, setVisible] = useState(() => false);

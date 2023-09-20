@@ -103,7 +103,6 @@ const Profile = ({navigation, route}) => {
   };
 
   const dateConvert = value => {
-    console.log(value);
     const monthNames = [
       'Jan',
       'Feb',

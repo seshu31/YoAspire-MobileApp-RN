@@ -39,7 +39,6 @@ const Login = ({navigation, route}) => {
   // };
 
   const onSubmit = data => {
-    console.log(data);
     navigation.navigate('index');
   };
 

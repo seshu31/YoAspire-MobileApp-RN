@@ -49,7 +49,6 @@ const Register = ({navigation}) => {
   };
 
   const onSubmit = data => {
-    console.log(data);
     navigation.navigate('otp-verification', {
       email: data.email,
     });

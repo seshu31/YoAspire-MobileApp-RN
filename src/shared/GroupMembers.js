@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import {Provider} from 'react-native-paper';
 import Loader from '../reusables/Loader';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GroupMemberCard from './GroupMemberCard';
 import articles from '../PostProfileData';
 import theme from '../../theme';
@@ -52,7 +52,11 @@ const GroupMembers = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             activeOpacity={0.5}>
-            <Ionicons name="arrow-back" size={32} color="#fff" />
+            <MaterialIcons
+              name="arrow-back-ios"
+              size={normalize(26)}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Members</Text>
         </View>
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
   connectionHeader: {
     height: normalize(60),
     flexDirection: 'row',
-    paddingHorizontal: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },

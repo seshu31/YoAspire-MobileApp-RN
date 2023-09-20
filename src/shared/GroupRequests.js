@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, FlatList, TouchableOpacity} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import GroupRequestCard from './GroupRequestCard';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../reusables/Loader';
 import articles from '../PostProfileData';
 
@@ -40,7 +40,11 @@ const GroupRequests = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Requests</Text>
       </View>
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
   connectionHeader: {
     height: normalize(60),
     flexDirection: 'row',
-    paddingHorizontal: normalize(10),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },

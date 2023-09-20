@@ -10,6 +10,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserProject = ({navigation, route}) => {
   const [project, setProject] = useState(() => [
@@ -143,38 +145,37 @@ const UserProject = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.small),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#FFF',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(15),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
   },
   courseText: {
-    fontSize: 20,
-    marginBottom: 10,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.small),
+    color: theme.colors.black,
   },
   dateText: {
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     color: '#444',
   },
   editIcon: {

@@ -9,12 +9,14 @@ import {
   Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from '../reusables/Loader';
 import {useForm, Controller} from 'react-hook-form';
 import Textarea from 'react-native-textarea';
 import {Picker} from '@react-native-picker/picker';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const CreateGroup = ({navigation, route}) => {
   // Initialize variables and states
@@ -92,7 +94,11 @@ const CreateGroup = ({navigation, route}) => {
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               activeOpacity={0.5}>
-              <Ionicons name="arrow-back" size={32} color="#376eb3" />
+              <MaterialIcons
+                name="arrow-back-ios"
+                size={normalize(26)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
             <Text style={styles.title}>Create New Group </Text>
             <Text
@@ -116,7 +122,7 @@ const CreateGroup = ({navigation, route}) => {
               onPress={imageHandler}
               style={styles.photoEdit}
               activeOpacity={0.5}>
-              <Ionicons name="create" size={18} color="#376eb3" />
+              <AntDesign name="edit" size={24} color="#376eb3" />
             </TouchableOpacity>
           </View>
         </View>
@@ -182,6 +188,7 @@ const CreateGroup = ({navigation, route}) => {
           selectedValue={visibility}
           onValueChange={handeleVisibility}
           prompt="Visibility Status"
+          dropdownIconColor={theme.colors.black}
           style={styles.picker}>
           <Picker.Item label="Public" value="0" />
           <Picker.Item label="Private" value="1" />
@@ -208,11 +215,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: theme.colors.border,
     justifyContent: 'space-between',
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.large),
   },
   title: {
     fontSize: normalize(theme.fontSizes.large),
     paddingLeft: '10%',
+    color: theme.colors.level2,
   },
   postButton: {
     color: theme.colors.primary,
@@ -230,6 +238,7 @@ const styles = StyleSheet.create({
   photoText: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
     marginVertical: normalize(theme.spacing.small),
+    color: theme.colors.level2,
   },
   photo: {
     width: normalize(100),
@@ -255,9 +264,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     elevation: normalize(5),
     borderRadius: normalize(50),
-    paddingLeft: normalize(theme.spacing.small),
-    paddingRight: normalize(8),
-    paddingVertical: normalize(8),
+    padding: normalize(8),
   },
   textareaContainer: {
     borderBottomWidth: normalize(3),
@@ -272,11 +279,13 @@ const styles = StyleSheet.create({
   dropdownLabel: {
     paddingTop: '5%',
     fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.level2,
   },
   picker: {
     marginLeft: '-2%',
     borderBottomWidth: normalize(3),
     borderBottomColor: theme.colors.grey,
+    color: theme.colors.black,
   },
   textField: {
     marginTop: '3%',
