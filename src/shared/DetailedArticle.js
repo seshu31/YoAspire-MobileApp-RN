@@ -18,23 +18,45 @@ import normalize from 'react-native-normalize';
 import {Provider} from 'react-native-paper';
 import theme from '../../theme';
 
-const DetailedArticle = ({navigation}) => {
-  const [article, setArticle] = useState(() => []);
-  const [comments, setComments] = useState(() => [
-    {id: '1', text: 'This is comment 1'},
-    {id: '2', text: 'This is comment 2'},
-    {id: '3', text: 'This is comment 3'},
+const DetailedArticle = ({navigation, route}) => {
+  const [article, setArticle] = useState(
+    route.params?.articles ? route.params.articles : null,
+  );
+  // console.log(article ? article : 'no article');
+  const [comments, setComments] = useState([
+    {
+      id: '1',
+      text: 'This is comment 1',
+      First_Name: 'venu',
+      Last_Name: 'm',
+      Comment: 'Comment 1',
+    },
+    {
+      id: '2',
+      text: 'This is comment 2',
+      First_Name: 'venu2',
+      Last_Name: 'm',
+      Comment: 'Comment 2',
+    },
+    {
+      id: '3',
+      text: 'This is comment 3',
+      First_Name: 'venu3',
+      Last_Name: 'm',
+      Comment: 'Comment 3',
+    },
   ]);
   // const [loading, setLoading] = useState(() => true);
-  // const [fetching, setFetching] = useState(() => false);
+  const [fetching, setFetching] = useState(false);
   const [likeCount, setLikeCount] = useState(4);
   const [commentCount, setCommentCount] = useState(10);
-  const [commentField, setCommentField] = useState(() => true);
+  const [commentField, setCommentField] = useState(true);
   const [comment, setComment] = useState(() => '');
+  const [userid, setUserid] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [owner, setOwner] = useState(false);
 
-  useEffect(() => {
-    // console.log(comments);
-  });
+  console.log(article?.UserId === userid);
 
   const fetchTags = () => {
     return <Text style={styles.tagsText}>tag</Text>;
@@ -86,113 +108,97 @@ const DetailedArticle = ({navigation}) => {
           <View>
             <Image
               style={styles.writeImage}
-              source={require('../../assets/male.png')}
-              // source={
-              //   article.img_file_name
-              //     ? {uri: article.img_file_name}
-              //     : require('../../assets/male.png')
-              // }
+              source={
+                article.img_file_name
+                  ? {uri: article.img_file_name}
+                  : require('../../assets/male.png')
+              }
             />
           </View>
           <View style={styles.writerDesc}>
             <Text style={styles.writerName}>
-              {/* {article.First_Name} {article.Last_Name} */}
-              Venu makaraju
+              {article.First_Name} {article.Last_Name}
             </Text>
           </View>
         </View>
         <View style={styles.articleTitle}>
-          <Text style={styles.titleText}>Title</Text>
+          <Text style={styles.titleText}>{article.Title}</Text>
         </View>
-        <View style={styles.articleBrief}>
-          <Text style={styles.briefText}>Brief</Text>
-        </View>
-        {/* {article.Brief != null ? (
-        ) : null} */}
-        <View style={styles.articleDesc}>
-          <View>
-            <Text style={styles.jobType}>@Job_Type</Text>
-            <Text style={styles.location}>location</Text>
+
+        {article.Brief !== null ? (
+          <View style={styles.articleBrief}>
+            <Text style={styles.briefText}>{article.Brief}</Text>
           </View>
-          {/* {article.Category_Type === 'job' ? (
-          ) : null} */}
-          <Text style={styles.descriptionText}>Description</Text>
-          {/* {article.Category_Type === 'article' ? null : (
+        ) : null}
+
+        <View style={styles.articleDesc}>
+          {article.Category_Type === 'job' ? (
+            <View>
+              <Text>@{article.Job_Type}</Text>
+              <Text style={{paddingVertical: 10}}>{article.Location}</Text>
+            </View>
+          ) : null}
+
+          <Text style={styles.descriptionText}>{article.Description}</Text>
+
+          {article.Category_Type === 'article' ? null : (
             <Text style={styles.byText}>
               By <Text style={{fontWeight: 'bold'}}>{article.Organiser}</Text>,{' '}
               {new Date(article.Date_of_Event).toDateString()},{' '}
               {`${article.Time_of_Event[0]}${article.Time_of_Event[1]}.${article.Time_of_Event[3]}${article.Time_of_Event[4]}`}
             </Text>
-          )} */}
-          <Text style={styles.byText}>
-            By <Text style={styles.organiser}>Organiser</Text>
-          </Text>
-          {/* {article.Category_Type === 'article' ? null : (
+          )}
+
+          {article.Category_Type === 'article' ? null : (
             <View style={styles.articleLink}>
               <Text style={styles.linkText}>{article.Link}</Text>
             </View>
-          )} */}
-          <View style={styles.articleLink}>
-            <Text style={styles.linkText}>Link</Text>
-          </View>
-          {/* {article.Hashtags != null ? (
+          )}
+
+          {article.Hashtags != null ? (
             <View style={styles.articleTags}>{fetchTags()}</View>
-          ) : null} */}
-          <View style={styles.articleTags}>{fetchTags()}</View>
-          <View style={styles.articleImage}>
-            <Image
-              style={styles.article}
-              source={require('../../assets/pic2.png')}
-              // source={
-              //   article.Image
-              //     ? {uri: article.Image}
-              //     : require('../../assets/pic2.png')
-              // }
-            />
+          ) : null}
+        </View>
+
+        <View style={styles.articleImage}>
+          <Image
+            style={{resizeMode: 'cover', width: '100%', height: 200}}
+            source={
+              article.Image
+                ? {uri: article.Image}
+                : require('../../assets/pic2.png')
+            }
+          />
+        </View>
+
+        <View style={styles.likeSection}>
+          <View style={styles.likeButton}>
+            <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
+              {liked ? (
+                <AntDesign
+                  name="like1"
+                  size={24}
+                  color="#1b76f2" // Color when liked
+                />
+              ) : (
+                <AntDesign
+                  name="like2"
+                  size={24}
+                  color="lightgrey" // Color when not liked
+                />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{likeCount} Likes</Text>
           </View>
-          <View style={styles.likeSection}>
-            <View style={styles.likeButton}>
-              <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
-                {liked ? (
-                  <AntDesign
-                    name="like1"
-                    size={24}
-                    color="#1b76f2" // Color when liked
-                  />
-                ) : (
-                  <AntDesign
-                    name="like2"
-                    size={24}
-                    color="lightgrey" // Color when not liked
-                  />
-                )}
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{likeCount} Likes</Text>
-            </View>
-            <View style={styles.likeButton}>
-              <TouchableOpacity
-                onPress={commentFieldHandler}
-                activeOpacity={0.5}>
-                <FontAwesome name="comment-o" size={24} color="lightgrey" />
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{commentCount} Comments</Text>
-            </View>
+          <View style={styles.likeButton}>
+            <TouchableOpacity onPress={commentFieldHandler} activeOpacity={0.5}>
+              <FontAwesome name="comment-o" size={24} color="lightgrey" />
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{commentCount} Comments</Text>
           </View>
-          {/* {commentField ? (
-            <View style={styles.inputRow}>
-              <TextInput
-                placeholder="Comment"
-                value={comment}
-                onChangeText={commentHandler}
-                autoCapitalize="none"
-                style={styles.inputField}
-                autoFocus={commentField}
-              />
-              <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
-                <Ionicons name="md-send" color="#376eb3" size={32} />
-              </TouchableOpacity>
-            </View>
-          ) : null} */}
+        </View>
+
+        {commentField ? (
           <View style={styles.inputRow}>
             <TextInput
               placeholder="Comment"
@@ -201,27 +207,31 @@ const DetailedArticle = ({navigation}) => {
               autoCapitalize="none"
               style={styles.inputField}
               autoFocus={commentField}
-              placeholderTextColor={theme.colors.grey}
-              color={theme.colors.black}
             />
-            <View style={styles.postComment}>
-              <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
-                <Ionicons name="send" color="#376eb3" size={34} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
+              <Ionicons name="send" color="#376eb3" size={32} />
+            </TouchableOpacity>
           </View>
-        </View>
+        ) : null}
       </View>
     );
   };
 
+  const fetchComments = () => {
+    console.log(
+      'fetchComments function, method:get, url:${backend_url}/comment/onpost/${route.params.PostId}',
+    );
+  };
+
   const renderItem = ({item}) => {
-    <CommentCard
-    // item={item}
-    // navigation={navigation}
-    // admin={item.UserId == userid || owner}
-    // fetchComments={fetchComments}
-    />;
+    return (
+      <CommentCard
+        item={item}
+        navigation={navigation}
+        admin={item.UserId === userid || owner}
+        fetchComments={fetchComments}
+      />
+    );
   };
 
   const refreshControl = () => {
@@ -232,37 +242,57 @@ const DetailedArticle = ({navigation}) => {
   return (
     <Provider>
       <View style={styles.container}>
-        <View style={styles.profileHeader}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            activeOpacity={0.5}>
-            <MaterialIcons
-              name="arrow-back-ios"
-              size={normalize(26)}
-              color={theme.colors.white}
+        {article ? (
+          <>
+            <View style={styles.profileHeader}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+                activeOpacity={0.5}>
+                <MaterialIcons
+                  name="arrow-back-ios"
+                  size={normalize(26)}
+                  color={theme.colors.white}
+                />
+              </TouchableOpacity>
+              {/* <Text style={styles.profileTitle}>Article</Text> */}
+              <Text style={styles.profileTitle}>
+                {route.params.articles.Category_Type}
+              </Text>
+              {article.UserId != userid ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('CreatePost', {
+                      post: article,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <Ionicons name="create" size={32} color="#fff" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity disabled={true}>
+                  <Ionicons
+                    name="create"
+                    size={32}
+                    color={theme.colors.white}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {loading ? <Loader /> : null}
+
+            <FlatList
+              data={comments}
+              contentContainerStyle={styles.articlelist}
+              keyExtractor={item => item.CommentId?.toString()}
+              ListHeaderComponent={getHeaderComponent()}
+              renderItem={renderItem}
+              refreshing={fetching}
+              onRefresh={refreshControl}
+              style={{opacity: loading ? 0 : 1}}
             />
-          </TouchableOpacity>
-          <Text style={styles.profileTitle}>Article</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreatePost', {
-                post: article,
-              })
-            }
-            activeOpacity={0.5}>
-            <Ionicons name="create" size={32} color="#fff" />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={comments}
-          contentContainerStyle={{paddingBottom: 10}}
-          ListHeaderComponent={getHeaderComponent()}
-          renderItem={renderItem}
-          // keyExtractor={item => item.CosmmentId.toString()}
-          // refreshing={fetching}
-          // onRefresh={refreshControl}
-          // style={{opacity: loading ? 0 : 1}}
-        />
+          </>
+        ) : null}
       </View>
     </Provider>
   );
@@ -284,6 +314,7 @@ const styles = StyleSheet.create({
   profileTitle: {
     fontSize: normalize(theme.fontSizes.extraLarge),
     color: theme.colors.white,
+    textTransform: 'capitalize',
   },
   writerInfo: {
     flexDirection: 'row',
@@ -421,6 +452,10 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: '100%',
     height: normalize(200),
+  },
+  articlelist: {
+    paddingBottom: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.small),
   },
 });
 

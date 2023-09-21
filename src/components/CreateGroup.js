@@ -109,7 +109,7 @@ const CreateGroup = ({navigation, route}) => {
           </>
         )}
       </View>
-      {/* <Loader /> */}
+      {loading ? <Loader /> : null}
       <View style={[styles.postForm, {opacity: loading ? 0.25 : 1}]}>
         <View style={styles.photoSection}>
           <Text style={styles.photoText}>Group Photo</Text>

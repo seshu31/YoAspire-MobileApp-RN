@@ -149,6 +149,7 @@ const DashboardArticle = ({articles, navigation}) => {
                 navigation.navigate('article', {
                   PostId: articles.PostId,
                   addComment: true,
+                  articles: articles,
                 })
               }
               activeOpacity={0.5}>
