@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,16 +9,32 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Menu} from 'react-native-paper';
 import normalize from 'react-native-normalize';
 import Loader from '../reusables/Loader';
 import theme from '../../theme';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const CommentCard = item => {
+const CommentCard = ({item, navigation, admin, fetchComments}) => {
+  console.log(item);
   const [liked, setLiked] = useState(() => true);
   const [likeCount, setLikeCount] = useState(5);
   const [visible, setVisible] = useState(() => false);
+
+  const likeHandler = () => {
+    // Toggle the liked state
+    setLiked(!liked);
+
+    // Log whether the item was liked or unliked
+    if (!liked) {
+      setLikeCount(likeCount + 1);
+      console.log('Item liked');
+    } else {
+      setLikeCount(likeCount - 1);
+      console.log('Item unliked');
+    }
+  };
 
   const dialogHandler = () =>
     Alert.alert(
@@ -48,24 +64,44 @@ const CommentCard = item => {
             source={require('../../assets/male.png')}
           />
           <Text style={styles.username}>
-            Venu Makaraju
-            {/* {item.First_Name} {item.Last_Name} */}
+            {item.First_Name} {item.Last_Name}
           </Text>
         </View>
-        <Menu
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-          anchor={
-            <TouchableOpacity
-              onPress={() => setVisible(true)}
-              style={{paddingHorizontal: '2%'}}>
-              <Ionicons name="md-more" size={26} color="#303030" />
-            </TouchableOpacity>
-          }>
-          <Menu.Item onPress={dialogHandler} title="Delete" />
-        </Menu>
-        {/* {admin ? (
-        ) : null} */}
+        {admin ? (
+          <Menu
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            anchor={
+              <TouchableOpacity
+                onPress={() => setVisible(true)}
+                style={{paddingHorizontal: '2%'}}>
+                <MaterialIcons name="more-vert" size={26} color="#303030" />
+              </TouchableOpacity>
+            }>
+            <Menu.Item onPress={dialogHandler} title="Delete" />
+          </Menu>
+        ) : null}
+      </View>
+      <Text style={styles.comment}> {item.Comment}</Text>
+      <View style={styles.likeSection}>
+        <View style={styles.likeButton}>
+          <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
+            {liked ? (
+              <AntDesign
+                name="like1"
+                size={24}
+                color="#1b76f2" // Color when liked
+              />
+            ) : (
+              <AntDesign
+                name="like2"
+                size={24}
+                color="lightgrey" // Color when not liked
+              />
+            )}
+          </TouchableOpacity>
+          <Text style={styles.likeText}>{likeCount} Likes</Text>
+        </View>
       </View>
     </View>
   );
@@ -73,36 +109,36 @@ const CommentCard = item => {
 
 const styles = StyleSheet.create({
   commentCard: {
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingVertical: normalize(theme.spacing.small),
+    borderRadius: normalize(theme.spacing.extraSmall),
     marginHorizontal: '5%',
-    marginTop: 10,
-    backgroundColor: 'whitesmoke',
+    marginTop: normalize(theme.spacing.small),
+    backgroundColor: theme.colors.whiteSmoke,
   },
   commentHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#fff',
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.white,
     paddingHorizontal: '2%',
   },
   username: {
     alignSelf: 'center',
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     paddingLeft: '3%',
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
   },
   comment: {
-    fontSize: 16,
-    lineHeight: 20,
-    paddingVertical: 10,
+    fontSize: normalize(theme.fontSizes.medium),
+    lineHeight: normalize(theme.spacing.large),
+    paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: '2%',
-    borderBottomWidth: 1,
-    borderColor: '#fff',
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.white,
   },
   likeSection: {
     flexDirection: 'row',
-    paddingTop: 10,
+    paddingTop: normalize(theme.spacing.small),
     paddingHorizontal: '3%',
   },
   likeButton: {
@@ -111,9 +147,9 @@ const styles = StyleSheet.create({
     width: '30%',
   },
   likeText: {
-    paddingLeft: 10,
-    fontSize: 16,
-    color: 'grey',
+    paddingLeft: normalize(theme.spacing.small),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.grey,
   },
 });
 
