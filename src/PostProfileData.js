@@ -1,7 +1,7 @@
 const articlesData = [
   {
     UserId: 1,
-    Brief: 'this is the brief of article',
+    Brief: 'This is the brief of article',
     id: 1,
     PostId: 1,
     Active: 1,
@@ -42,11 +42,12 @@ const articlesData = [
     Time_of_Event: '0612',
     Link: 'http://thisis-link.com',
     Category_Type: 'job',
-    Brief: 'this is the brief of article id3',
+    Brief: 'This is the brief of article id3',
     First_Name: 'ram',
     Last_Name: 'ponanna',
     Title: 'Backend Developer',
-    Description: 'Current working tool Nodejs, mongodb ',
+    Description:
+      'Current working tool Nodejs, mongodb, Current working tool Nodejs, mongodb, Current working tool Nodejs, mongodb, Current working tool Nodejs, mongodb ',
     Organiser: 'Aspire',
     Location: 'Vijayawada',
     Job_Type: 'Full time',

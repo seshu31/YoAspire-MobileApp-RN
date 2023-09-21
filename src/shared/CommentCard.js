@@ -17,7 +17,6 @@ import theme from '../../theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CommentCard = ({item, navigation, admin, fetchComments}) => {
-  console.log(item);
   const [liked, setLiked] = useState(() => true);
   const [likeCount, setLikeCount] = useState(5);
   const [visible, setVisible] = useState(() => false);
@@ -118,8 +117,6 @@ const styles = StyleSheet.create({
   commentHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
-    borderColor: theme.colors.white,
     paddingHorizontal: '2%',
   },
   username: {
@@ -133,8 +130,6 @@ const styles = StyleSheet.create({
     lineHeight: normalize(theme.spacing.large),
     paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: '2%',
-    borderBottomWidth: normalize(3),
-    borderColor: theme.colors.white,
   },
   likeSection: {
     flexDirection: 'row',
