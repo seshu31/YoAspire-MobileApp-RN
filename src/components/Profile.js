@@ -165,7 +165,7 @@ const Profile = ({navigation, route}) => {
           </View>
           <View style={styles.userInfo}>
             <View style={styles.userNameDetails}>
-              <Text style={styles.userName}>
+              <Text style={styles.userName} numberOfLines={1}>
                 {user.profile.First_Name} {user.profile.Last_Name}
               </Text>
               {connectionLevel ? (
@@ -179,7 +179,9 @@ const Profile = ({navigation, route}) => {
               ) : null}
             </View>
             {user.profile.Title ? (
-              <Text style={styles.userDesc}>{user.profile.Title}</Text>
+              <Text style={styles.userDesc} numberOfLines={2}>
+                {user.profile.Title}
+              </Text>
             ) : null}
             {owner ? null : (
               <View style={styles.followSection}>
@@ -247,7 +249,7 @@ const Profile = ({navigation, route}) => {
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Email :</Text>
-                  {user.profile.Email !== '' || null ? (
+                  {(user.profile.Email && user.profile.Email !== '') || null ? (
                     <Text style={styles.details}>{user.profile.Email}</Text>
                   ) : (
                     <Text style={styles.details}>----</Text>
@@ -255,7 +257,8 @@ const Profile = ({navigation, route}) => {
                 </View>
                 <View style={styles.personalInfoItem}>
                   <Text style={styles.details}>Phone :</Text>
-                  {user.profile.phone_no !== '' || null ? (
+                  {(user.profile.phone_no && user.profile.phone_no !== '') ||
+                  null ? (
                     <Text style={styles.details}>{user.profile.phone_no}</Text>
                   ) : (
                     <Text style={styles.details}>----</Text>
@@ -566,7 +569,7 @@ const styles = StyleSheet.create({
   NoProjectContainer: {
     flex: 1,
     justifyContent: 'center',
-    margin: normalize(theme.spacing.extraSmall),
+    margin: normalize(theme.spacing.medium),
   },
   NoProject: {
     fontSize: normalize(theme.fontSizes.small),
@@ -657,7 +660,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     padding: normalize(theme.spacing.small),
-    marginVertical: normalize(theme.spacing.extraSmall),
+    marginBottom: normalize(theme.spacing.small),
     borderColor: theme.colors.grey,
     borderBottomWidth: 0,
   },
@@ -668,7 +671,7 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   boxHeader: {
-    padding: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.small),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -701,7 +704,7 @@ const styles = StyleSheet.create({
     color: theme.colors.level2,
   },
   userInfoBox: {
-    marginTop: normalize(theme.spacing.small),
+    marginTop: normalize(theme.spacing.extraSmall),
   },
   skillsContainer: {
     marginVertical: normalize(theme.spacing.small),
@@ -717,7 +720,7 @@ const styles = StyleSheet.create({
   showMore: {
     color: theme.colors.primary,
     alignSelf: 'center',
-    marginBottom: normalize(theme.spacing.small),
+    marginBottom: normalize(theme.spacing.extraSmall),
   },
   achivementItem: {
     height: normalize(50),
