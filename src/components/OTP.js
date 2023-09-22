@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -9,6 +10,10 @@ import {
   Platform,
 } from 'react-native';
 import AccountImage from './AccountImage';
+import backend_url from '../../config';
+import axios from 'axios';
+import Loader from '../reusables/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OTP = ({route, navigation}) => {
   if (route.params && route.params.email) {
@@ -128,40 +133,55 @@ const OTP = ({route, navigation}) => {
   };
 
   const verifyOtp = async () => {
-    // setLoading(true);
-    // const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
-    // const url =
-    //   route.params && route.params.reset
-    //     ? `${backend_url}/auth/getresetdata/${otp}`
-    //     : `${backend_url}/auth/validate_otp/${otp}`;
-    // const response = await axios.get(url);
-    // if (response.data.statuscode === 1) {
-    //   setLoading(false);
-    //   navigation.setParams({email: null});
-    //   if (route.params && route.params.reset)
-    //     navigation.navigate('enter-password', {
-    //       message:
-    //         'Verification successful. Please, Set a new password to continue',
-    //       code: `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`,
-    //     });
-    //   else
-    //     navigation.navigate('login', {
-    //       message: 'Verification successful. Please, Login to continue',
-    //     });
-    // } else {
-    //   setLoading(false);
-    //   alert('Invalid OTP. Please, Try again.');
-    // }
-    if (route.params && route.params.reset)
-      navigation.navigate('enter-password', {
-        message:
-          'Verification successful. Please, Set a new password to continue',
-        code: `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`,
-      });
-    else
-      navigation.navigate('login', {
-        message: 'Verification successful. Please, Login to continue',
-      });
+    console.log('1');
+    setLoading(true);
+    const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
+
+    try {
+      const payload = {email: email, otp: otp};
+
+      const url =
+        route.params && route.params.reset
+          ? `${backend_url}/auth/getresetdata/${otp}`
+          : `${backend_url}/auth/verify_otp`;
+
+      const response = await (route.params && route.params.reset
+        ? axios.get(url)
+        : axios.post(url, payload, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }));
+
+      console.log(response.data, 'response for verifyotp');
+
+      if (response.data) {
+        setLoading(false);
+        navigation.setParams({email: null});
+        if (route.params && route.params.reset) {
+          navigation.navigate('enter-password', {
+            message:
+              'Verification successful. Please, Set a new password to continue',
+            code: otp,
+          });
+        } else {
+          response.data.token
+            ? AsyncStorage.setItem('token', response.data.token)
+            : Alert.alert('no token found');
+          navigation.navigate('login', {
+            message: 'Verification successful. Please, Login to continue',
+          });
+        }
+      } else {
+        setLoading(false);
+        Alert.alert('Invalid OTP. Please, Try again.');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+      Alert.alert('An error occurred. Please, try again later.');
+      navigation.goBack();
+    }
   };
 
   return (
