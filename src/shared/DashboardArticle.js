@@ -9,8 +9,9 @@ const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
     articles?.Active === 1 ? true : false,
   );
-  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
+  // console.log('Image Source:', articles);
 
+  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
   const likeHandler = () => {
     // Toggle the liked state locally
     setLiked(prevValue => !prevValue);
@@ -27,6 +28,8 @@ const DashboardArticle = ({articles, navigation}) => {
             <View>
               <Image
                 style={styles.writeImage}
+                // source={{uri: articles.img_file_name}}
+                // source={require('../../assets/male.png')}
                 source={
                   articles.img_file_name
                     ? {uri: articles.img_file_name}
@@ -119,6 +122,7 @@ const DashboardArticle = ({articles, navigation}) => {
           onPress={() =>
             navigation.navigate('article', {
               articles: articles,
+              enableAutofocus: false,
             })
           }
           activeOpacity={0.5}>
@@ -150,6 +154,7 @@ const DashboardArticle = ({articles, navigation}) => {
                   PostId: articles.PostId,
                   addComment: true,
                   articles: articles,
+                  enableAutofocus: true,
                 })
               }
               activeOpacity={0.5}>
@@ -202,6 +207,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     paddingLeft: '5%',
     color: theme.colors.black,
+    textTransform: 'capitalize',
   },
   articleTitle: {
     borderBottomWidth: normalize(3),

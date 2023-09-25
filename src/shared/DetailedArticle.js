@@ -22,7 +22,8 @@ const DetailedArticle = ({navigation, route}) => {
   const [article, setArticle] = useState(
     route.params?.articles ? route.params.articles : null,
   );
-  // console.log(article ? article : 'no article');
+  console.log('This is Article Data:', article);
+  const enableAutofocus = route.params?.enableAutofocus || false;
   const [comments, setComments] = useState([
     {
       id: '1',
@@ -56,18 +57,15 @@ const DetailedArticle = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const [owner, setOwner] = useState(false);
 
-  console.log(article?.UserId === userid);
-
   const fetchTags = () => {
-    return <Text style={styles.tagsText}>tag</Text>;
-    // const HashTags = article.Hashtags.split(',');
-    // return HashTags.map((tag, index) => {
-    //   return (
-    //     <Text style={styles.tagsText} key={index}>
-    //       tag
-    //     </Text>
-    //   );
-    // });
+    const HashTags = article.Hashtags.split(',');
+    return HashTags.map((tag, index) => {
+      return (
+        <Text style={styles.tagsText} key={index}>
+          {tag}
+        </Text>
+      );
+    });
   };
 
   const [liked, setLiked] = useState(false);
@@ -119,6 +117,10 @@ const DetailedArticle = ({navigation, route}) => {
             <Text style={styles.writerName}>
               {article.First_Name} {article.Last_Name}
             </Text>
+            <Text style={[styles.postTime]}>
+              {new Date(article.Date_of_Event).toDateString()}{' '}
+              {new Date(article.Date_of_Event).toLocaleTimeString()}
+            </Text>
           </View>
         </View>
         <View style={styles.articleTitle}>
@@ -133,24 +135,34 @@ const DetailedArticle = ({navigation, route}) => {
 
         <View style={styles.articleDesc}>
           {article.Category_Type === 'job' ? (
-            <View>
-              <Text>@{article.Job_Type}</Text>
-              <Text style={{paddingVertical: 10}}>{article.Location}</Text>
+            <View style={styles.joblocation}>
+              <Text style={styles.jobType1}>{article.Job_Type}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Ionicons
+                  name="location"
+                  color={theme.colors.primary}
+                  size={24}
+                />
+                <Text>{article.Location}</Text>
+              </View>
             </View>
           ) : null}
 
-          <Text style={styles.descriptionText}>{article.Description}</Text>
+          <View>
+            <Text style={{fontWeight: '700', color: '#000'}}>Description:</Text>
+            <Text style={styles.descriptionText}>{article.Description}</Text>
+          </View>
 
           {article.Category_Type === 'article' ? null : (
-            <Text style={styles.byText}>
-              By <Text style={{fontWeight: 'bold'}}>{article.Organiser}</Text>,{' '}
-              {new Date(article.Date_of_Event).toDateString()},{' '}
-              {`${article.Time_of_Event[0]}${article.Time_of_Event[1]}.${article.Time_of_Event[3]}${article.Time_of_Event[4]}`}
-            </Text>
+            <View style={styles.byText}>
+              <Text style={{fontWeight: '700', color: '#000'}}>Posted By:</Text>
+              <Text>{article.Organiser}</Text>
+            </View>
           )}
 
           {article.Category_Type === 'article' ? null : (
             <View style={styles.articleLink}>
+              <Text style={{color: '#000', fontWeight: '700'}}>Links:</Text>
               <Text style={styles.linkText}>{article.Link}</Text>
             </View>
           )}
@@ -206,7 +218,7 @@ const DetailedArticle = ({navigation, route}) => {
               onChangeText={commentHandler}
               autoCapitalize="none"
               style={styles.inputField}
-              autoFocus={commentField}
+              autoFocus={(commentField, enableAutofocus)}
             />
             <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
               <Ionicons name="send" color="#376eb3" size={32} />
@@ -254,7 +266,6 @@ const DetailedArticle = ({navigation, route}) => {
                   color={theme.colors.white}
                 />
               </TouchableOpacity>
-              {/* <Text style={styles.profileTitle}>Article</Text> */}
               <Text style={styles.profileTitle}>
                 {route.params.articles.Category_Type}
               </Text>
@@ -284,7 +295,7 @@ const DetailedArticle = ({navigation, route}) => {
             <FlatList
               data={comments}
               contentContainerStyle={styles.articlelist}
-              keyExtractor={item => item.CommentId?.toString()}
+              keyExtractor={item => item.Comment?.toString()}
               ListHeaderComponent={getHeaderComponent()}
               renderItem={renderItem}
               refreshing={fetching}
@@ -338,6 +349,12 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     paddingLeft: '5%',
     color: theme.colors.black,
+    textTransform: 'capitalize',
+  },
+  postTime: {
+    paddingLeft: '5%',
+    fontWeight: theme.fontWeight.normal,
+    fontSize: normalize(14),
   },
   articleTitle: {
     paddingHorizontal: '5%',
@@ -377,7 +394,7 @@ const styles = StyleSheet.create({
   },
   byText: {
     paddingTop: normalize(theme.spacing.small),
-    color: theme.colors.level2,
+    flexDirection: 'column',
   },
   articleLink: {
     paddingVertical: normalize(theme.spacing.small),
@@ -456,6 +473,23 @@ const styles = StyleSheet.create({
   articlelist: {
     paddingBottom: normalize(theme.spacing.small),
     paddingHorizontal: normalize(theme.spacing.small),
+  },
+  jobType1: {
+    paddingHorizontal: normalize(12),
+    paddingVertical: normalize(5),
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.small),
+    fontWeight: theme.fontWeight.bold,
+    borderRadius: normalize(theme.spacing.extraSmall),
+    alignSelf: 'flex-start',
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  joblocation: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingBottom: 10,
   },
 });
 
