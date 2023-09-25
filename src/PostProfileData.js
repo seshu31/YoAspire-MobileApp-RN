@@ -13,6 +13,8 @@ const articlesData = [
     Description:
       'Current working tool React Native Current working tool React Native Current working tool React Native React Native Current working tool React Native Current working tool React Native',
     heading: 'Heading1',
+    Date_of_Event: '2023-04-08T18:30:00.000Z',
+    Time_of_Event: '1812',
   },
   {
     UserId: 1,

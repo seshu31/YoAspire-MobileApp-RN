@@ -4,12 +4,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import CommentCard from './CommentCard';
 
 const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
     articles?.Active === 1 ? true : false,
   );
   // console.log('Image Source:', articles);
+  const [commentCount, setCommentCount] = useState(10);
 
   const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
   const likeHandler = () => {
@@ -145,7 +147,13 @@ const DashboardArticle = ({articles, navigation}) => {
                 />
               )}
             </TouchableOpacity>
-            <Text style={styles.likeText}>{likeCount} Likes</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.likeText}>
+                {`  `}
+                {likeCount}
+                Likes
+              </Text>
+            </View>
           </View>
           <View style={styles.likeButton}>
             <TouchableOpacity
@@ -158,11 +166,15 @@ const DashboardArticle = ({articles, navigation}) => {
                 })
               }
               activeOpacity={0.5}>
-              <FontAwesome name="comment-o" size={24} color="lightgrey" />
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <FontAwesome name="comment-o" size={24} color="lightgrey" />
+                <Text style={styles.likeText}>
+                  {/* {articles.No_of_Comments} */}
+                  {`  `}
+                  {commentCount} Comments
+                </Text>
+              </View>
             </TouchableOpacity>
-            <Text style={styles.likeText}>
-              {articles?.No_of_Comments} Comments
-            </Text>
           </View>
         </View>
       </View>
