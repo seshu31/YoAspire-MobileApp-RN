@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const GroupCard = ({item, navigation}) => {
-  // console.log('entered into group card', item);
   return (
     <TouchableOpacity
       onPress={() =>
@@ -15,10 +16,9 @@ const GroupCard = ({item, navigation}) => {
       <View style={styles.groupCard}>
         <Image
           style={styles.groupPhoto}
-          source={require('../../assets/male.png')}
-          // source={
-          //   item.image ? {uri: item.image} : require('../../assets/male.png')
-          // }
+          source={
+            item.image ? {uri: item.image} : require('../../assets/male.png')
+          }
         />
         <Text style={styles.groupName}>{item.name}</Text>
       </View>
@@ -28,25 +28,29 @@ const GroupCard = ({item, navigation}) => {
 
 const styles = StyleSheet.create({
   groupDetails: {
-    backgroundColor: '#f7f7f7',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    backgroundColor: theme.colors.whiteSmoke,
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
   },
   groupCard: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: '5%',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
     width: '85%',
   },
   groupPhoto: {
-    width: 60,
-    height: 60,
-    borderRadius: 100,
+    width: normalize(60),
+    height: normalize(60),
+    borderRadius: normalize(100),
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.primary,
+    borderWidth: normalize(3),
   },
   groupName: {
-    fontSize: 17,
+    fontSize: normalize(17),
     paddingLeft: '5%',
+    color: theme.colors.level2,
   },
 });
 

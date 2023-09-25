@@ -10,6 +10,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserCourse = ({navigation, route}) => {
   const [course, setCourse] = useState(() => []);
@@ -17,17 +21,7 @@ const UserCourse = ({navigation, route}) => {
   const [owner, setOwner] = useState(() => true);
   const [isLoading, setIsLoading] = useState(() => false);
 
-  let courseArr = [
-    {
-      title: 'course1',
-    },
-    {
-      title: 'course2',
-    },
-    {
-      title: 'course3',
-    },
-  ];
+  let courseArr = route.params?.courses ? route.params.courses : null;
 
   useEffect(() => fetchCourses(), []);
 
@@ -69,20 +63,28 @@ const UserCourse = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Courses</Text>
         {owner ? (
           <TouchableOpacity
-            // onPress={() => navigation.navigate('edit-course')}
+            onPress={() => navigation.navigate('edit-course')}
             activeOpacity={0.5}>
-            <Ionicons name="add" size={32} color="#fff" />
+            <Ionicons
+              name="add"
+              size={normalize(32)}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         ) : (
-          <Ionicons size={32} color="#376eb3" />
+          <Ionicons size={normalize(32)} color={theme.colors.black} />
         )}
       </View>
-      {courseArr.length ? (
+      {courseArr && courseArr.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {courseArr.map((el, index) => {
@@ -91,13 +93,17 @@ const UserCourse = ({navigation, route}) => {
                   <Text style={styles.courseText}>{el.title}</Text>
                   {owner ? (
                     <TouchableOpacity
-                      // onPress={() =>
-                      //   navigation.navigate('edit-course', {
-                      //     course: el,
-                      //   })
-                      // }
+                      onPress={() =>
+                        navigation.navigate('edit-course', {
+                          course: el,
+                        })
+                      }
                       activeOpacity={0.5}>
-                      <Ionicons name="create" color={'#376eb3'} size={24} />
+                      <AntDesign
+                        name="edit"
+                        color={theme.colors.primary}
+                        size={normalize(24)}
+                      />
                     </TouchableOpacity>
                   ) : null}
                 </View>
@@ -105,45 +111,59 @@ const UserCourse = ({navigation, route}) => {
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No projects to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add a project.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // height: 50,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
   },
   courseText: {
-    fontSize: 20,
-    height: 60,
-    lineHeight: 60,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    height: normalize(60),
+    lineHeight: normalize(60),
+    color: theme.colors.black,
   },
 });
 

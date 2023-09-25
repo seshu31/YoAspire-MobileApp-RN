@@ -7,47 +7,65 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  // ActivityIndicator,
-  // LogBox,
 } from 'react-native';
 import CommentCard from './CommentCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import {Provider} from 'react-native-paper';
 import theme from '../../theme';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {useNavigation, useRoute} from '@react-navigation/native';
 
-const DetailedArticle = ({navigation}) => {
-  const [article, setArticle] = useState(() => []);
-  const [comments, setComments] = useState(() => [
-    {id: '1', text: 'This is comment 1'},
-    {id: '2', text: 'This is comment 2'},
-    {id: '3', text: 'This is comment 3'},
+const DetailedArticle = ({navigation, route}) => {
+  const [article, setArticle] = useState(
+    route.params?.articles ? route.params.articles : null,
+  );
+  console.log('This is Article Data:', article);
+  const enableAutofocus = route.params?.enableAutofocus || false;
+  const [comments, setComments] = useState([
+    {
+      id: '1',
+      text: 'This is comment 1',
+      First_Name: 'venu',
+      Last_Name: 'm',
+      Comment: 'Comment 1',
+    },
+    {
+      id: '2',
+      text: 'This is comment 2',
+      First_Name: 'venu2',
+      Last_Name: 'm',
+      Comment: 'Comment 2',
+    },
+    {
+      id: '3',
+      text: 'This is comment 3',
+      First_Name: 'venu3',
+      Last_Name: 'm',
+      Comment: 'Comment 3',
+    },
   ]);
   // const [loading, setLoading] = useState(() => true);
-  // const [fetching, setFetching] = useState(() => false);
+  const [fetching, setFetching] = useState(false);
   const [likeCount, setLikeCount] = useState(4);
   const [commentCount, setCommentCount] = useState(10);
-  const [commentField, setCommentField] = useState(() => true);
+  const [commentField, setCommentField] = useState(true);
   const [comment, setComment] = useState(() => '');
-
-  useEffect(() => {
-    console.log(comments);
-  });
+  const [userid, setUserid] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [owner, setOwner] = useState(false);
 
   const fetchTags = () => {
-    console.log('fetchTags');
-    return <Text style={styles.tagsText}>tag</Text>;
-    // const HashTags = article.Hashtags.split(',');
-    // return HashTags.map((tag, index) => {
-    //   return (
-    //     <Text style={styles.tagsText} key={index}>
-    //       tag
-    //     </Text>
-    //   );
-    // });
+    const HashTags = article.Hashtags.split(',');
+    return HashTags.map((tag, index) => {
+      return (
+        <Text style={styles.tagsText} key={index}>
+          {tag}
+        </Text>
+      );
+    });
   };
 
   const [liked, setLiked] = useState(false);
@@ -67,7 +85,6 @@ const DetailedArticle = ({navigation}) => {
   };
 
   const commentFieldHandler = () => {
-    console.log('commentFieldHandler');
     setCommentField(prevValue => !prevValue);
     setComment('');
   };
@@ -89,137 +106,172 @@ const DetailedArticle = ({navigation}) => {
           <View>
             <Image
               style={styles.writeImage}
-              source={require('../../assets/male.png')}
-              // source={
-              //   article.img_file_name
-              //     ? {uri: article.img_file_name}
-              //     : require('../../assets/male.png')
-              // }
+              source={
+                article.img_file_name
+                  ? {uri: article.img_file_name}
+                  : require('../../assets/male.png')
+              }
             />
           </View>
           <View style={styles.writerDesc}>
             <Text style={styles.writerName}>
-              {/* {article.First_Name} {article.Last_Name} */}
-              Venu makaraju
+              {article.First_Name} {article.Last_Name}
             </Text>
+            <View
+              style={{
+                paddingLeft: '5%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: '#787878', fontWeight: '500'}}>
+                {article.PostedOn}
+              </Text>
+              <Text
+                style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                {'\u2B24'}
+              </Text>
+              <FontAwesome name="globe" color="#787878" />
+            </View>
           </View>
         </View>
         <View style={styles.articleTitle}>
-          <Text style={styles.titleText}>Title</Text>
+          <Text style={styles.titleText}>{article.Title}</Text>
         </View>
-        <View style={styles.articleBrief}>
-          <Text style={styles.briefText}>Brief</Text>
-        </View>
-        {/* {article.Brief != null ? (
-        ) : null} */}
-        <View style={styles.articleDesc}>
-          <View>
-            <Text>@Job_Type</Text>
-            <Text style={styles.location}>location</Text>
+        {article.Brief !== null &&
+        typeof article.Brief === 'string' &&
+        article.Brief.trim() !== '' ? (
+          <View style={styles.articleBrief}>
+            <Text style={styles.briefText}>{article.Brief}</Text>
           </View>
-          {/* {article.Category_Type === 'job' ? (
-          ) : null} */}
-          <Text style={styles.descriptionText}>Description</Text>
-          {/* {article.Category_Type === 'article' ? null : (
-            <Text style={styles.byText}>
-              By <Text style={{fontWeight: 'bold'}}>{article.Organiser}</Text>,{' '}
-              {new Date(article.Date_of_Event).toDateString()},{' '}
-              {`${article.Time_of_Event[0]}${article.Time_of_Event[1]}.${article.Time_of_Event[3]}${article.Time_of_Event[4]}`}
-            </Text>
-          )} */}
-          <Text style={styles.byText}>
-            By <Text style={styles.organiser}>Organiser</Text>
-          </Text>
-          {/* {article.Category_Type === 'article' ? null : (
+        ) : null}
+
+        <View style={styles.articleDesc}>
+          {article.Category_Type === 'job' ? (
+            <View style={styles.joblocation}>
+              <Text style={styles.jobType1}>{article.Job_Type}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Ionicons
+                  name="location"
+                  color={theme.colors.primary}
+                  size={24}
+                />
+                <Text style={{color: '#000'}}>{article.Location}</Text>
+              </View>
+            </View>
+          ) : null}
+
+          {article.Date_of_Event && (
+            <View>
+              <Text style={styles.heading}>Event On:</Text>
+              <Text style={[styles.postTime]}>
+                {new Date(article.Date_of_Event).toDateString()}{' '}
+                {new Date(article.Date_of_Event).toLocaleTimeString()}
+              </Text>
+            </View>
+          )}
+
+          <View>
+            <Text style={styles.heading}>Description:</Text>
+            <Text style={styles.descriptionText}>{article.Description}</Text>
+          </View>
+
+          {article.Category_Type === 'article' ? null : (
+            <View style={styles.byText}>
+              <Text style={styles.heading}>Posted By:</Text>
+              <Text style={{color: theme.colors.level2}}>
+                {article.Organiser}
+              </Text>
+            </View>
+          )}
+
+          {article.Category_Type === 'article' ? null : (
             <View style={styles.articleLink}>
+              <Text style={styles.heading}>Links:</Text>
               <Text style={styles.linkText}>{article.Link}</Text>
             </View>
-          )} */}
-          <View style={styles.articleLink}>
-            <Text style={styles.linkText}>Link</Text>
-          </View>
-          {/* {article.Hashtags != null ? (
+          )}
+
+          {article.Hashtags != null ? (
             <View style={styles.articleTags}>{fetchTags()}</View>
-          ) : null} */}
-          <View style={styles.articleTags}>{fetchTags()}</View>
-          <View style={styles.articleImage}>
-            <Image
-              style={styles.article}
-              source={require('../../assets/pic2.png')}
-              // source={
-              //   article.Image
-              //     ? {uri: article.Image}
-              //     : require('../../assets/pic2.png')
-              // }
-            />
-          </View>
-          <View style={styles.likeSection}>
-            <View style={styles.likeButton}>
-              <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
-                <Ionicons
-                  name="thumbs-up"
+          ) : null}
+        </View>
+
+        <View style={styles.articleImage}>
+          <Image
+            style={{resizeMode: 'cover', width: '100%', height: 200}}
+            source={
+              article.Image
+                ? {uri: article.Image}
+                : require('../../assets/pic2.png')
+            }
+          />
+        </View>
+
+        <View style={styles.likeSection}>
+          <View style={styles.likeButton}>
+            <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
+              {liked ? (
+                <AntDesign
+                  name="like1"
                   size={24}
-                  color={liked ? '#1b76f2' : 'lightgrey'}
+                  color="#1b76f2" // Color when liked
                 />
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{likeCount} Likes</Text>
-            </View>
-            <View style={styles.likeButton}>
-              <TouchableOpacity
-                onPress={commentFieldHandler}
-                activeOpacity={0.5}>
-                <Ionicons name="text" size={24} color="lightgrey" />
-              </TouchableOpacity>
-              <Text style={styles.likeText}>{commentCount} Comments</Text>
-            </View>
+              ) : (
+                <AntDesign
+                  name="like2"
+                  size={24}
+                  color="lightgrey" // Color when not liked
+                />
+              )}
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{likeCount} Likes</Text>
           </View>
-          {/* {commentField ? (
-            <View style={styles.inputRow}>
-              <TextInput
-                placeholder="Comment"
-                value={comment}
-                onChangeText={commentHandler}
-                autoCapitalize="none"
-                style={styles.inputField}
-                autoFocus={commentField}
-              />
-              <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
-                <Ionicons name="md-send" color="#376eb3" size={32} />
-              </TouchableOpacity>
-            </View>
-          ) : null} */}
+          <View style={styles.likeButton}>
+            <TouchableOpacity onPress={commentFieldHandler} activeOpacity={0.5}>
+              <FontAwesome name="comment-o" size={24} color="lightgrey" />
+            </TouchableOpacity>
+            <Text style={styles.likeText}>{commentCount} Comments</Text>
+          </View>
+        </View>
+
+        {commentField ? (
           <View style={styles.inputRow}>
             <TextInput
               placeholder="Comment"
+              placeholderTextColor={theme.colors.grey}
               value={comment}
               onChangeText={commentHandler}
               autoCapitalize="none"
               style={styles.inputField}
-              autoFocus={commentField}
+              autoFocus={(commentField, enableAutofocus)}
             />
-            <View style={styles.postComment}>
-              <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
-                <Ionicons name="send" color="#376eb3" size={34} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={postComment} activeOpacity={0.5}>
+              <Ionicons name="send" color="#376eb3" size={32} />
+            </TouchableOpacity>
           </View>
-        </View>
+        ) : null}
       </View>
     );
   };
 
+  const fetchComments = () => {
+    console.log(
+      'fetchComments function, method:get, url:${backend_url}/comment/onpost/${route.params.PostId}',
+    );
+  };
+
   const renderItem = ({item}) => {
-    console.log('CommentCard');
-    <CommentCard
-    // item={item}
-    // navigation={navigation}
-    // admin={item.UserId == userid || owner}
-    // fetchComments={fetchComments}
-    />;
+    return (
+      <CommentCard
+        item={item}
+        navigation={navigation}
+        admin={item.UserId === userid || owner}
+        fetchComments={fetchComments}
+      />
+    );
   };
 
   const refreshControl = () => {
-    console.log('fetch');
     // setFetching(true);
     // fetchPost();
     // fetchComments();
@@ -227,33 +279,56 @@ const DetailedArticle = ({navigation}) => {
   return (
     <Provider>
       <View style={styles.container}>
-        <View style={styles.profileHeader}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            activeOpacity={0.5}>
-            <Ionicons name="arrow-back" size={32} color="#fff" />
-          </TouchableOpacity>
-          <Text style={styles.profileTitle}>Article</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreatePost', {
-                post: article,
-              })
-            }
-            activeOpacity={0.5}>
-            <Ionicons name="create" size={32} color="#fff" />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={comments}
-          contentContainerStyle={{paddingBottom: 10}}
-          // keyExtractor={item => item.CosmmentId.toString()}
-          ListHeaderComponent={getHeaderComponent()}
-          renderItem={renderItem}
-          // refreshing={fetching}
-          // onRefresh={refreshControl}
-          // style={{opacity: loading ? 0 : 1}}
-        />
+        {article ? (
+          <>
+            <View style={styles.profileHeader}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+                activeOpacity={0.5}>
+                <MaterialIcons
+                  name="arrow-back-ios"
+                  size={normalize(26)}
+                  color={theme.colors.white}
+                />
+              </TouchableOpacity>
+              <Text style={styles.profileTitle}>
+                {route.params.articles.Category_Type}
+              </Text>
+              {article.UserId != userid ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('CreatePost', {
+                      post: article,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <Ionicons name="create" size={32} color="#fff" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity disabled={true}>
+                  <Ionicons
+                    name="create"
+                    size={32}
+                    color={theme.colors.white}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {loading ? <Loader /> : null}
+
+            <FlatList
+              data={comments}
+              contentContainerStyle={styles.articlelist}
+              keyExtractor={item => item.Comment?.toString()}
+              ListHeaderComponent={getHeaderComponent()}
+              renderItem={renderItem}
+              refreshing={fetching}
+              onRefresh={refreshControl}
+              style={{opacity: loading ? 0 : 1}}
+            />
+          </>
+        ) : null}
       </View>
     </Provider>
   );
@@ -268,13 +343,14 @@ const styles = StyleSheet.create({
     height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
   profileTitle: {
     fontSize: normalize(theme.fontSizes.extraLarge),
     color: theme.colors.white,
+    textTransform: 'capitalize',
   },
   writerInfo: {
     flexDirection: 'row',
@@ -297,6 +373,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: normalize(theme.fontSizes.medium),
     paddingLeft: '5%',
+    color: theme.colors.black,
+    textTransform: 'capitalize',
+  },
+  postTime: {
+    // paddingLeft: '5%',
+    fontWeight: theme.fontWeight.normal,
+    fontSize: normalize(14),
+    color: theme.colors.level2,
+    marginBottom: '2%',
   },
   articleTitle: {
     paddingHorizontal: '5%',
@@ -308,7 +393,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
     lineHeight: normalize(theme.spacing.large),
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.black,
   },
   articleBrief: {
     paddingHorizontal: '5%',
@@ -320,6 +406,7 @@ const styles = StyleSheet.create({
   briefText: {
     fontSize: normalize(17),
     lineHeight: normalize(theme.spacing.large),
+    color: theme.colors.level2,
   },
   articleDesc: {
     paddingHorizontal: '5%',
@@ -330,10 +417,11 @@ const styles = StyleSheet.create({
   descriptionText: {
     lineHeight: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.medium),
-    color: '#7f7f7f',
+    color: theme.colors.level2,
   },
   byText: {
     paddingTop: normalize(theme.spacing.small),
+    flexDirection: 'column',
   },
   articleLink: {
     paddingVertical: normalize(theme.spacing.small),
@@ -346,11 +434,11 @@ const styles = StyleSheet.create({
     paddingTop: normalize(theme.spacing.extraSmall),
   },
   tagsText: {
-    marginRight: normalize(theme.spacing.small),
+    borderRadius: normalize(theme.spacing.extraSmall),
     backgroundColor: theme.colors.grey,
     paddingHorizontal: normalize(theme.spacing.small),
-    paddingVertical: normalize(2),
-    borderRadius: normalize(theme.spacing.extraSmall),
+    paddingBottom: normalize(5),
+    color: theme.colors.black,
   },
   articleImage: {
     alignItems: 'center',
@@ -390,12 +478,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     height: normalize(40),
     fontSize: normalize(theme.fontSizes.medium),
+    marginRight: normalize(6),
+    color: theme.colors.black,
   },
   postComment: {
     paddingLeft: normalize(7),
   },
   location: {
     paddingVertical: normalize(theme.spacing.small),
+    color: theme.colors.level2,
+  },
+  jobType: {
+    color: theme.colors.level2,
   },
   organiser: {
     fontWeight: theme.fontWeight.bold,
@@ -405,6 +499,28 @@ const styles = StyleSheet.create({
     width: '100%',
     height: normalize(200),
   },
+  articlelist: {
+    paddingBottom: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.small),
+  },
+  jobType1: {
+    paddingHorizontal: normalize(12),
+    paddingVertical: normalize(5),
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.small),
+    fontWeight: theme.fontWeight.bold,
+    borderRadius: normalize(theme.spacing.extraSmall),
+    alignSelf: 'flex-start',
+    marginRight: normalize(theme.spacing.small),
+    marginBottom: normalize(theme.spacing.small),
+  },
+  joblocation: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingBottom: normalize(theme.spacing.small),
+  },
+  heading: {fontWeight: theme.fontWeight.bold, color: theme.colors.black},
 });
 
 export default DetailedArticle;

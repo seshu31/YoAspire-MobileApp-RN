@@ -5,33 +5,19 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
-const UserExperience = ({navigation}) => {
-  const [experience, setExperience] = useState(() => [
-    {
-      Company_name: 'title 1',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-    {
-      Company_name: 'title 2',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-    {
-      Company_name: 'title 3',
-      role: 'role1',
-      From: new Date('2022-03-25'),
-      To: new Date('2023-03-25'),
-    },
-  ]);
+const UserExperience = ({navigation, route}) => {
+  const [experience, setExperience] = useState(
+    route.params?.experience ? route.params.experience : null,
+  );
   const [isLoading, setIsLoading] = useState(() => false);
 
   useEffect(() => fetchExperience(), []);
@@ -93,16 +79,20 @@ const UserExperience = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color="#fff"
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Experience</Text>
         <TouchableOpacity
-          // onPress={() => navigation.navigate('edit-experience')}
+          onPress={() => navigation.navigate('edit-experience')}
           activeOpacity={0.5}>
           <Ionicons name="add" size={32} color="#fff" />
         </TouchableOpacity>
       </View>
-      {experience.length ? (
+      {experience && experience.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {experience.map((el, index) => {
@@ -112,7 +102,7 @@ const UserExperience = ({navigation}) => {
                     <Text style={styles.organisationName}>
                       {el.Company_name}
                     </Text>
-                    <Text style={styles.role}>{el.role}</Text>
+                    <Text style={styles.role}>{el.Role}</Text>
                     {el.To ? (
                       <Text style={styles.dateText}>
                         {dateConvert(el.From)} - {dateConvert(el.To)}
@@ -124,66 +114,81 @@ const UserExperience = ({navigation}) => {
                     )}
                   </View>
                   <TouchableOpacity
-                    // onPress={() =>
-                    //   navigation.navigate('edit-experience', {
-                    //     experience: el,
-                    //   })
-                    // }
+                    onPress={() =>
+                      navigation.navigate('edit-experience', {
+                        experience: el,
+                      })
+                    }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons name="create" color={'#376eb3'} size={24} />
+                    <AntDesign name="edit" color={'#376eb3'} size={24} />
                   </TouchableOpacity>
                 </View>
               );
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No experience to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add your experience.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
   },
   organisationName: {
-    fontSize: 20,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.extraSmall),
+    color: theme.colors.black,
   },
   role: {
-    fontSize: 18,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginBottom: normalize(5),
+    color: theme.colors.level2,
   },
   dateText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',

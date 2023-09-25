@@ -3,15 +3,16 @@ import {StyleSheet, View, Text, FlatList, TouchableOpacity} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import GroupRequestCard from './GroupRequestCard';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Loader from '../reusables/Loader';
-import articles from '../PostProfileData';
+import {Profiles} from '../staticData';
 
 const GroupRequests = ({navigation, route}) => {
   const {id} = route.params;
-  const [profiles, setProfiles] = useState(articles);
-  const [fetching, setFetching] = useState(() => false);
-  const [fetch, setFetch] = useState(() => false);
+  const [profiles, setProfiles] = useState(null);
+  const [fetching, setFetching] = useState(false);
+  const [fetch, setFetch] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchRequests = () => {
     console.log('method: GET, ${backend_url}/group/getreq/${id}');
@@ -40,23 +41,42 @@ const GroupRequests = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Requests</Text>
       </View>
-      {/* <Loader /> */}
-      <FlatList
-        data={profiles}
-        keyExtractor={item => item.userid}
-        renderItem={renderitem}
-        refreshing={fetching}
-        onRefresh={onRefresh}
-      />
+      {loading ? <Loader /> : null}
+      {profiles && profiles.length ? (
+        <FlatList
+          data={profiles}
+          keyExtractor={item => item.UserId}
+          renderItem={renderitem}
+          refreshing={fetching}
+          onRefresh={onRefresh}
+        />
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No requests to display</Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.black,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -64,7 +84,7 @@ const styles = StyleSheet.create({
   connectionHeader: {
     height: normalize(60),
     flexDirection: 'row',
-    paddingHorizontal: normalize(10),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },

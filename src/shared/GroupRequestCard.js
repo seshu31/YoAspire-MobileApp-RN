@@ -39,15 +39,15 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
         <Image
           style={styles.connectionImage}
           source={
-            item.img_file_name
-              ? {uri: item.img_file_name}
+            item.profile.img_file_name
+              ? {uri: item.profile.img_file_name}
               : require('../../assets/male.png')
           }
         />
         <View style={styles.connectionDetails}>
           <View style={styles.userNameDetails}>
-            <Text style={styles.connectionName}>
-              {item.First_Name} {item.Last_Name}
+            <Text style={styles.connectionName} numberOfLines={1}>
+              {item.profile.First_Name} {item.profile.Last_Name}
             </Text>
             {connectionLevel ? (
               <>
@@ -55,12 +55,14 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
                   {'   '}
                   {'\u2B24'}
                 </Text>
-                <Text> {connectionLevel}</Text>
+                <Text style={styles.connections}> {connectionLevel}</Text>
               </>
             ) : null}
           </View>
-          {item.heading ? (
-            <Text style={styles.connectionTitle}>{item.heading}</Text>
+          {item.profile.heading ? (
+            <Text style={styles.connectionTitle} numberOfLines={2}>
+              {item.profile.heading}
+            </Text>
           ) : null}
         </View>
       </View>
@@ -101,6 +103,8 @@ const styles = StyleSheet.create({
     width: normalize(50),
     height: normalize(50),
     borderRadius: normalize(100),
+    borderWidth: normalize(3),
+    borderColor: theme.colors.primary,
   },
   connectionDetails: {
     paddingLeft: normalize(15),
@@ -111,6 +115,7 @@ const styles = StyleSheet.create({
   },
   connectionName: {
     fontSize: normalize(17),
+    color: theme.colors.black,
   },
   connectionTitle: {
     paddingTop: normalize(5),
@@ -124,7 +129,15 @@ const styles = StyleSheet.create({
   connectIcons: {
     marginLeft: normalize(theme.spacing.small),
   },
-  connectionLevel: {fontSize: 5},
+  connectionLevel: {
+    fontSize: normalize(7),
+    color: theme.colors.black,
+    paddingTop: normalize(4),
+  },
+  connections: {
+    color: theme.colors.black,
+    paddingTop: normalize(2),
+  },
 });
 
 export default GroupRequestCard;
