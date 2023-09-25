@@ -126,8 +126,9 @@ const DetailedArticle = ({navigation, route}) => {
         <View style={styles.articleTitle}>
           <Text style={styles.titleText}>{article.Title}</Text>
         </View>
-
-        {article.Brief !== null ? (
+        {article.Brief !== null &&
+        typeof article.Brief === 'string' &&
+        article.Brief.trim() !== '' ? (
           <View style={styles.articleBrief}>
             <Text style={styles.briefText}>{article.Brief}</Text>
           </View>
@@ -143,7 +144,7 @@ const DetailedArticle = ({navigation, route}) => {
                   color={theme.colors.primary}
                   size={24}
                 />
-                <Text>{article.Location}</Text>
+                <Text style={{color: '#000'}}>{article.Location}</Text>
               </View>
             </View>
           ) : null}
@@ -156,7 +157,9 @@ const DetailedArticle = ({navigation, route}) => {
           {article.Category_Type === 'article' ? null : (
             <View style={styles.byText}>
               <Text style={{fontWeight: '700', color: '#000'}}>Posted By:</Text>
-              <Text>{article.Organiser}</Text>
+              <Text style={{color: theme.colors.level2}}>
+                {article.Organiser}
+              </Text>
             </View>
           )}
 
@@ -214,6 +217,7 @@ const DetailedArticle = ({navigation, route}) => {
           <View style={styles.inputRow}>
             <TextInput
               placeholder="Comment"
+              placeholderTextColor={theme.colors.grey}
               value={comment}
               onChangeText={commentHandler}
               autoCapitalize="none"
@@ -355,6 +359,7 @@ const styles = StyleSheet.create({
     paddingLeft: '5%',
     fontWeight: theme.fontWeight.normal,
     fontSize: normalize(14),
+    color: theme.colors.level2,
   },
   articleTitle: {
     paddingHorizontal: '5%',
@@ -451,6 +456,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     height: normalize(40),
     fontSize: normalize(theme.fontSizes.medium),
+    marginRight: normalize(6),
+    color: theme.colors.black,
   },
   postComment: {
     paddingLeft: normalize(7),

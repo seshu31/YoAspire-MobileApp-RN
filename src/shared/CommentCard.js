@@ -124,12 +124,14 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     paddingLeft: '3%',
     fontWeight: theme.fontWeight.bold,
+    color: theme.colors.black,
   },
   comment: {
     fontSize: normalize(theme.fontSizes.medium),
     lineHeight: normalize(theme.spacing.large),
     paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: '2%',
+    color: theme.colors.level2,
   },
   likeSection: {
     flexDirection: 'row',
