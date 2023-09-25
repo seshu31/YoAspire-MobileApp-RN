@@ -5,11 +5,12 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserDetails = ({navigation, route}) => {
   const {userid, skills} = route.params;
@@ -249,7 +250,11 @@ const UserDetails = ({navigation, route}) => {
                     // }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <Ionicons name="create" color={'#376eb3'} size={24} />
+                    <Ionicons
+                      name="create"
+                      color={theme.colors.primary}
+                      size={normalize(24)}
+                    />
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -264,71 +269,70 @@ const UserDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.small),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
     paddingLeft: '30%',
   },
   titleHeader: {
-    marginHorizontal: -15,
-    padding: 15,
+    marginHorizontal: normalize(-theme.spacing.medium),
+    padding: normalize(theme.spacing.medium),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#f3f2ef',
+    backgroundColor: theme.colors.whiteSmoke,
   },
   coursesContainer: {
-    paddingHorizontal: 15,
-    paddingBottom: 15,
+    paddingHorizontal: normalize(theme.spacing.medium),
+    paddingBottom: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
-    color: '#000',
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
+    color: theme.colors.black,
   },
   organisationName: {
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.extraSmall),
     textTransform: 'capitalize',
-    color: '#000',
+    color: theme.colors.black,
   },
   role: {
-    fontSize: 18,
-    marginBottom: 5,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginBottom: normalize(theme.spacing.extraSmall),
+    color: theme.colors.black,
   },
   skillItem: {
-    fontSize: 16,
-    height: 40,
+    fontSize: normalize(theme.fontSizes.medium),
+    height: normalize(40),
     width: '90%',
-    color: '#000',
-    lineHeight: 40,
+    color: theme.colors.black,
+    lineHeight: normalize(40),
   },
   dateText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   subHeading: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#376eb3',
+    fontSize: normalize(theme.fontSizes.large),
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.primary,
   },
 });
 

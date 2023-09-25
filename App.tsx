@@ -22,10 +22,18 @@ import UserExperience from './src/shared/UserExperience';
 import UserDetails from './src/shared/UserDetails';
 import UserCourse from './src/shared/UserCourse';
 import EditSkill from './src/shared/EditSkill';
+import EditProject from './src/shared/EditProject';
+import EditCourse from './src/shared/EditCource';
+import EditPublication from './src/shared/EditPublications';
+import EditExperience from './src/shared/EditExperience';
+import EditEducation from './src/shared/EditEducation';
 import GroupMembers from './src/shared/GroupMembers';
 import GroupRequests from './src/shared/GroupRequests';
 import Profile from './src/components/Profile';
 import ChatSection from './src/shared/ChatSection';
+import ManageNetwork from './src/shared/ManageNetwork';
+import NotificationCard from './src/shared/NotificationCard';
+import Notification from './src/components/Notification';
 
 const Stack = createStackNavigator();
 
@@ -40,7 +48,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="register"
           screenOptions={{
             headerShown: false,
           }}>
@@ -73,8 +81,18 @@ const App = () => {
             initialParams={{user: 213}}
           />
           <Stack.Screen
+            name="edit-project"
+            component={EditProject}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen
             name="user-publication"
             component={UserPublication}
+            initialParams={{user: 213}}
+          />
+          <Stack.Screen
+            name="edit-publication"
+            component={EditPublication}
             initialParams={{user: 213}}
           />
           <Stack.Screen
@@ -83,7 +101,9 @@ const App = () => {
             initialParams={{skills: []}}
           />
           <Stack.Screen name="user-education" component={UserEducation} />
+          <Stack.Screen name="edit-education" component={EditEducation} />
           <Stack.Screen name="user-experience" component={UserExperience} />
+          <Stack.Screen name="edit-experience" component={EditExperience} />
           <Stack.Screen
             name="user-details"
             component={UserDetails}
@@ -94,10 +114,13 @@ const App = () => {
             component={UserCourse}
             initialParams={{user: 213}}
           />
+          <Stack.Screen name="edit-course" component={EditCourse} />
           <Stack.Screen name="edit-skill" component={EditSkill} />
           <Stack.Screen name="group-members" component={GroupMembers} />
           <Stack.Screen name="manage-requests" component={GroupRequests} />
+          <Stack.Screen name="manage-network" component={ManageNetwork} />
           <Stack.Screen name="chat-section" component={ChatSection} />
+          <Stack.Screen name="notifications" component={Notification} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -9,6 +10,12 @@ import {
   Platform,
 } from 'react-native';
 import AccountImage from './AccountImage';
+import backend_url from '../../config';
+import axios from 'axios';
+import Loader from '../reusables/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const OTP = ({route, navigation}) => {
   if (route.params && route.params.email) {
@@ -128,44 +135,60 @@ const OTP = ({route, navigation}) => {
   };
 
   const verifyOtp = async () => {
-    // setLoading(true);
-    // const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
-    // const url =
-    //   route.params && route.params.reset
-    //     ? `${backend_url}/auth/getresetdata/${otp}`
-    //     : `${backend_url}/auth/validate_otp/${otp}`;
-    // const response = await axios.get(url);
-    // if (response.data.statuscode === 1) {
-    //   setLoading(false);
-    //   navigation.setParams({email: null});
-    //   if (route.params && route.params.reset)
-    //     navigation.navigate('enter-password', {
-    //       message:
-    //         'Verification successful. Please, Set a new password to continue',
-    //       code: `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`,
-    //     });
-    //   else
-    //     navigation.navigate('login', {
-    //       message: 'Verification successful. Please, Login to continue',
-    //     });
-    // } else {
-    //   setLoading(false);
-    //   alert('Invalid OTP. Please, Try again.');
-    // }
-    if (route.params && route.params.reset)
-      navigation.navigate('enter-password', {
-        message:
-          'Verification successful. Please, Set a new password to continue',
-        code: `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`,
-      });
-    else
-      navigation.navigate('login', {
-        message: 'Verification successful. Please, Login to continue',
-      });
+    console.log('1');
+    setLoading(true);
+    const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
+
+    try {
+      const payload = {email: email, otp: otp};
+
+      const url =
+        route.params && route.params.reset
+          ? `${backend_url}/auth/getresetdata/${otp}`
+          : `${backend_url}/auth/verify_otp`;
+
+      const response = await (route.params && route.params.reset
+        ? axios.get(url)
+        : axios.post(url, payload, {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }));
+
+      console.log(response.data, 'response for verifyotp');
+
+      if (response.data) {
+        setLoading(false);
+        navigation.setParams({email: null});
+        if (route.params && route.params.reset) {
+          navigation.navigate('enter-password', {
+            message:
+              'Verification successful. Please, Set a new password to continue',
+            code: otp,
+          });
+        } else {
+          response.data.token
+            ? AsyncStorage.setItem('token', response.data.token)
+            : Alert.alert('no token found');
+          navigation.navigate('login', {
+            message: 'Verification successful. Please, Login to continue',
+          });
+        }
+      } else {
+        setLoading(false);
+        Alert.alert('Invalid OTP. Please, Try again.');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error:', error);
+      Alert.alert('An error occurred. Please, try again later.');
+      navigation.goBack();
+    }
   };
 
   return (
     <View style={styles.container}>
+      {loading ? <Loader /> : null}
       <AccountImage />
       {email != null ? (
         <Text style={styles.infoText}>
@@ -195,14 +218,12 @@ const OTP = ({route, navigation}) => {
       <TouchableOpacity
         onPress={resendOtp}
         disabled={timer !== 0}
-        style={{marginTop: 10}}
+        style={styles.mt10}
         activeOpacity={0.5}>
         {timer === 0 ? (
-          <Text style={{color: '#376eb3', fontSize: 16}}>Resend otp</Text>
+          <Text style={styles.resendOtpText}>Resend otp</Text>
         ) : (
-          <Text style={{color: 'black', fontSize: 16}}>
-            Resend otp in {timer} seconds
-          </Text>
+          <Text style={styles.timerText}>Resend otp in {timer} seconds</Text>
         )}
       </TouchableOpacity>
       <TouchableOpacity
@@ -214,22 +235,9 @@ const OTP = ({route, navigation}) => {
             styles.submitButton,
             {
               opacity: otpArray.every(item => item) > 0 ? 1 : 0.8,
-              backgroundColor: loading ? '#cce4f7' : '#2196f3',
             },
           ]}>
-          <ActivityIndicator
-            style={{
-              position: 'absolute',
-              top: '15%',
-              left: '55%',
-            }}
-            animating={loading}
-            size="large"
-            color="#376eb3"
-          />
-          <Text style={[styles.submitText, {opacity: loading ? 0 : 1}]}>
-            SUBMIT
-          </Text>
+          <Text style={styles.submitText}>SUBMIT</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -237,15 +245,24 @@ const OTP = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  mt10: {marginTop: 10},
+  timerText: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
+  resendOtpText: {
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
   infoText: {
     color: 'green',
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     textAlign: 'center',
     marginBottom: '10%',
   },
@@ -254,34 +271,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   inputField: {
-    height: 50,
-    fontSize: 20,
-    marginBottom: 10,
+    height: normalize(50),
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: theme.colors.grey,
     borderWidth: 2,
-    backgroundColor: '#fff',
-    padding: 10,
-    marginHorizontal: 10,
+    backgroundColor: theme.colors.white,
+    padding: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
     textAlign: 'center',
-    color: '#000',
+    color: theme.colors.black,
   },
   submitButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2196f3',
     paddingHorizontal: '5%',
-    borderRadius: 5,
+    borderRadius: normalize(5),
   },
   submitText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
 });
 

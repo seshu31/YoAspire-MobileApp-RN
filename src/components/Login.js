@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -9,12 +10,20 @@ import {
 import AccountImage from './AccountImage';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import backend_url from '../../config';
+import Loader from '../reusables/Loader';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const Login = ({navigation, route}) => {
   const {
     control,
     handleSubmit,
+    getValues,
     formState: {errors},
+    setError,
     reset,
   } = useForm({
     defaultValues: {
@@ -22,6 +31,7 @@ const Login = ({navigation, route}) => {
       password: '',
     },
   });
+  const message = route.params?.message ? route.params.message : null;
   const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [emailAdd, setEmailAdd] = useState(() => '');
   const [emailErr, setEmailErr] = useState(() => true);
@@ -31,25 +41,97 @@ const Login = ({navigation, route}) => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
   };
 
-  // const handleLogin = () => {
-  //   setIsSecureEntry(true);
-  //   setEmailErr(true);
-  //   navigation.setParams({message: null});
-  //   route.params.loginHandler(true); // Assuming this function exists in the parent component
-  // };
+  const verifyPassword = async data => {
+    setLoading(true);
+    try {
+      if (data.email && data) {
+        const response = await axios.post(
+          `${backend_url}/auth/login`,
+          {
+            email: data.email,
+            password: data.password,
+          },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          },
+        );
+        if (response.data.token) {
+          try {
+            AsyncStorage.setItem('userToken', response.data.token);
+            AsyncStorage.setItem('userId', response.data.userid.toString());
+            navigation.navigate('index');
+          } catch (error) {
+            Alert.alert('Local storage failed');
+          }
+          setLoading(false);
+          return true;
+        } else if (response.data.statuscode === 0) {
+          setLoading(false);
+          navigation.navigate('otp-verification', {
+            email: emailAdd,
+          });
+        } else if (response.data.statuscode === -1) {
+          setError('email', {
+            type: 'EmailNotFound',
+            message: response.data.status,
+          });
+        } else {
+          setError('email', {
+            type: 'incorrectPassword',
+            message: 'incorrect password',
+          });
+        }
+        setLoading(false);
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+      Alert.alert('Something went wrong. Try again later.');
+    }
+  };
+
+  const hasSpace = async value => {
+    if (value.includes(' ')) {
+      return 'No spaces allowed';
+    }
+    return true;
+  };
+
+  const handleLogin = () => {
+    setIsSecureEntry(true);
+    setEmailAdd('');
+    setEmailErr(true);
+    navigation.setParams({message: null});
+    // route.params.loginHandler(true);
+  };
 
   const onSubmit = data => {
     console.log(data);
     navigation.navigate('index');
   };
 
+  const validateEmail = async value => {
+    const response = await axios.get(
+      `${backend_url}/auth/samplecheckemail/${value}`,
+    );
+    if (response.data.statuscode !== 1) {
+      setEmailErr(true);
+      return response.data.status;
+    }
+    setEmailErr(false);
+    return true;
+  };
+
   return (
     <View style={styles.container}>
+      {loading ? <Loader /> : null}
       <AccountImage />
       <View style={styles.loginCard}>
-        {/* {message != null ? (
+        {message != null ? (
           <Text style={styles.infoText}>{message}</Text>
-        ) : null} */}
+        ) : null}
         <Controller
           control={control}
           name="email"
@@ -63,25 +145,29 @@ const Login = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
             required: true,
+            validate: hasSpace,
+            validateEmail,
             pattern:
-              /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-            // validate: validateEmail,
+              /^\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+))\s*$/,
           }}
         />
+        {errors.email && errors.email.type === 'validate' && (
+          <Text style={styles.errorText}>{errors.email.message}</Text>
+        )}
         {errors.email && errors.email.type === 'required' && (
-          <Text style={{color: 'red'}}>Email Field is required.</Text>
+          <Text style={styles.errorText}>Email Field is required.</Text>
         )}
         {errors.email && errors.email.type === 'pattern' && (
-          <Text style={{color: 'red'}}>Enter valid EmailID</Text>
+          <Text style={styles.errorText}>Enter valid EmailID</Text>
         )}
-        {/* {errors.email && errors.email.type === 'validate' && (
-          <Text style={{color: 'red'}}>Email doesn't exists!</Text>
-        )} */}
+        {errors.email && errors.email.type === 'EmailNotFound' && (
+          <Text style={styles.errorText}>{errors.email.message}</Text>
+        )}
         <View style={styles.passwordField}>
           <Controller
             control={control}
@@ -96,13 +182,13 @@ const Login = ({navigation, route}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             rules={{
               required: true,
               minLength: 8,
-              // validate: validatePassword,
+              validate: hasSpace,
             }}
           />
           {isSecureEntry ? (
@@ -110,30 +196,34 @@ const Login = ({navigation, route}) => {
               style={styles.eyeIcon}
               onPress={togglePasswordType}
               activeOpacity={0.5}>
-              <Entypo name="eye" size={28} color="lightgrey" />
+              <Entypo name="eye" size={normalize(28)} color="lightgrey" />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.eyeIcon}
               onPress={togglePasswordType}
               activeOpacity={0.5}>
-              <Entypo name="eye-with-line" size={28} color="lightgrey" />
+              <Entypo
+                name="eye-with-line"
+                size={normalize(28)}
+                color="lightgrey"
+              />
             </TouchableOpacity>
           )}
           {errors.password && errors.password.type === 'required' && (
-            <Text style={{color: 'red'}}>Password Field is required.</Text>
+            <Text style={styles.errorText}>Password Field is required.</Text>
           )}
           {errors.password && errors.password.type === 'minLength' && (
-            <Text style={{color: 'red'}}>
+            <Text style={styles.errorText}>
               Password should consists of minimum 8 characters.
             </Text>
           )}
-          {/* {emailErr
-            ? errors.password &&
-              errors.password.type === 'validate' && (
-                <Text style={{color: 'red'}}>Password is incorrect.</Text>
-              )
-            : null} */}
+          {errors.password && errors.password.type === 'validate' && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
+          {errors.email && errors.email.type === 'incorrectPassword' && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
         </View>
         <View style={styles.registerBlock}>
           <TouchableOpacity
@@ -143,15 +233,10 @@ const Login = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          style={[
-            styles.loginButton,
-            {backgroundColor: loading ? '#cce4f7' : '#2196f3'},
-          ]}
-          onPress={handleSubmit(onSubmit)}
+          style={[styles.loginButton]}
+          onPress={handleSubmit(verifyPassword)}
           activeOpacity={0.5}>
-          <Text style={[styles.loginText, {opacity: loading ? 0 : 1}]}>
-            LOGIN
-          </Text>
+          <Text style={[styles.loginText]}>LOGIN</Text>
         </TouchableOpacity>
         <View style={styles.signInBlock}>
           <TouchableOpacity
@@ -168,66 +253,64 @@ const Login = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {color: theme.colors.red},
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
-    // Image styles go here
-  },
   loginCard: {
     width: '85%',
-    marginBottom: 100,
-    marginTop: -20,
+    marginBottom: normalize(100),
+    marginTop: normalize(-20),
   },
   infoText: {
     color: 'green',
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: normalize(theme.fontSizes.medium),
+    marginBottom: normalize(theme.spacing.small),
   },
   inputField: {
     width: '100%',
-    height: 50,
-    fontSize: 16,
-    marginBottom: 10,
+    height: normalize(50),
+    fontSize: normalize(theme.fontSizes.medium),
+    marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    color: '#000',
+    backgroundColor: theme.colors.white,
+    color: theme.colors.black,
   },
   passwordField: {
     position: 'relative',
-    marginVertical: 10,
+    marginVertical: normalize(theme.spacing.small),
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
-    top: 10,
+    right: normalize(theme.spacing.small),
+    top: normalize(theme.spacing.small),
   },
   loginButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2196f3',
   },
   loginText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
   signInBlock: {
     width: '100%',
   },
   registerText: {
     width: '100%',
-    color: '#376eb3',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
   forgotText: {

@@ -11,10 +11,12 @@ import {
 import DashboardArticle from './DashboardArticle';
 import Moment from 'react-moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
-import articles from '../PostProfileData';
+import {articlesData, members} from '../PostProfileData';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
@@ -29,7 +31,7 @@ const GroupDetailsCard = ({navigation, route}) => {
     admin_flag: true, //Boolean value change according data
     created_by: null, //This is will take int value
     joined: false,
-    req_sent: false, //Boolean value change according data
+    req_sent: true, //Boolean value change according data
     group_type: true, //Boolean value change according data
   };
 
@@ -39,7 +41,7 @@ const GroupDetailsCard = ({navigation, route}) => {
   const [creator, setCreator] = useState(groupData.created_by);
   const [lineLength, setLineLength] = useState(3);
   const [lines, setLines] = useState(0);
-  const [profiles, setProfiles] = useState(articles);
+  const [profiles, setProfiles] = useState(members);
   const [isLoading, setIsLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -115,7 +117,8 @@ const GroupDetailsCard = ({navigation, route}) => {
 
   const loadEndPosts = () => {
     if (!allLoaded) {
-      setLoading(true);
+      // setLoading(true);
+      setLoading(false);
     }
     if (loading) {
       fetchPosts();
@@ -161,48 +164,56 @@ const GroupDetailsCard = ({navigation, route}) => {
               {new Date(group.created_on)}
             </Moment>
           </Text>
-          <TouchableOpacity
-            style={styles.membersItem}
-            onPress={() =>
-              navigation.navigate('group-members', {
-                id: id,
-                admin: admin,
-                creator: group.created_by,
-              })
-            }
-            activeOpacity={0.5}>
-            <Text style={styles.membersText}>
-              {group.total_members} Members
-            </Text>
-            <Ionicons name="arrow-forward" size={22} color="#376eb3" />
-          </TouchableOpacity>
           <View style={styles.groupButtons}>
-            {creator ? null : group.joined ? (
-              <TouchableOpacity onPress={leaveHandler} activeOpacity={0.5}>
-                <Text style={styles.groupButton}>Leave</Text>
-              </TouchableOpacity>
-            ) : group.req_sent ? (
-              <TouchableOpacity onPress={cancelHandler} activeOpacity={0.5}>
-                <Text style={styles.groupButton}>Requested</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={joinHandler} activeOpacity={0.5}>
-                <Text style={styles.groupButton}>
-                  {group.group_type ? 'Request' : 'Join'}
-                </Text>
-              </TouchableOpacity>
-            )}
-            {admin && group.group_type ? (
+            <View style={{flexDirection: 'row', paddingVertical: 10}}>
+              {creator ? null : group.joined ? (
+                <TouchableOpacity onPress={leaveHandler} activeOpacity={0.5}>
+                  <Text style={styles.groupButton}>Leave</Text>
+                </TouchableOpacity>
+              ) : group.req_sent ? (
+                <TouchableOpacity onPress={cancelHandler} activeOpacity={0.5}>
+                  <Text style={styles.groupButton}>Requested</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={joinHandler} activeOpacity={0.5}>
+                  <Text style={styles.groupButton}>
+                    {group.group_type ? 'Request' : 'Join'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {admin && group.group_type ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('manage-requests', {
+                      id: id,
+                    })
+                  }
+                  activeOpacity={0.5}>
+                  <Text style={styles.groupButton}>Requests</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            <View>
               <TouchableOpacity
+                // style={styles.membersItem}
                 onPress={() =>
-                  navigation.navigate('manage-requests', {
+                  navigation.navigate('group-members', {
                     id: id,
+                    admin: admin,
+                    creator: group.created_by,
                   })
                 }
                 activeOpacity={0.5}>
-                <Text style={styles.groupButtonrequest}>Requests</Text>
+                <Text style={styles.groupButton}>
+                  Members ({group.total_members} )
+                </Text>
+                {/* <MaterialIcons
+                  name="arrow-forward-ios"
+                  size={normalize(26)}
+                  color={theme.colors.primary}
+                /> */}
               </TouchableOpacity>
-            ) : null}
+            </View>
           </View>
         </View>
       </>
@@ -221,7 +232,11 @@ const GroupDetailsCard = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#376eb3" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.primary}
+          />
         </TouchableOpacity>
         <Text style={styles.groupTitle}>Group</Text>
         {admin ? (
@@ -233,15 +248,15 @@ const GroupDetailsCard = ({navigation, route}) => {
               })
             }
             activeOpacity={0.5}>
-            <Ionicons name="create" color={'#376eb3'} size={26} />
+            <AntDesign name="edit" color={'#376eb3'} size={26} />
           </TouchableOpacity>
         ) : (
           <Ionicons color={'#fff'} marginRight={26} />
         )}
       </View>
-      {/* <Loader /> */}
+      {isLoading ? <Loader /> : null}
       <FlatList
-        data={articles}
+        data={articlesData}
         keyExtractor={item => item.PostId.toString()}
         renderItem={renderItem}
         ListHeaderComponent={renderHeader}
@@ -263,7 +278,7 @@ const GroupDetailsCard = ({navigation, route}) => {
           })
         }
         activeOpacity={0.5}>
-        <Ionicons name="create" size={28} color="white" />
+        <Ionicons name="create" color={'#FFF'} size={26} />
       </TouchableOpacity>
       {/* {group && group.joined ? (
       ) : null} */}
@@ -286,7 +301,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   groupTitle: {
-    fontSize: normalize(25),
+    fontSize: normalize(24),
     textTransform: 'uppercase',
     paddingLeft: normalize(theme.spacing.large),
     color: theme.colors.primary,
@@ -320,22 +335,24 @@ const styles = StyleSheet.create({
   groupName: {
     fontSize: normalize(21),
     fontWeight: theme.fontWeight.bold,
+    color: theme.colors.black,
   },
   groupDesc: {
     fontSize: normalize(theme.fontSizes.medium),
     paddingTop: normalize(6),
+    color: theme.colors.level2,
   },
   showMore: {
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.primary,
-    alignSelf: 'flex-start',
+    paddingLeft: '70%',
+    paddingVertical: '1%',
   },
   membersItem: {
-    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: normalize(11),
+    paddingHorizontal: 9,
+    marginBottom: 5,
   },
   membersText: {
     fontSize: normalize(17),
@@ -344,27 +361,15 @@ const styles = StyleSheet.create({
   groupButtons: {
     flexDirection: 'row',
     width: '100%',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   footer: {
     paddingBottom: normalize(6),
   },
-  groupButtonrequest: {
-    backgroundColor: theme.colors.white,
-    color: theme.colors.primary,
-    borderColor: theme.colors.primary,
-    borderWidth: normalize(3),
-    paddingVertical: normalize(7),
-    paddingHorizontal: normalize(20),
-    fontSize: normalize(theme.fontSizes.medium),
-    borderRadius: normalize(theme.spacing.medium),
-    marginTop: normalize(5),
-    marginBottom: normalize(10),
-    marginRight: normalize(10),
-  },
   groupButton: {
     paddingVertical: normalize(7),
-    paddingHorizontal: normalize(theme.spacing.large),
+    paddingHorizontal: normalize(theme.spacing.medium),
     backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
     borderWidth: normalize(3),
@@ -383,7 +388,7 @@ const styles = StyleSheet.create({
     borderRadius: normalize(100),
     elevation: normalize(5),
     paddingTop: normalize(12),
-    paddingBottom: normalize(13),
+    paddingBottom: normalize(15),
     paddingLeft: normalize(15),
     paddingRight: normalize(12),
   },

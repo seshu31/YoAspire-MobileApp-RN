@@ -4,13 +4,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import CommentCard from './CommentCard';
 
 const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
     articles?.Active === 1 ? true : false,
   );
-  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
+  // console.log('Image Source:', articles);
+  const [commentCount, setCommentCount] = useState(10);
 
+  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
   const likeHandler = () => {
     // Toggle the liked state locally
     setLiked(prevValue => !prevValue);
@@ -27,6 +30,8 @@ const DashboardArticle = ({articles, navigation}) => {
             <View>
               <Image
                 style={styles.writeImage}
+                // source={{uri: articles.img_file_name}}
+                // source={require('../../assets/male.png')}
                 source={
                   articles.img_file_name
                     ? {uri: articles.img_file_name}
@@ -41,6 +46,21 @@ const DashboardArticle = ({articles, navigation}) => {
                 ellipsizeMode={'tail'}>
                 {articles.First_Name} {articles.Last_Name}
               </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingLeft: '5%',
+                }}>
+                <Text style={{color: '#787878', fontWeight: '500'}}>
+                  {articles.PostedOn}
+                </Text>
+                <Text
+                  style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                  {'\u2B24'}
+                </Text>
+                <FontAwesome name="globe" color="#787878" />
+              </View>
             </View>
           </View>
           <View style={styles.articleTitle}>
@@ -86,6 +106,20 @@ const DashboardArticle = ({articles, navigation}) => {
           </View>
           <View style={styles.jobDetails}>
             <Text style={styles.jobTitle}>{articles.Title}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: '#787878', fontWeight: '500'}}>
+                {articles.PostedOn}
+              </Text>
+              <Text
+                style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                {'\u2B24'}
+              </Text>
+              <FontAwesome name="globe" color="#787878" />
+            </View>
             <Text style={styles.jobType}>{articles.Job_Type}</Text>
             <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
             <Text style={styles.jobLocation}>{articles.Location}</Text>
@@ -97,6 +131,19 @@ const DashboardArticle = ({articles, navigation}) => {
         <View style={styles.webinarItem}>
           <Text style={styles.webinarText}>Webinar</Text>
           <Text style={styles.webinarTitle}>{articles.Title}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: '#787878', fontWeight: '500'}}>
+              {articles.PostedOn}
+            </Text>
+            <Text style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+              {'\u2B24'}
+            </Text>
+            <FontAwesome name="globe" color="#787878" />
+          </View>
           <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
           <Text style={styles.webinarBrief}>{articles.Brief}</Text>
           <Image
@@ -119,6 +166,7 @@ const DashboardArticle = ({articles, navigation}) => {
           onPress={() =>
             navigation.navigate('article', {
               articles: articles,
+              enableAutofocus: false,
             })
           }
           activeOpacity={0.5}>
@@ -135,13 +183,19 @@ const DashboardArticle = ({articles, navigation}) => {
                 />
               ) : (
                 <AntDesign
-                  name="like1"
+                  name="like2"
                   size={24}
                   color="lightgrey" // Color when not liked
                 />
               )}
             </TouchableOpacity>
-            <Text style={styles.likeText}>{likeCount} Likes</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.likeText}>
+                {`  `}
+                {likeCount}
+                Likes
+              </Text>
+            </View>
           </View>
           <View style={styles.likeButton}>
             <TouchableOpacity
@@ -149,14 +203,20 @@ const DashboardArticle = ({articles, navigation}) => {
                 navigation.navigate('article', {
                   PostId: articles.PostId,
                   addComment: true,
+                  articles: articles,
+                  enableAutofocus: true,
                 })
               }
               activeOpacity={0.5}>
-              <FontAwesome name="comment" size={24} color="lightgrey" />
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <FontAwesome name="comment-o" size={24} color="lightgrey" />
+                <Text style={styles.likeText}>
+                  {/* {articles.No_of_Comments} */}
+                  {`  `}
+                  {commentCount} Comments
+                </Text>
+              </View>
             </TouchableOpacity>
-            <Text style={styles.likeText}>
-              {articles?.No_of_Comments} Comments
-            </Text>
           </View>
         </View>
       </View>
@@ -167,12 +227,13 @@ const DashboardArticle = ({articles, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.colors.whiteSmoke,
   },
   card: {
     borderRadius: normalize(theme.spacing.extraSmall),
     backgroundColor: theme.colors.white,
     marginVertical: normalize(theme.spacing.extraSmall),
-    marginHorizontal: normalize(theme.spacing.small),
+    paddingHorizontal: 10,
   },
   articleItem: {
     marginBottom: normalize(theme.spacing.extraSmall),
@@ -183,7 +244,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: normalize(3),
     borderBottomColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
     width: '100%',
   },
   writerDesc: {
@@ -198,16 +259,9 @@ const styles = StyleSheet.create({
   writerName: {
     fontWeight: theme.fontWeight.bold,
     fontSize: normalize(theme.fontSizes.medium),
-    paddingLeft: normalize(theme.spacing.extraSmall),
+    paddingLeft: '5%',
     color: theme.colors.black,
-  },
-  category: {
-    backgroundColor: '#74d848',
-    color: theme.colors.white,
-    paddingHorizontal: normalize(theme.spacing.small),
-    paddingVertical: normalize(3),
-    borderRadius: normalize(theme.spacing.extraSmall),
-    alignSelf: 'center',
+    textTransform: 'capitalize',
   },
   articleTitle: {
     borderBottomWidth: normalize(3),
@@ -217,50 +271,56 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
     lineHeight: normalize(theme.spacing.extraLarge),
+    color: theme.colors.level2,
   },
   articleDesc: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   descriptionText: {
     lineHeight: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.medium),
     width: '100%',
+    color: theme.colors.level2,
   },
   articleImage: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   jobItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(3),
+    paddingHorizontal: '3%',
   },
   jobDetails: {
     paddingLeft: normalize(theme.spacing.small),
   },
   jobTitle: {
     fontSize: normalize(theme.fontSizes.medium),
-    fontWeight: theme.fontWeight.bold,
+    fontWeight: '700',
+    color: theme.colors.black,
   },
   jobType: {
     paddingVertical: normalize(theme.spacing.extraSmall),
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   jobOrganiser: {
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   jobLocation: {
     paddingVertical: normalize(theme.spacing.extraSmall),
-    fontSize: normalize(15),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarItem: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: '5%',
   },
   webinarText: {
     paddingHorizontal: normalize(12),
@@ -274,16 +334,19 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.extraSmall),
   },
   webinarTitle: {
-    fontSize: normalize(17),
+    fontSize: normalize(theme.fontSizes.medium),
     fontWeight: theme.fontWeight.bold,
     paddingVertical: normalize(3),
+    color: theme.colors.black,
   },
   webinarOrganiser: {
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarBrief: {
     paddingVertical: normalize(3),
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   webinarImage: {
     width: '100%',
@@ -300,10 +363,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: normalize(40),
-    paddingLeft: normalize(theme.spacing.extraSmall),
+    paddingLeft: '5%',
   },
   likeText: {
-    paddingLeft: normalize(theme.spacing.small),
+    paddingLeft: normalize(theme.spacing.extraSmall),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.grey,
   },

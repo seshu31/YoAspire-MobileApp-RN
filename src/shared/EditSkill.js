@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useForm, Controller} from 'react-hook-form';
 import Loader from '../reusables/Loader';
 import theme from '../../theme';
@@ -18,12 +19,10 @@ const EditSkill = ({navigation, route}) => {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm({
-    defaultValues: {
-      skill: '',
-    },
-  });
-  const [skill, setSkill] = useState(null);
+  } = useForm();
+  const [skill, setSkill] = useState(
+    route.params?.skill ? route.params.skill : null,
+  );
 
   const skillHandler = async data => {
     // setIsLoading(true);
@@ -106,24 +105,27 @@ const EditSkill = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
-          {/* {skill ? 'Edit Skill' : 'Add Skill'} */}
-          Edit Skill
+          {skill ? 'Edit Skill' : 'Add Skill'}
+          {/* Edit Skill */}
         </Text>
         <TouchableOpacity
           onPress={handleSubmit(skillHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save" size={24} color="#fff" />
+          <Ionicons name="save-outline" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
-      {/* <Loader /> */}
       <View style={styles.body}>
         <Controller
           control={control}
           name="skill"
-          defaultValue=""
+          defaultValue={skill}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               style={styles.inputField}
@@ -148,9 +150,11 @@ const EditSkill = ({navigation, route}) => {
           </Text>
         )}
         {skill ? (
-          <Text style={styles.deleteButton} onPress={deleteHanlder}>
-            Delete this skill
-          </Text>
+          <TouchableOpacity
+            style={styles.deleteButtonContainer}
+            onPress={deleteHanlder}>
+            <Text style={styles.deleteButton}>Delete this skill</Text>
+          </TouchableOpacity>
         ) : null}
       </View>
     </View>
@@ -158,6 +162,13 @@ const EditSkill = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 6,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -166,7 +177,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: normalize(10),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     alignItems: 'center',
   },
@@ -177,21 +188,22 @@ const styles = StyleSheet.create({
   inputField: {
     width: '100%',
     height: normalize(50),
-    marginBottom: normalize(20),
+    marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
     borderBottomWidth: normalize(3),
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   body: {
     padding: normalize(theme.spacing.large),
   },
   deleteButton: {
-    color: theme.colors.red,
+    color: theme.colors.white,
     alignSelf: 'center',
-    fontSize: normalize(18),
-    marginVertical: normalize(10),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
   alertText: {color: theme.colors.red},
 });

@@ -2,6 +2,12 @@
 #
 .DS_Store
 
+# Yarn
+yarn.lock
+
+# npm
+package-lock.json
+
 # Xcode
 #
 build/

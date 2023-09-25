@@ -10,22 +10,15 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const UserPublication = ({navigation, route}) => {
-  const [publication, setPublication] = useState(() => [
-    {
-      title: 'title 1',
-      date: new Date('2022-03-25'),
-    },
-    {
-      title: 'title 2',
-      date: new Date('2022-03-25'),
-    },
-    {
-      title: 'title 3',
-      date: new Date('2022-03-25'),
-    },
-  ]);
+  const [publication, setPublication] = useState(
+    route.params?.publications ? route.params.publications : null,
+  );
   const {userid} = route.params;
   const [owner, setOwner] = useState(() => true);
   const [isLoading, setIsLoading] = useState(() => false);
@@ -89,12 +82,16 @@ const UserPublication = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.5}>
-          <Ionicons name="arrow-back" size={32} color="#fff" />
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={normalize(26)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Publications</Text>
         {owner ? (
           <TouchableOpacity
-            // onPress={() => navigation.navigate('edit-publication')}
+            onPress={() => navigation.navigate('edit-publication')}
             activeOpacity={0.5}>
             <Ionicons name="add" size={32} color="#fff" />
           </TouchableOpacity>
@@ -102,7 +99,7 @@ const UserPublication = ({navigation, route}) => {
           <Ionicons size={32} color="#376eb3" />
         )}
       </View>
-      {publication.length ? (
+      {publication && publication.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {publication.map((el, index) => {
@@ -115,14 +112,17 @@ const UserPublication = ({navigation, route}) => {
                   {owner ? (
                     <TouchableOpacity
                       onPress={() =>
-                        // navigation.navigate('edit-publication', {
-                        //   publication: el,
-                        // })
-                        {}
+                        navigation.navigate('edit-publication', {
+                          publication: el,
+                        })
                       }
                       style={styles.editIcon}
                       activeOpacity={0.5}>
-                      <Ionicons name="create" color={'#376eb3'} size={24} />
+                      <AntDesign
+                        name="edit"
+                        color={theme.colors.primary}
+                        size={normalize(24)}
+                      />
                     </TouchableOpacity>
                   ) : null}
                 </View>
@@ -130,47 +130,62 @@ const UserPublication = ({navigation, route}) => {
             })}
           </View>
         </ScrollView>
-      ) : null}
+      ) : (
+        <View style={styles.NoProjectContainer}>
+          <Text style={styles.NoProject}>No projects to display</Text>
+          <Text style={styles.NoProject}>
+            Click on '+' icon to add a project.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   profileHeader: {
-    height: 60,
+    height: normalize(60),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    backgroundColor: '#376eb3',
+    paddingHorizontal: normalize(theme.spacing.large),
+    backgroundColor: theme.colors.primary,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   profileTitle: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    color: theme.colors.white,
   },
   coursesContainer: {
-    padding: 15,
+    padding: normalize(theme.spacing.medium),
   },
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10,
+    borderBottomWidth: normalize(3),
+    borderColor: theme.colors.border,
+    paddingVertical: normalize(theme.spacing.small),
   },
   courseText: {
-    fontSize: 20,
-    marginBottom: 10,
-    color: '#000',
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.small),
+    color: theme.colors.black,
   },
   dateText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.level2,
   },
   editIcon: {
     alignItems: 'center',

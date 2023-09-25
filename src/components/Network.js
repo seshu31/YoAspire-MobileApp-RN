@@ -69,7 +69,7 @@ const Network = () => {
     return (
       <TouchableOpacity
         style={styles.manageItem}
-        onPress={() => console.log('navigate to manage network screen')}
+        onPress={() => navigation.navigate('manage-network')}
         activeOpacity={0.5}>
         <Text style={styles.manageText}>Manage my network</Text>
         <MaterialIcons

@@ -8,6 +8,8 @@ const theme = {
     grey: '#ccc',
     placeholdercolor: '#c7c7c7',
     darkgrey: '#999',
+    whiteSmoke: '#F5F5F5',
+    level2: '#787878',
   },
   fontWeight: {
     light: '300',
