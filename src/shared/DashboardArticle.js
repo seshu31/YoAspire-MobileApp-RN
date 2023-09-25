@@ -46,6 +46,21 @@ const DashboardArticle = ({articles, navigation}) => {
                 ellipsizeMode={'tail'}>
                 {articles.First_Name} {articles.Last_Name}
               </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingLeft: '5%',
+                }}>
+                <Text style={{color: '#787878', fontWeight: '500'}}>
+                  {articles.PostedOn}
+                </Text>
+                <Text
+                  style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                  {'\u2B24'}
+                </Text>
+                <FontAwesome name="globe" color="#787878" />
+              </View>
             </View>
           </View>
           <View style={styles.articleTitle}>
@@ -91,6 +106,20 @@ const DashboardArticle = ({articles, navigation}) => {
           </View>
           <View style={styles.jobDetails}>
             <Text style={styles.jobTitle}>{articles.Title}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: '#787878', fontWeight: '500'}}>
+                {articles.PostedOn}
+              </Text>
+              <Text
+                style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                {'\u2B24'}
+              </Text>
+              <FontAwesome name="globe" color="#787878" />
+            </View>
             <Text style={styles.jobType}>{articles.Job_Type}</Text>
             <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
             <Text style={styles.jobLocation}>{articles.Location}</Text>
@@ -102,6 +131,19 @@ const DashboardArticle = ({articles, navigation}) => {
         <View style={styles.webinarItem}>
           <Text style={styles.webinarText}>Webinar</Text>
           <Text style={styles.webinarTitle}>{articles.Title}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: '#787878', fontWeight: '500'}}>
+              {articles.PostedOn}
+            </Text>
+            <Text style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+              {'\u2B24'}
+            </Text>
+            <FontAwesome name="globe" color="#787878" />
+          </View>
           <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
           <Text style={styles.webinarBrief}>{articles.Brief}</Text>
           <Image
