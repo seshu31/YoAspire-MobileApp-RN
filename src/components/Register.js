@@ -52,11 +52,11 @@ const Register = ({navigation}) => {
   const handleRegister = ({email, password, firstName, lastName, username}) => {
     setLoading(true);
     const payload = {
-      email,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-      username,
+      email: email.trim(),
+      password: password.trim(),
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      username: username.trim(),
       role: 'user',
     };
     console.log(JSON.stringify(payload), 'handleregister function');
@@ -117,6 +117,14 @@ const Register = ({navigation}) => {
     });
   };
 
+  const validateUsername = async value => {
+    const response = await axios.get(
+      `${backend_url}/auth/checkusername/${value}`,
+    );
+    if (response.data.statuscode !== -1) return true;
+    return false;
+  };
+
   return (
     <>
       {loading ? <Loader /> : null}
@@ -141,7 +149,7 @@ const Register = ({navigation}) => {
               required: true,
               minLength: 6,
               maxLength: 30,
-              // validate: validateUsername,
+              validate: validateUsername,
             }}
           />
           {errors.username && errors.username.type === 'required' && (
