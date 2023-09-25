@@ -13,8 +13,8 @@ const articlesData = [
     Description:
       'Current working tool React Native Current working tool React Native Current working tool React Native React Native Current working tool React Native Current working tool React Native',
     heading: 'Heading1',
-    Date_of_Event: '2023-04-08T18:30:00.000Z',
     Time_of_Event: '1812',
+    PostedOn: '2D',
   },
   {
     UserId: 1,
@@ -33,6 +33,7 @@ const articlesData = [
     Organiser: 'Aspire',
     Brief: 'This is sravani working as a developer in aspire',
     admin_flag: 1,
+    PostedOn: '7h',
   },
   {
     id: 3,
@@ -54,6 +55,7 @@ const articlesData = [
     Location: 'Vijayawada',
     Job_Type: 'Full time',
     creator: 1,
+    PostedOn: '11D',
   },
   // Add more static article data as needed
 ];

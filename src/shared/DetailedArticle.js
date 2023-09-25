@@ -117,10 +117,21 @@ const DetailedArticle = ({navigation, route}) => {
             <Text style={styles.writerName}>
               {article.First_Name} {article.Last_Name}
             </Text>
-            <Text style={[styles.postTime]}>
-              {new Date(article.Date_of_Event).toDateString()}{' '}
-              {new Date(article.Date_of_Event).toLocaleTimeString()}
-            </Text>
+            <View
+              style={{
+                paddingLeft: '5%',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: '#787878', fontWeight: '500'}}>
+                {article.PostedOn}
+              </Text>
+              <Text
+                style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
+                {'\u2B24'}
+              </Text>
+              <FontAwesome name="globe" color="#787878" />
+            </View>
           </View>
         </View>
         <View style={styles.articleTitle}>
@@ -149,14 +160,24 @@ const DetailedArticle = ({navigation, route}) => {
             </View>
           ) : null}
 
+          {article.Date_of_Event && (
+            <View>
+              <Text style={styles.heading}>Event On:</Text>
+              <Text style={[styles.postTime]}>
+                {new Date(article.Date_of_Event).toDateString()}{' '}
+                {new Date(article.Date_of_Event).toLocaleTimeString()}
+              </Text>
+            </View>
+          )}
+
           <View>
-            <Text style={{fontWeight: '700', color: '#000'}}>Description:</Text>
+            <Text style={styles.heading}>Description:</Text>
             <Text style={styles.descriptionText}>{article.Description}</Text>
           </View>
 
           {article.Category_Type === 'article' ? null : (
             <View style={styles.byText}>
-              <Text style={{fontWeight: '700', color: '#000'}}>Posted By:</Text>
+              <Text style={styles.heading}>Posted By:</Text>
               <Text style={{color: theme.colors.level2}}>
                 {article.Organiser}
               </Text>
@@ -165,7 +186,7 @@ const DetailedArticle = ({navigation, route}) => {
 
           {article.Category_Type === 'article' ? null : (
             <View style={styles.articleLink}>
-              <Text style={{color: '#000', fontWeight: '700'}}>Links:</Text>
+              <Text style={styles.heading}>Links:</Text>
               <Text style={styles.linkText}>{article.Link}</Text>
             </View>
           )}
@@ -356,10 +377,11 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   postTime: {
-    paddingLeft: '5%',
+    // paddingLeft: '5%',
     fontWeight: theme.fontWeight.normal,
     fontSize: normalize(14),
     color: theme.colors.level2,
+    marginBottom: '2%',
   },
   articleTitle: {
     paddingHorizontal: '5%',
@@ -490,14 +512,15 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeight.bold,
     borderRadius: normalize(theme.spacing.extraSmall),
     alignSelf: 'flex-start',
-    marginRight: 10,
-    marginBottom: 10,
+    marginRight: normalize(theme.spacing.small),
+    marginBottom: normalize(theme.spacing.small),
   },
   joblocation: {
     flex: 1,
     flexDirection: 'column',
-    paddingBottom: 10,
+    paddingBottom: normalize(theme.spacing.small),
   },
+  heading: {fontWeight: theme.fontWeight.bold, color: theme.colors.black},
 });
 
 export default DetailedArticle;
