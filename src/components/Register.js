@@ -142,7 +142,7 @@ const Register = ({navigation}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             rules={{
@@ -182,7 +182,7 @@ const Register = ({navigation}) => {
                 onChangeText={onChange}
                 value={value}
                 style={styles.inputField}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             name="firstName"
@@ -214,7 +214,7 @@ const Register = ({navigation}) => {
                 onChangeText={onChange}
                 value={value}
                 style={styles.inputField}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             name="lastName"
@@ -245,16 +245,13 @@ const Register = ({navigation}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             rules={{
               required: true,
               pattern:
                 /^\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+))\s*$/,
-              // pattern:
-              // /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-              // validate: validateEmail,
               validate: hasSpace,
             }}
           />
@@ -281,7 +278,7 @@ const Register = ({navigation}) => {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholderTextColor={'lightgrey'}
+                  placeholderTextColor={theme.colors.placeholdercolor}
                 />
               )}
               rules={{required: true, minLength: 8, validate: hasSpace}}
@@ -291,14 +288,22 @@ const Register = ({navigation}) => {
                 style={styles.eyeIcon}
                 onPress={togglePasswordType}
                 activeOpacity={0.5}>
-                <Entypo name="eye" size={28} color="lightgrey" />
+                <Entypo
+                  name="eye"
+                  size={normalize(28)}
+                  color={theme.colors.grey}
+                />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.eyeIcon}
                 onPress={togglePasswordType}
                 activeOpacity={0.5}>
-                <Entypo name="eye-with-line" size={28} color="lightgrey" />
+                <Entypo
+                  name="eye-with-line"
+                  size={normalize(28)}
+                  color={theme.colors.grey}
+                />
               </TouchableOpacity>
             )}
             {errors.password && errors.password.type === 'required' && (
@@ -327,7 +332,7 @@ const Register = ({navigation}) => {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholderTextColor={'lightgrey'}
+                  placeholderTextColor={theme.colors.placeholdercolor}
                 />
               )}
               rules={{
@@ -341,14 +346,22 @@ const Register = ({navigation}) => {
                 style={styles.eyeIcon}
                 onPress={toggleConfirmPasswordType}
                 activeOpacity={0.5}>
-                <Entypo name="eye" size={28} color="lightgrey" />
+                <Entypo
+                  name="eye"
+                  size={normalize(28)}
+                  color={theme.colors.grey}
+                />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.eyeIcon}
                 onPress={toggleConfirmPasswordType}
                 activeOpacity={0.5}>
-                <Entypo name="eye-with-line" size={28} color="lightgrey" />
+                <Entypo
+                  name="eye-with-line"
+                  size={normalize(28)}
+                  color={theme.colors.grey}
+                />
               </TouchableOpacity>
             )}
             {errors.cnfmpassword && errors.cnfmpassword.type === 'required' && (
@@ -367,7 +380,7 @@ const Register = ({navigation}) => {
                 <Entypo
                   style={styles.checkMark}
                   name="check"
-                  size={20}
+                  size={normalize(20)}
                   color="#2196f3"
                 />
               ) : // <Text>checkMark</Text>
@@ -413,52 +426,52 @@ const Register = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  errorText: {color: 'red'},
+  errorText: {color: theme.colors.red},
   container: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   loginCard: {
     width: '85%',
-    marginTop: -50,
-    marginBottom: 50,
+    marginTop: normalize(-50),
+    marginBottom: normalize(50),
   },
   inputField: {
     width: '100%',
-    height: 50,
-    marginVertical: 10,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#376eb3',
-    borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    color: '#000',
+    borderColor: theme.colors.primary,
+    borderBottomWidth: normalize(3),
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   signInBlock: {
     width: '100%',
   },
   signinText: {
     width: '100%',
-    color: '#376eb3',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
   signupButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
     backgroundColor: '#2196f3',
   },
   signupText: {
-    color: '#fff',
-    fontSize: 18,
-    letterSpacing: 2,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    letterSpacing: normalize(2),
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
     textTransform: 'uppercase',
   },
   passwordField: {
@@ -466,33 +479,33 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
-    top: 20,
+    right: normalize(theme.spacing.small),
+    top: normalize(theme.spacing.large),
   },
   termsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: normalize(theme.spacing.small),
   },
   textRow: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: normalize(theme.spacing.small),
   },
   termsText: {
-    fontWeight: 'bold',
-    color: '#2196f3',
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.primary,
   },
   checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    marginTop: 10,
-    marginHorizontal: 5,
+    width: normalize(theme.spacing.large),
+    height: normalize(theme.spacing.large),
+    borderWidth: normalize(3),
+    marginTop: normalize(theme.spacing.small),
+    marginHorizontal: normalize(5),
     alignItems: 'center',
     justifyContent: 'center',
   },
   checkMark: {
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
 });
 

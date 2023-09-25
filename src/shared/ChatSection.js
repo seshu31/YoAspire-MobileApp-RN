@@ -75,7 +75,7 @@ const ChatSection = ({navigation, route}) => {
           <MaterialIcons
             name="arrow-back-ios"
             size={normalize(26)}
-            color="#376eb3"
+            color={theme.colors.primary}
           />
         </TouchableOpacity>
         <Text style={styles.profileTitle} numberOfLines={1}>
@@ -102,7 +102,7 @@ const ChatSection = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="send"
-            color="#376eb3"
+            color={theme.colors.primary}
             size={normalize(34)}
             style={{opacity: chatMsg ? 1 : 0.7}}
           />
@@ -127,23 +127,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     flexDirection: 'row',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     alignItems: 'center',
   },
   profileTitle: {
     fontSize: normalize(24),
-    color: '#376eb3',
+    color: theme.colors.primary,
     paddingLeft: '10%',
     textTransform: 'capitalize',
   },
   inputRow: {
     position: 'absolute',
     bottom: 0,
-    height: 50,
+    height: normalize(50),
     backgroundColor: theme.colors.white,
-    paddingVertical: 10,
-    marginVertical: 5,
-    paddingHorizontal: 20,
+    paddingVertical: normalize(theme.spacing.small),
+    marginVertical: normalize(theme.spacing.extraSmall),
+    paddingHorizontal: normalize(theme.spacing.large),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -151,13 +151,13 @@ const styles = StyleSheet.create({
   inputField: {
     width: '90%',
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginRight: normalize(5),
-    height: 40,
-    fontSize: 16,
-    color: 'black',
+    borderColor: theme.colors.grey,
+    borderRadius: normalize(5),
+    paddingHorizontal: normalize(theme.spacing.small),
+    marginRight: normalize(theme.spacing.extraSmall),
+    height: normalize(40),
+    fontSize: normalize(theme.spacing.medium),
+    color: theme.colors.black,
   },
 });
 

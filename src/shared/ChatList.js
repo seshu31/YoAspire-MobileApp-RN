@@ -52,17 +52,17 @@ const ChatList = ({item, navigation}) => {
 const styles = StyleSheet.create({
   chatList: {
     borderBottomWidth: 1,
-    borderBottomColor: '#999',
+    borderBottomColor: theme.colors.grey,
   },
   chatSection: {
     flexDirection: 'row',
     paddingHorizontal: '5%',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
   },
   chatImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
+    width: normalize(50),
+    height: normalize(50),
+    borderRadius: normalize(100),
     borderColor: theme.colors.primary,
     borderWidth: 0.5,
   },
@@ -78,16 +78,16 @@ const styles = StyleSheet.create({
   },
   chatName: {
     width: '80%',
-    fontSize: 18,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     color: theme.colors.black,
   },
   chatTime: {
-    fontSize: 14,
+    fontSize: normalize(theme.fontSizes.small),
   },
   chatMessage: {
-    paddingTop: 5,
-    fontSize: 15,
-    color: 'grey',
+    paddingTop: normalize(theme.spacing.extraSmall),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.grey,
   },
 });
 

@@ -147,7 +147,7 @@ const CreatePost = () => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder={'Say Something'}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -156,10 +156,10 @@ const CreatePost = () => {
           }}
         />
         {errors.description && errors.description.type === 'required' && (
-          <Text style={{color: 'red'}}>Description field is required.</Text>
+          <Text style={styles.errorText}>Description field is required.</Text>
         )}
         {errors.description && errors.description.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Description should consists maximum of 500 characters.
           </Text>
         )}
@@ -197,7 +197,7 @@ const CreatePost = () => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -206,10 +206,10 @@ const CreatePost = () => {
           }}
         />
         {errors.title && errors.title.type === 'required' && (
-          <Text style={{color: 'red'}}>Title field is required.</Text>
+          <Text style={styles.errorText}>Title field is required.</Text>
         )}
         {errors.title && errors.title.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Title should consists maximum of 30 characters.
           </Text>
         )}
@@ -224,7 +224,7 @@ const CreatePost = () => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -233,10 +233,10 @@ const CreatePost = () => {
           }}
         />
         {errors.brief && errors.brief.type === 'required' && (
-          <Text style={{color: 'red'}}>Brief field is required.</Text>
+          <Text style={styles.errorText}>Brief field is required.</Text>
         )}
         {errors.brief && errors.brief.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Brief should consists maximum of 50 characters.
           </Text>
         )}
@@ -252,7 +252,7 @@ const CreatePost = () => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -262,10 +262,10 @@ const CreatePost = () => {
         />
         {/* ) : null} */}
         {errors.link && errors.link.type === 'required' && (
-          <Text style={{color: 'red'}}>Link field is required.</Text>
+          <Text style={styles.errorText}>Link field is required.</Text>
         )}
         {errors.link && errors.link.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Link should consists maximum of 200 characters.
           </Text>
         )}
@@ -280,7 +280,7 @@ const CreatePost = () => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -288,7 +288,7 @@ const CreatePost = () => {
           }}
         />
         {errors.hashtags && errors.hashtags.type === 'maxLength' && (
-          <Text style={{color: 'red'}}>
+          <Text style={styles.errorText}>
             Hash Tags should consists maximum of 100 characters.
           </Text>
         )}
@@ -317,31 +317,32 @@ const CreatePost = () => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {color: 'red'},
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   header: {
     borderBottomWidth: 1,
-    height: 50,
+    height: normalize(50),
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#ddd',
+    borderColor: theme.colors.grey,
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingHorizontal: normalize(theme.spacing.small),
   },
   title: {
-    fontSize: 20,
+    fontSize: normalize(theme.fontSizes.large),
     paddingLeft: '5%',
-    color: '#376eb3',
+    color: theme.colors.primary,
   },
   postButton: {
-    backgroundColor: '#376eb3',
-    fontSize: 18,
-    color: '#FFF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 10,
+    backgroundColor: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.large),
+    color: theme.colors.white,
+    paddingHorizontal: normalize(theme.spacing.small),
+    paddingVertical: normalize(theme.spacing.small),
+    borderRadius: normalize(theme.spacing.small),
   },
   postForm: {
     flexGrow: 1,
@@ -349,37 +350,37 @@ const styles = StyleSheet.create({
   },
   groupText: {
     color: 'orange',
-    fontSize: 17,
-    paddingTop: 15,
+    fontSize: normalize(theme.fontSizes.medium),
+    paddingTop: normalize(theme.spacing.medium),
     alignSelf: 'center',
   },
   textareaContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
   },
   textareaField: {
     textAlignVertical: 'top', // hack android
-    paddingVertical: 10,
-    fontSize: 17,
-    color: 'black',
+    paddingVertical: normalize(theme.spacing.small),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   dropdownLabel: {
     paddingTop: '5%',
-    fontSize: 14,
-    color: '#376eb3',
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.primary,
   },
   picker: {
-    borderWidth: 1,
-    borderColor: 'red',
-    color: '#000',
+    borderWidth: normalize(3),
+    borderColor: theme.colors.red,
+    color: theme.colors.black,
   },
   textField: {
     marginTop: '3%',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    fontSize: 16,
-    color: '#000',
+    paddingVertical: normalize(theme.spacing.small),
+    borderBottomWidth: normalize(3),
+    borderBottomColor: theme.colors.grey,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   date: {
     marginTop: '7%',
@@ -390,28 +391,28 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
   },
   dateTimeText: {
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
   },
   uploadedImage: {
-    width: 200,
-    height: 200,
-    marginTop: 10,
+    width: normalize(200),
+    height: normalize(200),
+    marginTop: normalize(theme.spacing.small),
   },
   imageButton: {
     alignSelf: 'center',
-    color: '#376eb3',
-    fontSize: 18,
-    marginTop: 20,
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.small),
   },
   deleteButton: {
     alignSelf: 'center',
-    color: 'red',
-    fontSize: 18,
-    marginVertical: 20,
+    color: theme.colors.red,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    marginVertical: normalize(theme.spacing.large),
   },
   horizontalLine: {
     width: '100%',
-    borderTopColor: 'lightgrey',
+    borderTopColor: theme.colors.grey,
     borderTopWidth: 1,
   },
 });

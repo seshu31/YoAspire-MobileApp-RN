@@ -80,7 +80,7 @@ const Chat = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     justifyContent: 'center',
   },
   messageButtonStyle: {
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
   messageButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#376eb3',
-    borderColor: '#376eb3',
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
     borderWidth: 1,
-    color: '#fff',
-    fontSize: 18,
-    borderRadius: 30,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    borderRadius: normalize(30),
   },
 });
 

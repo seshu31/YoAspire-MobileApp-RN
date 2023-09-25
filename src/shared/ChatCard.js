@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
-
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 const ChatCard = ({item}) => {
   return (
     <View style={styles.chatSection}>
@@ -36,12 +37,12 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   chatImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 100,
+    width: normalize(40),
+    height: normalize(40),
+    borderRadius: normalize(100),
   },
   chatBody: {
-    paddingLeft: 10,
+    paddingLeft: normalize(theme.spacing.small),
   },
   chatHeader: {
     flexDirection: 'row',
@@ -58,12 +59,12 @@ const styles = StyleSheet.create({
   },
   chatTime: {
     color: '#606060',
-    fontSize: 13,
+    fontSize: normalize(theme.fontSizes.small),
   },
   chatText: {
-    paddingTop: 5,
-    fontSize: 15,
-    color: 'grey',
+    paddingTop: normalize(theme.spacing.extraSmall),
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.grey,
   },
 });
 

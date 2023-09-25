@@ -14,6 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import backend_url from '../../config';
 import Loader from '../reusables/Loader';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const Login = ({navigation, route}) => {
   const {
@@ -143,7 +145,7 @@ const Login = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -155,16 +157,16 @@ const Login = ({navigation, route}) => {
           }}
         />
         {errors.email && errors.email.type === 'validate' && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+          <Text style={styles.errorText}>{errors.email.message}</Text>
         )}
         {errors.email && errors.email.type === 'required' && (
-          <Text style={{color: 'red'}}>Email Field is required.</Text>
+          <Text style={styles.errorText}>Email Field is required.</Text>
         )}
         {errors.email && errors.email.type === 'pattern' && (
-          <Text style={{color: 'red'}}>Enter valid EmailID</Text>
+          <Text style={styles.errorText}>Enter valid EmailID</Text>
         )}
         {errors.email && errors.email.type === 'EmailNotFound' && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+          <Text style={styles.errorText}>{errors.email.message}</Text>
         )}
         <View style={styles.passwordField}>
           <Controller
@@ -180,13 +182,12 @@ const Login = ({navigation, route}) => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                placeholderTextColor={'lightgrey'}
+                placeholderTextColor={theme.colors.placeholdercolor}
               />
             )}
             rules={{
               required: true,
               minLength: 8,
-              // pattern: /^\S+$/,
               validate: hasSpace,
             }}
           />
@@ -195,29 +196,33 @@ const Login = ({navigation, route}) => {
               style={styles.eyeIcon}
               onPress={togglePasswordType}
               activeOpacity={0.5}>
-              <Entypo name="eye" size={28} color="lightgrey" />
+              <Entypo name="eye" size={normalize(28)} color="lightgrey" />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.eyeIcon}
               onPress={togglePasswordType}
               activeOpacity={0.5}>
-              <Entypo name="eye-with-line" size={28} color="lightgrey" />
+              <Entypo
+                name="eye-with-line"
+                size={normalize(28)}
+                color="lightgrey"
+              />
             </TouchableOpacity>
           )}
           {errors.password && errors.password.type === 'required' && (
-            <Text style={{color: 'red'}}>Password Field is required.</Text>
+            <Text style={styles.errorText}>Password Field is required.</Text>
           )}
           {errors.password && errors.password.type === 'minLength' && (
-            <Text style={{color: 'red'}}>
+            <Text style={styles.errorText}>
               Password should consists of minimum 8 characters.
             </Text>
           )}
           {errors.password && errors.password.type === 'validate' && (
-            <Text style={{color: 'red'}}>{errors.password.message}</Text>
+            <Text style={styles.errorText}>{errors.password.message}</Text>
           )}
           {errors.email && errors.email.type === 'incorrectPassword' && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
+            <Text style={styles.errorText}>{errors.email.message}</Text>
           )}
         </View>
         <View style={styles.registerBlock}>
@@ -248,66 +253,64 @@ const Login = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  errorText: {color: theme.colors.red},
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
-    // Image styles go here
-  },
   loginCard: {
     width: '85%',
-    marginBottom: 100,
-    marginTop: -20,
+    marginBottom: normalize(100),
+    marginTop: normalize(-20),
   },
   infoText: {
     color: 'green',
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: normalize(theme.fontSizes.medium),
+    marginBottom: normalize(theme.spacing.small),
   },
   inputField: {
     width: '100%',
-    height: 50,
-    fontSize: 16,
-    marginBottom: 10,
+    height: normalize(50),
+    fontSize: normalize(theme.fontSizes.medium),
+    marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    color: '#000',
+    backgroundColor: theme.colors.white,
+    color: theme.colors.black,
   },
   passwordField: {
     position: 'relative',
-    marginVertical: 10,
+    marginVertical: normalize(theme.spacing.small),
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
-    top: 10,
+    right: normalize(theme.spacing.small),
+    top: normalize(theme.spacing.small),
   },
   loginButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2196f3',
   },
   loginText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
   signInBlock: {
     width: '100%',
   },
   registerText: {
     width: '100%',
-    color: '#376eb3',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
   forgotText: {

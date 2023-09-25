@@ -14,6 +14,8 @@ import backend_url from '../../config';
 import axios from 'axios';
 import Loader from '../reusables/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const OTP = ({route, navigation}) => {
   if (route.params && route.params.email) {
@@ -186,6 +188,7 @@ const OTP = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
+      {loading ? <Loader /> : null}
       <AccountImage />
       {email != null ? (
         <Text style={styles.infoText}>
@@ -215,14 +218,12 @@ const OTP = ({route, navigation}) => {
       <TouchableOpacity
         onPress={resendOtp}
         disabled={timer !== 0}
-        style={{marginTop: 10}}
+        style={styles.mt10}
         activeOpacity={0.5}>
         {timer === 0 ? (
-          <Text style={{color: '#376eb3', fontSize: 16}}>Resend otp</Text>
+          <Text style={styles.resendOtpText}>Resend otp</Text>
         ) : (
-          <Text style={{color: 'black', fontSize: 16}}>
-            Resend otp in {timer} seconds
-          </Text>
+          <Text style={styles.timerText}>Resend otp in {timer} seconds</Text>
         )}
       </TouchableOpacity>
       <TouchableOpacity
@@ -234,22 +235,9 @@ const OTP = ({route, navigation}) => {
             styles.submitButton,
             {
               opacity: otpArray.every(item => item) > 0 ? 1 : 0.8,
-              backgroundColor: loading ? '#cce4f7' : '#2196f3',
             },
           ]}>
-          <ActivityIndicator
-            style={{
-              position: 'absolute',
-              top: '15%',
-              left: '55%',
-            }}
-            animating={loading}
-            size="large"
-            color="#376eb3"
-          />
-          <Text style={[styles.submitText, {opacity: loading ? 0 : 1}]}>
-            SUBMIT
-          </Text>
+          <Text style={styles.submitText}>SUBMIT</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -257,15 +245,24 @@ const OTP = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  mt10: {marginTop: 10},
+  timerText: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
+  resendOtpText: {
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
   infoText: {
     color: 'green',
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     textAlign: 'center',
     marginBottom: '10%',
   },
@@ -274,34 +271,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   inputField: {
-    height: 50,
-    fontSize: 20,
-    marginBottom: 10,
+    height: normalize(50),
+    fontSize: normalize(theme.fontSizes.large),
+    marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: theme.colors.grey,
     borderWidth: 2,
-    backgroundColor: '#fff',
-    padding: 10,
-    marginHorizontal: 10,
+    backgroundColor: theme.colors.white,
+    padding: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
     textAlign: 'center',
-    color: '#000',
+    color: theme.colors.black,
   },
   submitButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#2196f3',
     paddingHorizontal: '5%',
-    borderRadius: 5,
+    borderRadius: normalize(5),
   },
   submitText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
 });
 
