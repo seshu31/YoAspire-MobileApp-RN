@@ -134,7 +134,7 @@ const EditProject = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Title"
+              placeholder="Title*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -161,7 +161,7 @@ const EditProject = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Link"
+              placeholder="Link*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -195,7 +195,7 @@ const EditProject = ({navigation, route}) => {
                 } - ${projectStartDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Date
+                  Start Date*
                 </Text>
               )}
             </Text>
@@ -233,7 +233,7 @@ const EditProject = ({navigation, route}) => {
                 } - ${projectEndDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Final Date
+                  Final Date*
                 </Text>
               )}
             </Text>

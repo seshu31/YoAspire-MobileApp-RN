@@ -136,8 +136,8 @@ const EditSkill = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholder="Skill"
-              placeholderTextColor={'lightgrey'}
+              placeholder="Skill*"
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{

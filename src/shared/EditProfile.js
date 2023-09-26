@@ -159,7 +159,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="User Name"
+              placeholder="User Name*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -192,7 +192,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="First Name"
+              placeholder="First Name*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -225,7 +225,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Last Name"
+              placeholder="Last Name*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -262,7 +262,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholderTextColor={theme.colors.placeholdercolor}
-              placeholder="Email"
+              placeholder="Email*"
             />
           )}
           rules={{
@@ -291,7 +291,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholderTextColor={theme.colors.placeholdercolor}
-              placeholder="Phone"
+              placeholder="Phone*"
             />
           )}
           rules={{
@@ -322,7 +322,7 @@ const EditProfile = ({navigation, route}) => {
             style={styles.inputField}
             value={dob}
             placeholderTextColor={theme.colors.placeholdercolor}
-            placeholder="DOB"
+            placeholder="DOB*"
             editable={false}
           />
           <TouchableOpacity
@@ -359,7 +359,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholderTextColor={theme.colors.placeholdercolor}
-              placeholder="Location"
+              placeholder="Location*"
             />
           )}
           rules={{

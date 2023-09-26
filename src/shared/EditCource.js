@@ -136,7 +136,7 @@ const EditCourse = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Title"
+              placeholder="Title*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -170,7 +170,7 @@ const EditCourse = ({navigation, route}) => {
                 } - ${courseStartDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Year
+                  Start Year*
                 </Text>
               )}
             </Text>
@@ -208,7 +208,7 @@ const EditCourse = ({navigation, route}) => {
                 } - ${courseEndDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Final Date
+                  Final Date*
                 </Text>
               )}
             </Text>

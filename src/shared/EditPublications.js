@@ -116,7 +116,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Title"
+              placeholder="Title*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -143,7 +143,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Link"
+              placeholder="Link*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -170,7 +170,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Journal"
+              placeholder="Journal*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -202,7 +202,7 @@ const EditPublication = ({navigation, route}) => {
                   : publicationDate.getMonth() + 1
               } - ${publicationDate.getFullYear()}`
             ) : (
-              <Text style={styles.projectDurationPlaceholder}>Date</Text>
+              <Text style={styles.projectDurationPlaceholder}>Date*</Text>
             )}
           </Text>
           {show && (

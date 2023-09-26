@@ -143,7 +143,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Company"
+              placeholder="Company*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -170,7 +170,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Role"
+              placeholder="Role*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -197,7 +197,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="City"
+              placeholder="City*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -218,7 +218,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="State"
+              placeholder="State*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -265,7 +265,7 @@ const EditExperience = ({navigation, route}) => {
                 } - ${experienceFromDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Date
+                  Start Date*
                 </Text>
               )}
             </Text>
@@ -309,7 +309,7 @@ const EditExperience = ({navigation, route}) => {
                   } - ${experienceToDate.getFullYear()}`
                 ) : (
                   <Text style={styles.projectDurationPlaceholder}>
-                    Final Date
+                    Final Date*
                   </Text>
                 )}
               </Text>

@@ -109,7 +109,7 @@ const EditEducation = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Institution"
+              placeholder="Institution*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -136,7 +136,7 @@ const EditEducation = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Degree"
+              placeholder="Degree*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -163,7 +163,7 @@ const EditEducation = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Branch"
+              placeholder="Branch*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -217,7 +217,7 @@ const EditEducation = ({navigation, route}) => {
                 } - ${educationStartDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Date
+                  Start Date*
                 </Text>
               )}
             </Text>
@@ -258,7 +258,7 @@ const EditEducation = ({navigation, route}) => {
                   } - ${educationEndDate.getFullYear()}`
                 ) : (
                   <Text style={styles.projectDurationPlaceholder}>
-                    Final Date
+                    Final Date*
                   </Text>
                 )}
               </Text>
