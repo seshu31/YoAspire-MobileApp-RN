@@ -22,6 +22,31 @@ const DashboardArticle = ({articles, navigation}) => {
     setLikeCount(prevValue => (liked ? prevValue - 1 : prevValue + 1));
   };
 
+  const postedFormattedTime = formatTimeAgo(articles?.PostedOn);
+
+  // Function to format the time difference
+  function formatTimeAgo(postedTime) {
+    const currentTime = new Date();
+    const postTime = new Date(postedTime);
+    const timeDifference = currentTime - postTime;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    if (months > 0) {
+      return months === 1 ? '1mo ago' : `${months}mo ago`;
+    } else if (days > 0) {
+      return days === 1 ? '1d ago' : `${days}d ago`;
+    } else if (hours > 0) {
+      return hours === 1 ? '1h ago' : `${hours}h ago`;
+    } else if (minutes > 0) {
+      return minutes === 1 ? '1m ago' : `${minutes}m ago`;
+    } else {
+      return 'Just now';
+    }
+  }
+
   const fetchArticle = () => {
     if (articles?.Category_Type === 'article') {
       return (
@@ -30,8 +55,6 @@ const DashboardArticle = ({articles, navigation}) => {
             <View>
               <Image
                 style={styles.writeImage}
-                // source={{uri: articles.img_file_name}}
-                // source={require('../../assets/male.png')}
                 source={
                   articles.img_file_name
                     ? {uri: articles.img_file_name}
@@ -40,48 +63,29 @@ const DashboardArticle = ({articles, navigation}) => {
               />
             </View>
             <View style={styles.writerDesc}>
-              <Text
-                style={styles.writerName}
-                numberOfLines={1}
-                ellipsizeMode={'tail'}>
+              <Text style={styles.writerName} numberOfLines={1}>
                 {articles.First_Name} {articles.Last_Name}
               </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingLeft: '5%',
-                }}>
-                <Text style={{color: '#787878', fontWeight: '500'}}>
-                  {articles.PostedOn}
-                </Text>
-                <Text
-                  style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
-                  {'\u2B24'}
-                </Text>
-                <FontAwesome name="globe" color="#787878" />
+              <View style={styles.postedOn}>
+                <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
+                <Text style={styles.dot}>{'\u2B24'}</Text>
+                <FontAwesome name="globe" color={theme.colors.level2} />
               </View>
             </View>
           </View>
           <View style={styles.articleTitle}>
-            <Text
-              style={styles.titleText}
-              numberOfLines={1}
-              ellipsizeMode={'tail'}>
+            <Text style={styles.titleText} numberOfLines={1}>
               {articles.Title}
             </Text>
           </View>
           <View style={styles.articleDesc}>
-            <Text
-              style={styles.descriptionText}
-              numberOfLines={3}
-              ellipsizeMode={'tail'}>
+            <Text style={styles.descriptionText} numberOfLines={3}>
               {articles.Description}
             </Text>
           </View>
           <View style={styles.articleImage}>
             <Image
-              style={{width: '100%', height: 150, resizeMode: 'cover'}}
+              style={styles.postImage}
               source={
                 articles.Image
                   ? {uri: articles.Image}
@@ -96,7 +100,7 @@ const DashboardArticle = ({articles, navigation}) => {
         <View style={styles.jobItem}>
           <View>
             <Image
-              style={{width: 100, height: 100, resizeMode: 'contain'}}
+              style={styles.jobImage}
               source={
                 articles.Image
                   ? {uri: articles.Image}
@@ -106,19 +110,10 @@ const DashboardArticle = ({articles, navigation}) => {
           </View>
           <View style={styles.jobDetails}>
             <Text style={styles.jobTitle}>{articles.Title}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Text style={{color: '#787878', fontWeight: '500'}}>
-                {articles.PostedOn}
-              </Text>
-              <Text
-                style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
-                {'\u2B24'}
-              </Text>
-              <FontAwesome name="globe" color="#787878" />
+            <View style={styles.postedOn}>
+              <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
+              <Text style={styles.dot}>{'\u2B24'}</Text>
+              <FontAwesome name="globe" color={theme.colors.level2} />
             </View>
             <Text style={styles.jobType}>{articles.Job_Type}</Text>
             <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
@@ -131,18 +126,10 @@ const DashboardArticle = ({articles, navigation}) => {
         <View style={styles.webinarItem}>
           <Text style={styles.webinarText}>Webinar</Text>
           <Text style={styles.webinarTitle}>{articles.Title}</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: '#787878', fontWeight: '500'}}>
-              {articles.PostedOn}
-            </Text>
-            <Text style={{color: '#787878', fontSize: 5, paddingHorizontal: 2}}>
-              {'\u2B24'}
-            </Text>
-            <FontAwesome name="globe" color="#787878" />
+          <View style={styles.postedOn}>
+            <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
+            <Text style={styles.dot}>{'\u2B24'}</Text>
+            <FontAwesome name="globe" color={theme.colors.level2} />
           </View>
           <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
           <Text style={styles.webinarBrief}>{articles.Brief}</Text>
@@ -167,6 +154,7 @@ const DashboardArticle = ({articles, navigation}) => {
             navigation.navigate('article', {
               articles: articles,
               enableAutofocus: false,
+              formatTimeAgo: formatTimeAgo,
             })
           }
           activeOpacity={0.5}>
@@ -178,23 +166,19 @@ const DashboardArticle = ({articles, navigation}) => {
               {liked ? (
                 <AntDesign
                   name="like1"
-                  size={24}
-                  color="#1b76f2" // Color when liked
+                  size={normalize(theme.iconSizes.medium)}
+                  color={theme.colors.primary} // Color when liked
                 />
               ) : (
                 <AntDesign
                   name="like2"
-                  size={24}
-                  color="lightgrey" // Color when not liked
+                  size={normalize(theme.iconSizes.medium)}
+                  color={theme.colors.grey} // Color when not liked
                 />
               )}
             </TouchableOpacity>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.likeText}>
-                {`  `}
-                {likeCount}
-                Likes
-              </Text>
+            <View style={styles.likesContainer}>
+              <Text style={styles.likeText}>{likeCount} Likes</Text>
             </View>
           </View>
           <View style={styles.likeButton}>
@@ -208,11 +192,14 @@ const DashboardArticle = ({articles, navigation}) => {
                 })
               }
               activeOpacity={0.5}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <FontAwesome name="comment-o" size={24} color="lightgrey" />
+              <View style={styles.likesContainer}>
+                <FontAwesome
+                  name="comment-o"
+                  size={normalize(theme.iconSizes.medium)}
+                  color={theme.colors.grey}
+                />
                 <Text style={styles.likeText}>
                   {/* {articles.No_of_Comments} */}
-                  {`  `}
                   {commentCount} Comments
                 </Text>
               </View>
@@ -233,7 +220,7 @@ const styles = StyleSheet.create({
     borderRadius: normalize(theme.spacing.extraSmall),
     backgroundColor: theme.colors.white,
     marginVertical: normalize(theme.spacing.extraSmall),
-    paddingHorizontal: 10,
+    paddingHorizontal: normalize(theme.spacing.small),
   },
   articleItem: {
     marginBottom: normalize(theme.spacing.extraSmall),
@@ -244,12 +231,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: normalize(3),
     borderBottomColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
     width: '100%',
   },
   writerDesc: {
     justifyContent: 'center',
     width: '85%',
+    paddingLeft: normalize(theme.spacing.medium),
   },
   writeImage: {
     width: normalize(35),
@@ -259,25 +247,24 @@ const styles = StyleSheet.create({
   writerName: {
     fontWeight: theme.fontWeight.bold,
     fontSize: normalize(theme.fontSizes.medium),
-    paddingLeft: '5%',
     color: theme.colors.black,
     textTransform: 'capitalize',
   },
   articleTitle: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
     justifyContent: 'center',
   },
   titleText: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
     lineHeight: normalize(theme.spacing.extraLarge),
     color: theme.colors.level2,
   },
   articleDesc: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
   },
   descriptionText: {
     lineHeight: normalize(theme.spacing.large),
@@ -288,7 +275,7 @@ const styles = StyleSheet.create({
   articleImage: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
   },
   jobItem: {
     flexDirection: 'row',
@@ -301,7 +288,7 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: normalize(theme.fontSizes.medium),
-    fontWeight: '700',
+    fontWeight: theme.fontWeight.bold,
     color: theme.colors.black,
   },
   jobType: {
@@ -320,11 +307,11 @@ const styles = StyleSheet.create({
   },
   webinarItem: {
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
   },
   webinarText: {
-    paddingHorizontal: normalize(12),
-    paddingVertical: normalize(3),
+    paddingHorizontal: normalize(theme.spacing.small),
+    paddingVertical: normalize(theme.spacing.extraSmall),
     backgroundColor: '#74d848',
     color: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
@@ -336,7 +323,7 @@ const styles = StyleSheet.create({
   webinarTitle: {
     fontSize: normalize(theme.fontSizes.medium),
     fontWeight: theme.fontWeight.bold,
-    paddingVertical: normalize(3),
+    paddingVertical: normalize(theme.spacing.extraSmall),
     color: theme.colors.black,
   },
   webinarOrganiser: {
@@ -344,7 +331,7 @@ const styles = StyleSheet.create({
     color: theme.colors.level2,
   },
   webinarBrief: {
-    paddingVertical: normalize(3),
+    paddingVertical: normalize(theme.spacing.extraSmall),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.level2,
   },
@@ -357,18 +344,45 @@ const styles = StyleSheet.create({
   likeSection: {
     flexDirection: 'row',
     borderTopColor: theme.colors.border,
-    borderTopWidth: normalize(3),
+    borderTopWidth: 1,
   },
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
     height: normalize(40),
-    paddingLeft: '5%',
+    paddingLeft: normalize(theme.spacing.medium),
   },
   likeText: {
     paddingLeft: normalize(theme.spacing.extraSmall),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.grey,
+  },
+  postedOn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  postedOnText: {
+    color: theme.colors.level2,
+    fontWeight: theme.fontWeight.semiBold,
+  },
+  dot: {
+    color: theme.colors.level2,
+    fontSize: normalize(theme.fontSizes.extraSmall),
+    paddingHorizontal: normalize(theme.fontSizes.extraSmall),
+  },
+  postImage: {
+    width: '100%',
+    height: normalize(150),
+    resizeMode: 'cover',
+  },
+  jobImage: {
+    width: normalize(100),
+    height: normalize(100),
+    resizeMode: 'contain',
+  },
+  likesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

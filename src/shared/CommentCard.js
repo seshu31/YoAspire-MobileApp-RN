@@ -12,14 +12,13 @@ import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Menu} from 'react-native-paper';
 import normalize from 'react-native-normalize';
-import Loader from '../reusables/Loader';
 import theme from '../../theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CommentCard = ({item, navigation, admin, fetchComments}) => {
-  const [liked, setLiked] = useState(() => true);
+  const [liked, setLiked] = useState(true);
   const [likeCount, setLikeCount] = useState(5);
-  const [visible, setVisible] = useState(() => false);
+  const [visible, setVisible] = useState(false);
 
   const likeHandler = () => {
     // Toggle the liked state
@@ -51,15 +50,16 @@ const CommentCard = ({item, navigation, admin, fetchComments}) => {
     );
 
   const deleteHandler = () => {
+    setVisible(false);
     console.log('medthod: get, url: ${backend_url}/comment/${item.CommentId}');
   };
 
   return (
     <View style={styles.commentCard}>
       <View style={styles.commentHeader}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.commentProfileContainer}>
           <Image
-            style={{width: 40, height: 40}}
+            style={styles.profileImage}
             source={require('../../assets/male.png')}
           />
           <Text style={styles.username}>
@@ -71,31 +71,35 @@ const CommentCard = ({item, navigation, admin, fetchComments}) => {
             visible={visible}
             onDismiss={() => setVisible(false)}
             anchor={
-              <TouchableOpacity
-                onPress={() => setVisible(true)}
-                style={{paddingHorizontal: '2%'}}>
-                <MaterialIcons name="more-vert" size={26} color="#303030" />
+              <TouchableOpacity onPress={() => setVisible(true)}>
+                <MaterialIcons
+                  name="more-vert"
+                  size={normalize(theme.iconSizes.medium)}
+                  color={theme.colors.black}
+                />
               </TouchableOpacity>
             }>
             <Menu.Item onPress={dialogHandler} title="Delete" />
           </Menu>
         ) : null}
       </View>
-      <Text style={styles.comment}> {item.Comment}</Text>
+      <Text style={styles.comment} numberOfLines={2}>
+        {item.Comment}
+      </Text>
       <View style={styles.likeSection}>
         <View style={styles.likeButton}>
           <TouchableOpacity onPress={likeHandler} activeOpacity={0.5}>
             {liked ? (
               <AntDesign
                 name="like1"
-                size={24}
-                color="#1b76f2" // Color when liked
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.primary} // Color when liked
               />
             ) : (
               <AntDesign
                 name="like2"
-                size={24}
-                color="lightgrey" // Color when not liked
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.grey} // Color when not liked
               />
             )}
           </TouchableOpacity>
@@ -117,12 +121,12 @@ const styles = StyleSheet.create({
   commentHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: '2%',
+    paddingHorizontal: normalize(theme.spacing.small),
   },
   username: {
     alignSelf: 'center',
     fontSize: normalize(theme.fontSizes.medium),
-    paddingLeft: '3%',
+    paddingLeft: normalize(theme.spacing.small),
     fontWeight: theme.fontWeight.bold,
     color: theme.colors.black,
   },
@@ -130,23 +134,29 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     lineHeight: normalize(theme.spacing.large),
     paddingVertical: normalize(theme.spacing.small),
-    paddingHorizontal: '2%',
+    paddingHorizontal: normalize(theme.spacing.small),
     color: theme.colors.level2,
   },
   likeSection: {
     flexDirection: 'row',
     paddingTop: normalize(theme.spacing.small),
-    paddingHorizontal: '3%',
+    paddingHorizontal: normalize(theme.spacing.small),
   },
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '30%',
   },
   likeText: {
     paddingLeft: normalize(theme.spacing.small),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.grey,
+  },
+  commentProfileContainer: {
+    flexDirection: 'row',
+  },
+  profileImage: {
+    width: normalize(40),
+    height: normalize(40),
   },
 });
 
