@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CameraOptionsModal from '../reusables/CameraOptionsModal';
 import Loader from '../reusables/Loader';
 import {useForm, Controller} from 'react-hook-form';
 import Textarea from 'react-native-textarea';
@@ -22,6 +22,7 @@ const CreateGroup = ({navigation, route}) => {
   // Initialize variables and states
   var group = false;
   const [loading, setLoading] = useState(() => false);
+  const [showCameraOptions, setShowCameraOptions] = useState(false);
   const [image, setImage] = useState(() => (group ? group.image : null));
   const {
     control,
@@ -44,7 +45,7 @@ const CreateGroup = ({navigation, route}) => {
 
   // Function to handle image selection
   const imageHandler = async () => {
-    console.log('imageHandler');
+    setShowCameraOptions(true);
   };
 
   // Function to handle group deletion confirmation dialog
@@ -80,7 +81,11 @@ const CreateGroup = ({navigation, route}) => {
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               activeOpacity={0.5}>
-              <Ionicons name="arrow-back" size={32} color="#376eb3" />
+              <MaterialIcons
+                name="arrow-back-ios"
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
             <Text style={styles.title}>Edit Group </Text>
             <Text
@@ -96,7 +101,7 @@ const CreateGroup = ({navigation, route}) => {
               activeOpacity={0.5}>
               <MaterialIcons
                 name="arrow-back-ios"
-                size={normalize(26)}
+                size={normalize(theme.iconSizes.mediumLarge)}
                 color={theme.colors.primary}
               />
             </TouchableOpacity>
@@ -119,10 +124,14 @@ const CreateGroup = ({navigation, route}) => {
               source={image ? {uri: image} : require('../../assets/male.png')}
             />
             <TouchableOpacity
-              onPress={imageHandler}
+              onPress={() => imageHandler()}
               style={styles.photoEdit}
               activeOpacity={0.5}>
-              <AntDesign name="edit" size={24} color="#376eb3" />
+              <AntDesign
+                name="edit"
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -133,7 +142,7 @@ const CreateGroup = ({navigation, route}) => {
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               placeholder="name"
-              style={[styles.textField, {marginTop: 0}]}
+              style={[styles.textField]}
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
@@ -199,6 +208,10 @@ const CreateGroup = ({navigation, route}) => {
           </TouchableOpacity>
         ) : null}
       </View>
+      <CameraOptionsModal
+        showCameraOptions={showCameraOptions}
+        setShowCameraOptions={setShowCameraOptions}
+      />
     </View>
   );
 };
@@ -209,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     height: normalize(50),
     flexDirection: 'row',
     alignItems: 'center',
@@ -219,7 +232,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: normalize(theme.fontSizes.large),
-    paddingLeft: '10%',
+    paddingLeft: normalize(35),
     color: theme.colors.level2,
   },
   postButton: {
@@ -227,9 +240,8 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.large),
   },
   postForm: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.large),
   },
-
   photoSection: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -244,53 +256,44 @@ const styles = StyleSheet.create({
     width: normalize(100),
     height: normalize(100),
     borderRadius: normalize(50),
-    borderWidth: normalize(5),
+    borderWidth: 3,
     borderColor: theme.colors.primary,
     marginVertical: normalize(theme.spacing.small),
   },
-
   photoDiv: {
     position: 'relative',
-  },
-  photoIndicator: {
-    position: 'absolute',
-    top: '35%',
-    left: '9%',
   },
   photoEdit: {
     position: 'absolute',
     right: normalize(-8),
-    bottom: normalize(25),
+    bottom: normalize(theme.spacing.extraLarge),
     backgroundColor: theme.colors.white,
     elevation: normalize(5),
     borderRadius: normalize(50),
     padding: normalize(8),
   },
   textareaContainer: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
   },
   textareaField: {
-    textAlignVertical: 'top', // hack android
+    textAlignVertical: 'top',
     paddingVertical: normalize(theme.spacing.small),
     fontSize: normalize(theme.fontSizes.mediumLarge),
     color: theme.colors.black,
   },
   dropdownLabel: {
-    paddingTop: '5%',
+    paddingTop: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.small),
     color: theme.colors.level2,
   },
   picker: {
     marginLeft: '-2%',
-    borderBottomWidth: normalize(3),
-    borderBottomColor: theme.colors.grey,
     color: theme.colors.black,
   },
   textField: {
-    marginTop: '3%',
     paddingVertical: normalize(theme.spacing.small),
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
     fontSize: normalize(theme.fontSizes.medium),
   },
