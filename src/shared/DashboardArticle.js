@@ -153,7 +153,7 @@ const DashboardArticle = ({articles, navigation}) => {
           onPress={() =>
             navigation.navigate('article', {
               articles: articles,
-              enableAutofocus: false,
+              enableAutofocusValue: false,
               formatTimeAgo: formatTimeAgo,
             })
           }
@@ -188,7 +188,8 @@ const DashboardArticle = ({articles, navigation}) => {
                   PostId: articles.PostId,
                   addComment: true,
                   articles: articles,
-                  enableAutofocus: true,
+                  enableAutofocusValue: true,
+                  formatTimeAgo: formatTimeAgo,
                 })
               }
               activeOpacity={0.5}>

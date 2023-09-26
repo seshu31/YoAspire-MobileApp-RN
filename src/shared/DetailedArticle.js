@@ -20,10 +20,11 @@ import theme from '../../theme';
 import {commentsData} from '../PostProfileData';
 
 const DetailedArticle = ({navigation, route}) => {
+  const {articles, enableAutofocusValue, formatTimeAgo} = route.params;
   const [article, setArticle] = useState(
     route.params?.articles ? route.params.articles : {},
   );
-  const enableAutofocus = route.params?.enableAutofocus || false;
+  const enableAutofocus = enableAutofocusValue || false;
   const [comments, setComments] = useState(commentsData);
   const [fetching, setFetching] = useState(false);
   const [likeCount, setLikeCount] = useState(4);
@@ -33,9 +34,8 @@ const DetailedArticle = ({navigation, route}) => {
   const [userid, setUserid] = useState(null);
   const [loading, setLoading] = useState(false);
   const [owner, setOwner] = useState(false);
-  const postedFormattedTime = route.params?.formatTimeAgo(
-    route.params?.articles?.PostedOn,
-  );
+
+  const postedFormattedTime = formatTimeAgo(articles?.PostedOn);
   const fetchTags = () => {
     const HashTags = article.Hashtags.split(',');
     return HashTags.map((tag, index) => {
