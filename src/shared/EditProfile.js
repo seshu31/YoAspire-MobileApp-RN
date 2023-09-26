@@ -36,10 +36,7 @@ const EditProfile = ({navigation, route}) => {
   }, []);
 
   const onDateChange = selectedDate => {
-    console.log('check date', route.params?.user?.profile?.DOB);
-
     const currentDate = new Date(selectedDate);
-    console.log('current date', currentDate);
     const requiredDate =
       currentDate.getDate().toString().length === 1
         ? '0' + currentDate.getDate()
@@ -109,7 +106,7 @@ const EditProfile = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(24)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -119,7 +116,7 @@ const EditProfile = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="save-outline"
-            size={normalize(24)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -163,7 +160,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="User Name"
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -187,7 +184,7 @@ const EditProfile = ({navigation, route}) => {
         )}
         <Controller
           control={control}
-          name="firstname"
+          name="firstName"
           defaultValue={user.profile.First_Name}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
@@ -196,7 +193,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="First Name"
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -205,22 +202,22 @@ const EditProfile = ({navigation, route}) => {
             maxLength: 30,
           }}
         />
-        {errors.firstname && errors.firstname.type === 'required' && (
-          <Text style={styles.errorText}>Firstname Field is required.</Text>
+        {errors.firstName && errors.firstName.type === 'required' && (
+          <Text style={styles.errorText}>firstName Field is required.</Text>
         )}
-        {errors.firstname && errors.firstname.type === 'minLength' && (
+        {errors.firstName && errors.firstName.type === 'minLength' && (
           <Text style={styles.errorText}>
-            Firstname should consists minimum of 3 characters.
+            firstName should consists minimum of 3 characters.
           </Text>
         )}
-        {errors.firstname && errors.firstname.type === 'maxLength' && (
+        {errors.firstName && errors.firstName.type === 'maxLength' && (
           <Text style={styles.errorText}>
-            Firstname should consists maximum of 30 characters.
+            firstName should consists maximum of 30 characters.
           </Text>
         )}
         <Controller
           control={control}
-          name="lastname"
+          name="lastName"
           defaultValue={user.profile.Last_Name}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
@@ -229,7 +226,7 @@ const EditProfile = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="Last Name"
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -238,17 +235,17 @@ const EditProfile = ({navigation, route}) => {
             maxLength: 30,
           }}
         />
-        {errors.lastname && errors.lastname.type === 'required' && (
-          <Text style={styles.errorText}>lastname Field is required.</Text>
+        {errors.lastName && errors.lastName.type === 'required' && (
+          <Text style={styles.errorText}>lastName Field is required.</Text>
         )}
-        {errors.lastname && errors.lastname.type === 'minLength' && (
+        {errors.lastName && errors.lastName.type === 'minLength' && (
           <Text style={styles.errorText}>
-            lastname should consists minimum of 3 characters.
+            lastName should consists minimum of 3 characters.
           </Text>
         )}
-        {errors.lastname && errors.lastname.type === 'maxLength' && (
+        {errors.lastName && errors.lastName.type === 'maxLength' && (
           <Text style={styles.errorText}>
-            lastname should consists maximum of 30 characters.
+            lastName should consists maximum of 30 characters.
           </Text>
         )}
 
@@ -264,7 +261,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
               placeholder="Email"
             />
           )}
@@ -293,7 +290,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
               placeholder="Phone"
             />
           )}
@@ -324,7 +321,7 @@ const EditProfile = ({navigation, route}) => {
             autoCapitalize="none"
             style={styles.inputField}
             value={dob}
-            placeholderTextColor={'lightgrey'}
+            placeholderTextColor={theme.colors.placeholdercolor}
             placeholder="DOB"
             editable={false}
           />
@@ -334,7 +331,7 @@ const EditProfile = ({navigation, route}) => {
             activeOpacity={0.5}>
             <Ionicons
               name="calendar"
-              size={normalize(30)}
+              size={normalize(theme.iconSizes.large)}
               color={theme.colors.darkgrey}
             />
           </TouchableOpacity>
@@ -343,7 +340,6 @@ const EditProfile = ({navigation, route}) => {
           date={date ? date : new Date()}
           format="MM/DD/YYYY"
           androidVariant="nativeAndroid"
-          value={date}
           mode="date"
           style={styles.picker}
           maximumDate={maximumDOB}
@@ -362,7 +358,7 @@ const EditProfile = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholderTextColor={'lightgrey'}
+              placeholderTextColor={theme.colors.placeholdercolor}
               placeholder="Location"
             />
           )}
@@ -445,7 +441,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
-    fontSize: normalize(theme.fontSizes.medium),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     color: theme.colors.black,
   },
   dateTime: {

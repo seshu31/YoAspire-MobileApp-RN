@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Image} from 'react-native';
+import normalize from 'react-native-normalize';
 
 const AccountImage = () => {
   return (
@@ -14,6 +15,7 @@ const AccountImage = () => {
 const styles = StyleSheet.create({
   companyLogo: {
     width: '80%',
+    height: normalize(250),
   },
 });
 

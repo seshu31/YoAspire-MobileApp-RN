@@ -25,31 +25,26 @@ const Login = ({navigation, route}) => {
     formState: {errors},
     setError,
     reset,
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-  const message = route.params?.message ? route.params.message : null;
+  } = useForm();
+  const message = route.params?.message ? route.params.message : '';
   const [isSecureEntry, setIsSecureEntry] = useState(true);
-  const [emailAdd, setEmailAdd] = useState(() => '');
-  const [emailErr, setEmailErr] = useState(() => true);
-  const [loading, setLoading] = useState(() => false);
+  const [emailAdd, setEmailAdd] = useState('');
+  const [loading, setLoading] = useState(false);
+  const values = getValues();
 
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
   };
 
-  const verifyPassword = async data => {
+  const verifyPassword = async (email, password) => {
     setLoading(true);
     try {
-      if (data.email && data) {
+      if (email && password) {
         const response = await axios.post(
           `${backend_url}/auth/login`,
           {
-            email: data.email,
-            password: data.password,
+            email: email,
+            password: password,
           },
           {
             headers: {
@@ -88,6 +83,7 @@ const Login = ({navigation, route}) => {
       }
     } catch (err) {
       console.log(err);
+      setLoading(false);
       Alert.alert('Something went wrong. Try again later.');
     }
   };
@@ -99,29 +95,12 @@ const Login = ({navigation, route}) => {
     return true;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsSecureEntry(true);
     setEmailAdd('');
-    setEmailErr(true);
     navigation.setParams({message: null});
+    await verifyPassword(values.email, values.password);
     // route.params.loginHandler(true);
-  };
-
-  const onSubmit = data => {
-    console.log(data);
-    navigation.navigate('index');
-  };
-
-  const validateEmail = async value => {
-    const response = await axios.get(
-      `${backend_url}/auth/samplecheckemail/${value}`,
-    );
-    if (response.data.statuscode !== 1) {
-      setEmailErr(true);
-      return response.data.status;
-    }
-    setEmailErr(false);
-    return true;
   };
 
   return (
@@ -151,7 +130,6 @@ const Login = ({navigation, route}) => {
           rules={{
             required: true,
             validate: hasSpace,
-            validateEmail,
             pattern:
               /^\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~\s-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+))\s*$/,
           }}
@@ -177,6 +155,7 @@ const Login = ({navigation, route}) => {
               <TextInput
                 placeholder="Password"
                 autoCapitalize="none"
+                contextMenuHidden={true}
                 style={styles.inputField}
                 secureTextEntry={isSecureEntry}
                 onBlur={onBlur}
@@ -196,7 +175,11 @@ const Login = ({navigation, route}) => {
               style={styles.eyeIcon}
               onPress={togglePasswordType}
               activeOpacity={0.5}>
-              <Entypo name="eye" size={normalize(28)} color="lightgrey" />
+              <Entypo
+                name="eye"
+                size={normalize(theme.iconSizes.mediumLarge)}
+                color={theme.colors.grey}
+              />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -205,8 +188,8 @@ const Login = ({navigation, route}) => {
               activeOpacity={0.5}>
               <Entypo
                 name="eye-with-line"
-                size={normalize(28)}
-                color="lightgrey"
+                size={normalize(theme.iconSizes.mediumLarge)}
+                color={theme.colors.grey}
               />
             </TouchableOpacity>
           )}
@@ -234,7 +217,7 @@ const Login = ({navigation, route}) => {
         </View>
         <TouchableOpacity
           style={[styles.loginButton]}
-          onPress={handleSubmit(verifyPassword)}
+          onPress={handleSubmit(handleLogin)}
           activeOpacity={0.5}>
           <Text style={[styles.loginText]}>LOGIN</Text>
         </TouchableOpacity>
@@ -257,13 +240,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
+    paddingTop: normalize(70),
     alignItems: 'center',
-    justifyContent: 'center',
   },
   loginCard: {
     width: '85%',
-    marginBottom: normalize(100),
-    marginTop: normalize(-20),
   },
   infoText: {
     color: 'green',
@@ -272,8 +253,9 @@ const styles = StyleSheet.create({
   },
   inputField: {
     width: '100%',
+    paddingRight: normalize(40),
     height: normalize(50),
-    fontSize: normalize(theme.fontSizes.medium),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
     borderColor: theme.colors.primary,
@@ -295,7 +277,7 @@ const styles = StyleSheet.create({
     marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2196f3',
+    backgroundColor: theme.colors.primary,
   },
   loginText: {
     color: theme.colors.white,
@@ -315,7 +297,7 @@ const styles = StyleSheet.create({
   },
   forgotText: {
     width: '100%',
-    color: '#2196f3',
+    color: theme.colors.primary,
     textAlign: 'right',
   },
 });

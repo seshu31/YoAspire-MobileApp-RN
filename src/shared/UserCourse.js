@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -21,7 +21,7 @@ const UserCourse = ({navigation, route}) => {
   const [owner, setOwner] = useState(() => true);
   const [isLoading, setIsLoading] = useState(() => false);
 
-  let courseArr = route.params?.courses ? route.params.courses : null;
+  let courseArr = route.params?.courses ? route.params.courses : [];
 
   useEffect(() => fetchCourses(), []);
 
@@ -32,7 +32,7 @@ const UserCourse = ({navigation, route}) => {
         : setOwner(false);
       return await AsyncStorage.getItem('userToken');
     } catch (error) {
-      alert('Something went wrong');
+      Alert.alert('Something went wrong');
     }
   };
 
@@ -65,7 +65,7 @@ const UserCourse = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -76,12 +76,15 @@ const UserCourse = ({navigation, route}) => {
             activeOpacity={0.5}>
             <Ionicons
               name="add"
-              size={normalize(32)}
+              size={normalize(theme.iconSizes.large)}
               color={theme.colors.white}
             />
           </TouchableOpacity>
         ) : (
-          <Ionicons size={normalize(32)} color={theme.colors.black} />
+          <Ionicons
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.black}
+          />
         )}
       </View>
       {courseArr && courseArr.length ? (
@@ -102,7 +105,7 @@ const UserCourse = ({navigation, route}) => {
                       <AntDesign
                         name="edit"
                         color={theme.colors.primary}
-                        size={normalize(24)}
+                        size={normalize(theme.iconSizes.medium)}
                       />
                     </TouchableOpacity>
                   ) : null}

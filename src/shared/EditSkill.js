@@ -107,7 +107,7 @@ const EditSkill = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -118,7 +118,11 @@ const EditSkill = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(skillHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save-outline" size={24} color="#fff" />
+          <Ionicons
+            name="save-outline"
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>

@@ -107,7 +107,7 @@ const EditCourse = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -119,7 +119,7 @@ const EditCourse = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="save-outline"
-            size={normalize(24)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -182,16 +182,16 @@ const EditCourse = ({navigation, route}) => {
                 format="DD/MM/YYYY"
                 mode="date"
                 androidVariant="nativeAndroid"
-                value={courseStartDate}
                 onConfirm={onChangeFromDate}
                 onCancel={onChangeFromDate}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && courseStartDate == null ? (
-              <Text style={styles.errorText}>Start Year Field is required</Text>
+              <Text style={styles.errorText}>Start Date Field is required</Text>
             ) : null}
           </View>
+          <Text style={styles.hyphen}>-</Text>
           <View style={styles.yearField}>
             <Text
               style={[styles.inputField, styles.projectDuration]}
@@ -208,7 +208,7 @@ const EditCourse = ({navigation, route}) => {
                 } - ${courseEndDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Final Year
+                  Final Date
                 </Text>
               )}
             </Text>
@@ -220,14 +220,13 @@ const EditCourse = ({navigation, route}) => {
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
-                value={courseEndDate}
                 onConfirm={onChangeToDate}
                 onCancel={onChangeToDate}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && courseEndDate == null ? (
-              <Text style={styles.errorText}>Final Year Field is required</Text>
+              <Text style={styles.errorText}>Final Date Field is required</Text>
             ) : null}
           </View>
         </View>
@@ -268,28 +267,6 @@ const EditCourse = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  deleteButton: {
-    color: theme.colors.white,
-    alignSelf: 'center',
-    fontSize: normalize(theme.fontSizes.large),
-    marginVertical: normalize(theme.spacing.small),
-  },
-  deleteButtonContainer: {
-    backgroundColor: theme.colors.red,
-    borderRadius: 6,
-    shadowOpacity: 0.4, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
-    elevation: 6,
-  },
-  errorText: {
-    color: theme.colors.red,
-  },
-  projectDurationPlaceholder: {
-    color: theme.colors.placeholdercolor,
-  },
-  projectDuration: {
-    paddingTop: normalize(theme.spacing.medium),
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -325,18 +302,47 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   yearField: {
-    width: '49%',
+    width: '46%',
   },
   textarea: {
     textAlignVertical: 'top',
-    fontSize: 16,
-    color: '#333',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   initialBody: {
     paddingVertical: normalize(theme.spacing.extraSmall),
     borderColor: theme.colors.primary,
     marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
+  },
+  hyphen: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    marginTop: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
+  },
+  deleteButton: {
+    color: theme.colors.white,
+    alignSelf: 'center',
+    fontSize: normalize(theme.fontSizes.large),
+    marginVertical: normalize(theme.spacing.small),
+  },
+  deleteButtonContainer: {
+    backgroundColor: theme.colors.red,
+    borderRadius: 6,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 6,
+  },
+  errorText: {
+    color: theme.colors.red,
+  },
+  projectDurationPlaceholder: {
+    color: theme.colors.placeholdercolor,
+  },
+  projectDuration: {
+    paddingTop: normalize(theme.spacing.medium),
+    textAlign: 'center',
   },
 });
 export default EditCourse;

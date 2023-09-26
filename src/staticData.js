@@ -142,9 +142,9 @@ const Profiles = [
       heading: 'heading example2',
       DOB: '2000-04-08T18:30:00.000Z',
       Title: 'fullstack developer',
-      Email: 'sravs.vadlamanu4@gmail.com',
-      phone_no: '9186572345',
-      Location: 'hyderabad',
+      Email: '',
+      phone_no: '',
+      Location: '',
     },
     experience: [
       {
@@ -387,7 +387,7 @@ const ChatListData = [
     flag: 'sender',
     message: 'heyy sraz',
     profile: {
-      First_Name: 'durga',
+      First_Name: 'durga durga 2 krishna kranthi',
       Last_Name: 'sravani',
       User_Name: 'srazzz',
       heading: 'heading example',
@@ -454,4 +454,18 @@ const chatArray = [
   {msgId: 5, message: 'bye'},
   {msgId: 6, message: 'bye'},
 ];
-export {Profiles, Followees, ChatListData, chatArray};
+
+const DummyUser = {
+  UserId: 8,
+  profile: {
+    First_Name: 'Ram',
+    Last_Name: 'P',
+    heading: '',
+    Title: '',
+    DOB: '',
+    Email: '',
+    phone_no: '',
+    Location: '',
+  },
+};
+export {Profiles, Followees, ChatListData, chatArray, DummyUser};

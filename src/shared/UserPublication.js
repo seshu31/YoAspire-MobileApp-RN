@@ -17,11 +17,11 @@ import normalize from 'react-native-normalize';
 
 const UserPublication = ({navigation, route}) => {
   const [publication, setPublication] = useState(
-    route.params?.publications ? route.params.publications : null,
+    route.params?.publications ? route.params.publications : [],
   );
   const {userid} = route.params;
-  const [owner, setOwner] = useState(() => true);
-  const [isLoading, setIsLoading] = useState(() => false);
+  const [owner, setOwner] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => fetchPublications(), []);
 
@@ -84,7 +84,7 @@ const UserPublication = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -93,13 +93,20 @@ const UserPublication = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('edit-publication')}
             activeOpacity={0.5}>
-            <Ionicons name="add" size={32} color="#fff" />
+            <Ionicons
+              name="add"
+              size={normalize(theme.iconSizes.large)}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         ) : (
-          <Ionicons size={32} color="#376eb3" />
+          <Ionicons
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.primary}
+          />
         )}
       </View>
-      {publication && publication.length ? (
+      {publication.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {publication.map((el, index) => {
@@ -121,7 +128,7 @@ const UserPublication = ({navigation, route}) => {
                       <AntDesign
                         name="edit"
                         color={theme.colors.primary}
-                        size={normalize(24)}
+                        size={normalize(theme.iconSizes.medium)}
                       />
                     </TouchableOpacity>
                   ) : null}

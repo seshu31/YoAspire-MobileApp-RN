@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -16,9 +17,8 @@ import normalize from 'react-native-normalize';
 
 const UserEducation = ({navigation, route}) => {
   const [education, setEducation] = useState(
-    route.params?.education ? route.params.education : null,
+    route.params?.education ? route.params.education : [],
   );
-  console.log(education);
   const [isLoading, setIsLoading] = useState(() => false);
 
   useEffect(() => fetchEducation(), []);
@@ -30,7 +30,7 @@ const UserEducation = ({navigation, route}) => {
         token: await AsyncStorage.getItem('userToken'),
       };
     } catch (error) {
-      alert('Something went wrong');
+      Alert.alert('Something went wrong');
     }
   };
 
@@ -82,7 +82,7 @@ const UserEducation = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -92,12 +92,12 @@ const UserEducation = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="add"
-            size={normalize(32)}
+            size={normalize(theme.iconSizes.large)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
       </View>
-      {education && education.length ? (
+      {education.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {education.map((el, index) => {

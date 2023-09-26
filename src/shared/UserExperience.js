@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -16,7 +17,7 @@ import normalize from 'react-native-normalize';
 
 const UserExperience = ({navigation, route}) => {
   const [experience, setExperience] = useState(
-    route.params?.experience ? route.params.experience : null,
+    route.params?.experience ? route.params.experience : [],
   );
   const [isLoading, setIsLoading] = useState(() => false);
 
@@ -29,7 +30,7 @@ const UserExperience = ({navigation, route}) => {
         token: await AsyncStorage.getItem('userToken'),
       };
     } catch (error) {
-      alert('Something went wrong');
+      Alert.alert('Something went wrong');
     }
   };
 
@@ -81,18 +82,22 @@ const UserExperience = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
-            color="#fff"
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.white}
           />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Experience</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('edit-experience')}
           activeOpacity={0.5}>
-          <Ionicons name="add" size={32} color="#fff" />
+          <Ionicons
+            name="add"
+            size={normalize(theme.iconSizes.large)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
-      {experience && experience.length ? (
+      {experience.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {experience.map((el, index) => {
@@ -121,7 +126,11 @@ const UserExperience = ({navigation, route}) => {
                     }
                     style={styles.editIcon}
                     activeOpacity={0.5}>
-                    <AntDesign name="edit" color={'#376eb3'} size={24} />
+                    <AntDesign
+                      name="edit"
+                      color={theme.colors.primary}
+                      size={normalize(theme.iconSizes.medium)}
+                    />
                   </TouchableOpacity>
                 </View>
               );

@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   messageButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: normalize(theme.spacing.small),
+    paddingHorizontal: normalize(theme.spacing.large),
     backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
     borderWidth: 1,

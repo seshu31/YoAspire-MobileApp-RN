@@ -7,8 +7,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
-  Button,
 } from 'react-native';
 import AccountImage from './AccountImage';
 import {useForm, Controller} from 'react-hook-form';
@@ -33,12 +31,12 @@ const Register = ({navigation}) => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      username: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      cnfmpassword: '',
+      email: 'sravs.vadlamanu@gmail.com',
+      password: 'Sravs.vadlamanu@gmail.com1',
+      cnfmPassword: 'Sravs.vadlamanu@gmail.com1',
+      firstName: 'durga',
+      lastName: 'sravani',
+      username: 'srazzz',
     },
   });
 
@@ -49,7 +47,13 @@ const Register = ({navigation}) => {
     return true;
   };
 
-  const handleRegister = ({email, password, firstName, lastName, username}) => {
+  const handleRegister = async ({
+    email,
+    password,
+    firstName,
+    lastName,
+    username,
+  }) => {
     setLoading(true);
     const payload = {
       email: email.trim(),
@@ -59,41 +63,43 @@ const Register = ({navigation}) => {
       username: username.trim(),
       role: 'user',
     };
-    console.log(JSON.stringify(payload), 'handleregister function');
+    console.log(JSON.stringify(payload), 'handleRegister function');
 
-    axios
-      .post(`${backend_url}/auth/register`, payload, {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
+    try {
+      const response = await axios.post(
+        `${backend_url}/auth/register`,
+        payload,
+        {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         },
-      })
-      .then(response => {
-        console.log('register response', response.data);
-        setLoading(false);
-        if (response.data.statuscode === 1 || response.data.statuscode === -2) {
-          navigation.navigate('otp-verification', {
-            email: email,
-          });
-          reset({
-            email: '',
-            password: '',
-            cnfmpassword: '',
-            firstName: '',
-            lastName: '',
-            username: '',
-          });
-        } else if (response.data.statuscode === -1) {
-          Alert.alert('Account exists', response.data.status);
-        } else {
-          navigation.navigate('otp-verification', {
-            email: email,
-          });
-        }
-      })
-      .catch(err => {
-        setLoading(false);
-        Alert.alert('Something went wrong. Please, try again.', err);
-      });
+      );
+
+      console.log('register response', response.data);
+      setLoading(false);
+
+      if (response.data.statuscode === 1 || response.data.statuscode === -2) {
+        navigation.navigate('otp-verification', {
+          email: email,
+        });
+        reset({
+          email: '',
+          password: '',
+          cnfmPassword: '',
+          firstName: '',
+          lastName: '',
+          username: '',
+        });
+      } else if (response.data.statuscode === -1) {
+        Alert.alert('Account exists', response.data.status);
+      } else {
+        Alert.alert('Error', 'Something went wrong');
+      }
+    } catch (err) {
+      setLoading(false);
+      Alert.alert('Something went wrong. Please, try again.', err.message);
+    }
   };
 
   const togglePasswordType = () => {
@@ -108,13 +114,6 @@ const Register = ({navigation}) => {
 
   const toggleCheckbox = () => {
     setIsChecked(prevIsChecked => !prevIsChecked);
-  };
-
-  const onSubmit = data => {
-    console.log(data);
-    navigation.navigate('otp-verification', {
-      email: data.email,
-    });
   };
 
   const validateUsername = async value => {
@@ -188,16 +187,16 @@ const Register = ({navigation}) => {
             name="firstName"
           />
           {errors.firstName && errors.firstName.type === 'required' && (
-            <Text style={styles.errorText}>Firstname Field is required.</Text>
+            <Text style={styles.errorText}>FirstName Field is required.</Text>
           )}
           {errors.firstName && errors.firstName.type === 'minLength' && (
             <Text style={styles.errorText}>
-              Firstname should consists minimum of 3 characters.
+              FirstName should consists minimum of 3 characters.
             </Text>
           )}
           {errors.firstName && errors.firstName.type === 'maxLength' && (
             <Text style={styles.errorText}>
-              Firstname should consists maximum of 30 characters.
+              FirstName should consists maximum of 30 characters.
             </Text>
           )}
           <Controller
@@ -220,16 +219,16 @@ const Register = ({navigation}) => {
             name="lastName"
           />
           {errors.lastName && errors.lastName.type === 'required' && (
-            <Text style={styles.errorText}>Lastname Field is required.</Text>
+            <Text style={styles.errorText}>LastName Field is required.</Text>
           )}
           {errors.lastName && errors.lastName.type === 'minLength' && (
             <Text style={styles.errorText}>
-              Lastname should consists minimum of 3 characters.
+              LastName should consists minimum of 3 characters.
             </Text>
           )}
           {errors.lastName && errors.lastName.type === 'maxLength' && (
             <Text style={styles.errorText}>
-              Lastname should consists maximum of 30 characters.
+              LastName should consists maximum of 30 characters.
             </Text>
           )}
           <Controller
@@ -273,6 +272,7 @@ const Register = ({navigation}) => {
                 <TextInput
                   placeholder="Password"
                   autoCapitalize="none"
+                  contextMenuHidden={true}
                   style={styles.inputField}
                   secureTextEntry={isSecureEntry}
                   onBlur={onBlur}
@@ -290,7 +290,7 @@ const Register = ({navigation}) => {
                 activeOpacity={0.5}>
                 <Entypo
                   name="eye"
-                  size={normalize(28)}
+                  size={normalize(theme.iconSizes.mediumLarge)}
                   color={theme.colors.grey}
                 />
               </TouchableOpacity>
@@ -301,7 +301,7 @@ const Register = ({navigation}) => {
                 activeOpacity={0.5}>
                 <Entypo
                   name="eye-with-line"
-                  size={normalize(28)}
+                  size={normalize(theme.iconSizes.mediumLarge)}
                   color={theme.colors.grey}
                 />
               </TouchableOpacity>
@@ -321,10 +321,11 @@ const Register = ({navigation}) => {
           <View style={styles.passwordField}>
             <Controller
               control={control}
-              name="cnfmpassword"
+              name="cnfmPassword"
               defaultValue=""
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
+                  contextMenuHidden={true}
                   placeholder="Confirm Password"
                   autoCapitalize="none"
                   style={styles.inputField}
@@ -337,7 +338,6 @@ const Register = ({navigation}) => {
               )}
               rules={{
                 required: true,
-                minLength: 8,
                 validate: value => value === watch('password'),
               }}
             />
@@ -348,7 +348,7 @@ const Register = ({navigation}) => {
                 activeOpacity={0.5}>
                 <Entypo
                   name="eye"
-                  size={normalize(28)}
+                  size={normalize(theme.iconSizes.mediumLarge)}
                   color={theme.colors.grey}
                 />
               </TouchableOpacity>
@@ -359,15 +359,15 @@ const Register = ({navigation}) => {
                 activeOpacity={0.5}>
                 <Entypo
                   name="eye-with-line"
-                  size={normalize(28)}
+                  size={normalize(theme.iconSizes.mediumLarge)}
                   color={theme.colors.grey}
                 />
               </TouchableOpacity>
             )}
-            {errors.cnfmpassword && errors.cnfmpassword.type === 'required' && (
+            {errors.cnfmPassword && errors.cnfmPassword.type === 'required' && (
               <Text style={styles.errorText}>Password Field is required.</Text>
             )}
-            {errors.cnfmpassword && errors.cnfmpassword.type === 'validate' && (
+            {errors.cnfmPassword && errors.cnfmPassword.type === 'validate' && (
               <Text style={styles.errorText}>Passwords didn't matched.</Text>
             )}
           </View>
@@ -380,24 +380,16 @@ const Register = ({navigation}) => {
                 <Entypo
                   style={styles.checkMark}
                   name="check"
-                  size={normalize(20)}
-                  color="#2196f3"
+                  size={normalize(theme.iconSizes.extraSmall)}
+                  color={theme.colors.primary}
                 />
-              ) : // <Text>checkMark</Text>
-              null}
+              ) : null}
             </TouchableOpacity>
             <View style={styles.textRow}>
-              <Text style={{color: '#000'}}> I agree with Yo!Aspire </Text>
+              <Text style={styles.agreeText}> I agree with Yo!Aspire </Text>
               <Text style={styles.termsText}> Terms and Conditions </Text>
             </View>
           </View>
-          {/* <View style={styles.termsRow}>
-          {isChecked ? null : (
-            <Text style={{color: '#000', marginLeft: 5}}>
-              Please check the box to proceed.
-            </Text>
-          )}
-        </View> */}
           <TouchableOpacity
             style={[
               styles.signupButton,
@@ -426,7 +418,6 @@ const Register = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  errorText: {color: theme.colors.red},
   container: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -441,6 +432,7 @@ const styles = StyleSheet.create({
   inputField: {
     width: '100%',
     height: normalize(50),
+    paddingRight: normalize(40),
     marginVertical: normalize(theme.spacing.small),
     alignItems: 'center',
     borderColor: theme.colors.primary,
@@ -463,7 +455,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    backgroundColor: '#2196f3',
+    backgroundColor: theme.colors.primary,
   },
   signupText: {
     color: theme.colors.white,
@@ -500,13 +492,15 @@ const styles = StyleSheet.create({
     height: normalize(theme.spacing.large),
     borderWidth: normalize(3),
     marginTop: normalize(theme.spacing.small),
-    marginHorizontal: normalize(5),
+    marginHorizontal: normalize(theme.spacing.extraSmall),
     alignItems: 'center',
     justifyContent: 'center',
   },
   checkMark: {
     fontWeight: theme.fontWeight.bold,
   },
+  agreeText: {color: theme.colors.black},
+  errorText: {color: theme.colors.red},
 });
 
 export default Register;

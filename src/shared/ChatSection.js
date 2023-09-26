@@ -74,14 +74,18 @@ const ChatSection = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.primary}
           />
         </TouchableOpacity>
-        <Text style={styles.profileTitle} numberOfLines={1}>
-          {name}
-        </Text>
+        <View style={styles.profileTitleContainer}>
+          <Text style={styles.profileTitle} numberOfLines={1}>
+            {name}
+          </Text>
+        </View>
+        <Text style={styles.profileTitle}>{''}</Text>
       </View>
+
       <FlatList
         // inverted={-1}
         data={chatArray}
@@ -103,7 +107,7 @@ const ChatSection = ({navigation, route}) => {
           <Ionicons
             name="send"
             color={theme.colors.primary}
-            size={normalize(34)}
+            size={normalize(theme.iconSizes.extraLarge)}
             style={{opacity: chatMsg ? 1 : 0.7}}
           />
         </TouchableOpacity>
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    paddingVertical: 50,
+    paddingVertical: normalize(50),
   },
   profileHeader: {
     position: 'absolute',
@@ -124,16 +128,20 @@ const styles = StyleSheet.create({
     height: normalize(50),
     width: '100%',
     backgroundColor: theme.colors.white,
-    paddingHorizontal: 20,
+    paddingHorizontal: normalize(theme.spacing.large),
     borderBottomWidth: 1,
-    flexDirection: 'row',
     borderColor: theme.colors.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  profileTitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   profileTitle: {
-    fontSize: normalize(24),
+    fontSize: normalize(theme.fontSizes.extraLarge),
     color: theme.colors.primary,
-    paddingLeft: '10%',
     textTransform: 'capitalize',
   },
   inputRow: {

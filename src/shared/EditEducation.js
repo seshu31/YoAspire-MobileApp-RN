@@ -24,15 +24,15 @@ const EditEducation = ({navigation, route}) => {
     handleSubmit,
     formState: {errors},
   } = useForm();
-  const [isLoading, setIsLoading] = useState(() => false);
-  const [isChecked, setIsChecked] = useState(() =>
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(
     education ? (education.To ? false : true) : false,
   );
-  const [educationStartDate, setEducationStartDate] = useState(() =>
-    education.From ? new Date(education.From) : null,
+  const [educationStartDate, setEducationStartDate] = useState(
+    education?.From ? new Date(education.From) : null,
   );
-  const [educationEndDate, setEducationEndDate] = useState(() =>
-    education.To ? new Date(education.To) : null,
+  const [educationEndDate, setEducationEndDate] = useState(
+    education?.To ? new Date(education.To) : null,
   );
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
   const [showToDatePicker, setShowToDatePicker] = useState(false);
@@ -52,7 +52,12 @@ const EditEducation = ({navigation, route}) => {
 
   const educationHandler = data => {
     console.log('educationHandler');
+    if (educationStartDate == null || educationEndDate == null) {
+      setIsLoading(false);
+      setDateErr(true);
+    }
   };
+
   const showDatepicker = value => {
     if (value === 1) {
       setShowFromDatePicker(true);
@@ -75,17 +80,21 @@ const EditEducation = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>
-          {education ? 'Edit Education' : 'Edit Education'}
+          {education ? 'Edit Education' : 'Add Education'}
         </Text>
         <TouchableOpacity
           onPress={handleSubmit(educationHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save-outline" size={24} color={theme.colors.white} />
+          <Ionicons
+            name="save-outline"
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}
@@ -101,6 +110,7 @@ const EditEducation = ({navigation, route}) => {
               onChangeText={value => onChange(value)}
               value={value}
               placeholder="Institution"
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -179,7 +189,7 @@ const EditEducation = ({navigation, route}) => {
               <Ionicons
                 style={styles.checkMark}
                 name="checkmark"
-                size={normalize(16)}
+                size={normalize(theme.iconSizes.extraSmall)}
                 color={theme.colors.primary}
               />
             ) : null}
@@ -207,7 +217,7 @@ const EditEducation = ({navigation, route}) => {
                 } - ${educationStartDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Year
+                  Start Date
                 </Text>
               )}
             </Text>
@@ -219,16 +229,16 @@ const EditEducation = ({navigation, route}) => {
                 format="DD/MM/YYYY"
                 mode="date"
                 androidVariant="nativeAndroid"
-                value={educationStartDate}
                 onConfirm={onChangeFromDate}
                 onCancel={onChangeFromDate}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && educationStartDate == null ? (
-              <Text style={styles.errorText}>Start Year Field is required</Text>
+              <Text style={styles.errorText}>Start Date Field is required</Text>
             ) : null}
           </View>
+          <Text style={styles.hyphen}>-</Text>
           <View style={styles.yearField}>
             {isChecked ? (
               <Text style={[styles.yearInputField]}>Present</Text>
@@ -248,7 +258,7 @@ const EditEducation = ({navigation, route}) => {
                   } - ${educationEndDate.getFullYear()}`
                 ) : (
                   <Text style={styles.projectDurationPlaceholder}>
-                    Final Year
+                    Final Date
                   </Text>
                 )}
               </Text>
@@ -261,14 +271,13 @@ const EditEducation = ({navigation, route}) => {
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
-                value={educationEndDate}
                 onConfirm={onChangeToDate}
                 onCancel={onChangeToDate}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && educationEndDate == null && !isChecked ? (
-              <Text style={styles.errorText}>Final Year Field is required</Text>
+              <Text style={styles.errorText}>Final Date Field is required</Text>
             ) : null}
           </View>
         </View>
@@ -324,6 +333,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     paddingTop: normalize(theme.spacing.medium),
     color: theme.colors.black,
+    textAlign: 'center',
   },
   body: {
     padding: normalize(theme.spacing.large),
@@ -333,7 +343,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   yearField: {
-    width: '49%',
+    width: '46%',
   },
   projectDurationPlaceholder: {
     color: theme.colors.placeholdercolor,
@@ -373,6 +383,12 @@ const styles = StyleSheet.create({
   checkboxText: {
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
+  },
+  hyphen: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    marginTop: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
   },
 });
 
