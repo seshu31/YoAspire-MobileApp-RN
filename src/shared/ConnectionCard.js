@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
     paddingVertical: normalize(theme.spacing.small),
   },
   detailsSection: {

@@ -127,15 +127,6 @@ const UserCourse = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
   },
   courseText: {
@@ -167,6 +158,15 @@ const styles = StyleSheet.create({
     height: normalize(60),
     lineHeight: normalize(60),
     color: theme.colors.black,
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

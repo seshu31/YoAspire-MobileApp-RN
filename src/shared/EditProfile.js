@@ -18,10 +18,12 @@ import {useForm, Controller} from 'react-hook-form';
 import DatePicker from 'react-native-date-picker';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import CameraOptionsModal from '../reusables/CameraOptionsModal';
 
 const EditProfile = ({navigation, route}) => {
   const user = route.params?.user ? route.params.user : null;
-  const [photoLoaded, setPhotoLoaded] = useState(() => true);
+  const [photoLoaded, setPhotoLoaded] = useState(true);
+  const [showCameraOptions, setShowCameraOptions] = useState(false);
   const [date, setDate] = useState(
     route.params?.user?.profile?.DOB
       ? new Date(route.params.user.profile.DOB)
@@ -97,6 +99,10 @@ const EditProfile = ({navigation, route}) => {
     setShow(true);
   };
 
+  const imageHandler = () => {
+    setShowCameraOptions(true);
+  };
+
   const maximumDOB = deltaDate(new Date(), 0, 0, 0);
   return (
     <ScrollView style={styles.container}>
@@ -139,11 +145,11 @@ const EditProfile = ({navigation, route}) => {
             />
             <TouchableOpacity
               style={styles.photoEdit}
-              onPress={() => {}}
+              onPress={() => imageHandler()}
               activeOpacity={0.5}>
               <AntDesign
                 name="edit"
-                size={normalize(18)}
+                size={normalize(theme.iconSizes.small)}
                 color={theme.colors.primary}
               />
             </TouchableOpacity>
@@ -370,6 +376,10 @@ const EditProfile = ({navigation, route}) => {
           <Text style={styles.errorText}>Location Field is required.</Text>
         )}
       </View>
+      <CameraOptionsModal
+        showCameraOptions={showCameraOptions}
+        setShowCameraOptions={setShowCameraOptions}
+      />
     </ScrollView>
   );
 };
@@ -425,8 +435,8 @@ const styles = StyleSheet.create({
   },
   photoEdit: {
     position: 'absolute',
-    right: -10,
-    bottom: 25,
+    right: normalize(-10),
+    bottom: normalize(25),
     backgroundColor: theme.colors.white,
     elevation: 5,
     borderRadius: normalize(50),
@@ -475,7 +485,7 @@ const styles = StyleSheet.create({
   calendarButton: {
     position: 'absolute',
     right: 0,
-    top: 10,
+    top: normalize(10),
   },
 });
 

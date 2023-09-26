@@ -9,7 +9,7 @@ import {Profiles} from '../staticData';
 
 const GroupRequests = ({navigation, route}) => {
   const {id} = route.params;
-  const [profiles, setProfiles] = useState(null);
+  const [profiles, setProfiles] = useState(Profiles);
   const [fetching, setFetching] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const GroupRequests = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>

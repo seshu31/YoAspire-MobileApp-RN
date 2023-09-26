@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   writerInfo: {
     flexDirection: 'row',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: normalize(theme.spacing.medium),

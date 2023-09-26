@@ -126,7 +126,7 @@ const UserEducation = ({navigation, route}) => {
                     <AntDesign
                       name="edit"
                       color={theme.colors.primary}
-                      size={normalize(24)}
+                      size={normalize(theme.iconSizes.medium)}
                     />
                   </TouchableOpacity>
                 </View>
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
   },

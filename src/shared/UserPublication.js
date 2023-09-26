@@ -150,15 +150,6 @@ const UserPublication = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -197,6 +188,15 @@ const styles = StyleSheet.create({
   editIcon: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

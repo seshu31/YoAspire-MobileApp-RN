@@ -150,15 +150,6 @@ const UserExperience = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -181,7 +172,7 @@ const styles = StyleSheet.create({
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
   },
@@ -190,9 +181,10 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.extraSmall),
     color: theme.colors.black,
   },
+
   role: {
     fontSize: normalize(theme.fontSizes.mediumLarge),
-    marginBottom: normalize(5),
+    marginBottom: normalize(theme.spacing.extraSmall),
     color: theme.colors.level2,
   },
   dateText: {
@@ -202,6 +194,15 @@ const styles = StyleSheet.create({
   editIcon: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

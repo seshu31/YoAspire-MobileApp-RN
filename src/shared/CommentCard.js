@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   commentCard: {
     paddingVertical: normalize(theme.spacing.small),
     borderRadius: normalize(theme.spacing.extraSmall),
-    marginHorizontal: '5%',
+    marginHorizontal: normalize(theme.spacing.medium),
     marginTop: normalize(theme.spacing.small),
     backgroundColor: theme.colors.whiteSmoke,
   },

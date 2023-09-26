@@ -15,25 +15,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Loader from '../reusables/Loader';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
-import {articlesData, members} from '../PostProfileData';
+import {articlesData, members, groupData} from '../PostProfileData';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const GroupDetailsCard = ({navigation, route}) => {
   // Replace the following static data with actual data
-  const groupData = {
-    id: 1,
-    name: 'Sample Group',
-    description:
-      'This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    image: 'https://example.com/sample-image.jpg',
-    created_on: '2023-01-15T10:30:00Z',
-    total_members: 20,
-    admin_flag: true, //Boolean value change according data
-    created_by: null, //This is will take int value
-    joined: false,
-    req_sent: true, //Boolean value change according data
-    group_type: true, //Boolean value change according data
-  };
 
   const {id, item} = route.params || {id: null, item: null};
   const [group, setGroup] = useState(groupData);

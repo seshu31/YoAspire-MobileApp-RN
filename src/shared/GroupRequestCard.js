@@ -71,13 +71,21 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
           style={styles.connectIcons}
           onPress={() => connectionHandler(true)}
           activeOpacity={0.5}>
-          <Ionicons name="checkmark-circle-outline" size={34} color="black" />
+          <Ionicons
+            name="checkmark-circle-outline"
+            size={normalize(theme.iconSizes.large)}
+            color={theme.colors.black}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.connectIcons}
           onPress={() => connectionHandler(false)}
           activeOpacity={0.5}>
-          <Ionicons name="close-circle-outline" size={34} color="black" />
+          <Ionicons
+            name="close-circle-outline"
+            size={normalize(theme.iconSizes.large)}
+            color={theme.colors.black}
+          />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -86,13 +94,13 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
 
 const styles = StyleSheet.create({
   connectionCard: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: '5%',
-    paddingVertical: normalize(11),
+    paddingHorizontal: normalize(theme.spacing.medium),
+    paddingVertical: normalize(theme.spacing.small),
   },
   detailsSection: {
     flexDirection: 'row',
@@ -103,22 +111,22 @@ const styles = StyleSheet.create({
     width: normalize(50),
     height: normalize(50),
     borderRadius: normalize(100),
-    borderWidth: normalize(3),
+    borderWidth: 1,
     borderColor: theme.colors.primary,
   },
   connectionDetails: {
-    paddingLeft: normalize(15),
+    paddingLeft: normalize(theme.spacing.medium),
   },
   userNameDetails: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   connectionName: {
-    fontSize: normalize(17),
+    fontSize: normalize(theme.spacing.medium),
     color: theme.colors.black,
   },
   connectionTitle: {
-    paddingTop: normalize(5),
+    paddingTop: normalize(theme.spacing.extraSmall),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.darkgrey,
   },
@@ -130,9 +138,9 @@ const styles = StyleSheet.create({
     marginLeft: normalize(theme.spacing.small),
   },
   connectionLevel: {
-    fontSize: normalize(7),
+    fontSize: normalize(theme.fontSizes.extraSmall),
     color: theme.colors.black,
-    paddingTop: normalize(4),
+    paddingTop: normalize(theme.spacing.extraSmall),
   },
   connections: {
     color: theme.colors.black,

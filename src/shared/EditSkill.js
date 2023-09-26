@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,

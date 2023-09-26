@@ -115,4 +115,19 @@ const commentsData = [
     Comment: 'Comment 3',
   },
 ];
-export {articlesData, groupMembers, commentsData};
+
+const groupData = {
+  id: 1,
+  name: 'Sample Group',
+  description:
+    'This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  image: 'https://example.com/sample-image.jpg',
+  created_on: '2023-01-15T10:30:00Z',
+  total_members: 20,
+  admin_flag: true, //Boolean value change according data
+  created_by: null, //This is will take int value
+  joined: false,
+  req_sent: true, //Boolean value change according data
+  group_type: true, //Boolean value change according data
+};
+export {articlesData, groupMembers, commentsData, groupData};

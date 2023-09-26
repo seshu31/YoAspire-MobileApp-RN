@@ -149,6 +149,27 @@ const CameraOptionsModal = ({showCameraOptions, setShowCameraOptions}) => {
     // }
   };
 
+  const deleteHandler = () => {
+    Alert.alert(
+      'Delete',
+      'Are you sure you want to delete?',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            // Handle the delete action here
+            console.log('Delete Pressed');
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
   const picFromGallery = async () => {
     setLoading(true);
     const options = {
@@ -235,7 +256,7 @@ const CameraOptionsModal = ({showCameraOptions, setShowCameraOptions}) => {
                 </View>
                 <Text style={styles.optionText}>Gallery</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={picFromGallery} style={styles.option}>
+              <TouchableOpacity onPress={deleteHandler} style={styles.option}>
                 <View style={styles.iconWithText}>
                   <MaterialIcons
                     name="delete"

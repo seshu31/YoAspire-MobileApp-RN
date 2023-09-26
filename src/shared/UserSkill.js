@@ -81,16 +81,6 @@ const UserSkill = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -113,7 +103,7 @@ const styles = StyleSheet.create({
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
     height: normalize(60),
@@ -123,6 +113,16 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.large),
     width: '90%',
     color: theme.colors.black,
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

@@ -394,8 +394,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   checkBoxText: {
-    fontSize: 16,
-    color: 'black',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   container: {
     flex: 1,
@@ -436,11 +436,11 @@ const styles = StyleSheet.create({
   },
   textarea: {
     textAlignVertical: 'top', // hack android
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
   initialBody: {
-    paddingVertical: 5,
+    paddingVertical: normalize(theme.spacing.extraSmall),
     borderColor: theme.colors.primary,
     marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
