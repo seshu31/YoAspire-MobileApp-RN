@@ -99,7 +99,11 @@ const DetailedArticle = ({navigation, route}) => {
             <View style={styles.postedOn}>
               <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
               <Text style={styles.dot}>{'\u2B24'}</Text>
-              <FontAwesome name="globe" color={theme.colors.level2} />
+              <FontAwesome
+                name="globe"
+                size={normalize(theme.iconSizes.extraSmall)}
+                color={theme.colors.level2}
+              />
             </View>
           </View>
         </View>

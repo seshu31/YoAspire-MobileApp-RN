@@ -29,16 +29,7 @@ const Register = ({navigation}) => {
     reset,
     handleSubmit,
     formState: {errors},
-  } = useForm({
-    defaultValues: {
-      email: 'sravs.vadlamanu@gmail.com',
-      password: 'Sravs.vadlamanu@gmail.com1',
-      cnfmPassword: 'Sravs.vadlamanu@gmail.com1',
-      firstName: 'durga',
-      lastName: 'sravani',
-      username: 'srazzz',
-    },
-  });
+  } = useForm();
 
   const hasSpace = async value => {
     if (value.includes(' ')) {

@@ -17,7 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CommentCard = ({item, navigation, admin, fetchComments}) => {
   const [liked, setLiked] = useState(true);
-  const [likeCount, setLikeCount] = useState(5);
+  const [likeCount, setLikeCount] = useState(item.No_of_Likes);
   const [visible, setVisible] = useState(false);
 
   const likeHandler = () => {

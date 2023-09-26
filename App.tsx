@@ -48,7 +48,7 @@ const App = () => {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="index"
+          initialRouteName="register"
           screenOptions={{
             headerShown: false,
           }}>
