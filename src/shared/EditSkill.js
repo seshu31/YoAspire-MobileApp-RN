@@ -107,7 +107,7 @@ const EditSkill = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -118,7 +118,11 @@ const EditSkill = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(skillHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save-outline" size={24} color="#fff" />
+          <Ionicons
+            name="save-outline"
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
@@ -132,8 +136,8 @@ const EditSkill = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholder="Skill"
-              placeholderTextColor={'lightgrey'}
+              placeholder="Skill*"
+              placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
           rules={{
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: normalize(theme.spacing.large),
     alignItems: 'center',
     borderColor: theme.colors.primary,
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     backgroundColor: theme.colors.white,
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,

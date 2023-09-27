@@ -59,7 +59,7 @@ const ManageNetwork = ({navigation}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>

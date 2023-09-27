@@ -32,7 +32,6 @@ const ProfileCard = ({item, navigation}) => {
   };
 
   const profileHandler = () => {
-    console.log('navigate to profile screen');
     navigation.navigate('profile', {
       userID: item.UserId,
       // have to remove this later
@@ -65,10 +64,7 @@ const ProfileCard = ({item, navigation}) => {
       </View>
       <View style={styles.detailsSection}>
         <View style={styles.userNameDetails}>
-          <Text
-            style={styles.profileName}
-            numberOfLines={1}
-            ellipsizeMode="tail">
+          <Text style={styles.profileName} numberOfLines={1}>
             {item.profile.First_Name} {item.profile.Last_Name}
           </Text>
           {connectionLevel ? (
@@ -81,10 +77,7 @@ const ProfileCard = ({item, navigation}) => {
             </>
           ) : null}
         </View>
-        <Text
-          style={styles.profileTitle}
-          numberOfLines={2}
-          ellipsizeMode="tail">
+        <Text style={styles.profileTitle} numberOfLines={2}>
           {item.profile.heading}
         </Text>
         <TouchableOpacity onPress={connectionHandler} activeOpacity={0.5}>

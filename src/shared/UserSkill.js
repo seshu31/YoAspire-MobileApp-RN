@@ -13,9 +13,7 @@ import normalize from 'react-native-normalize';
 import theme from '../../theme';
 
 const UserSkill = ({navigation, route}) => {
-  const skills = route.params?.skills ? route.params.skills : null;
-
-  let skillsArr = ['Html', 'Css', 'JavaScript', 'React', 'Angular'];
+  const skills = route.params?.skills ? route.params.skills : [];
 
   return (
     <View style={styles.container}>
@@ -25,7 +23,7 @@ const UserSkill = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -39,12 +37,12 @@ const UserSkill = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="add"
-            size={normalize(32)}
+            size={normalize(theme.iconSizes.large)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
       </View>
-      {skills && skills.length !== 0 ? (
+      {skills.length !== 0 ? (
         <ScrollView>
           <View style={styles.coursesContainer}>
             {skills.map((el, index) => {
@@ -62,7 +60,7 @@ const UserSkill = ({navigation, route}) => {
                     <AntDesign
                       name="edit"
                       color={theme.colors.primary}
-                      size={normalize(24)}
+                      size={normalize(theme.iconSizes.medium)}
                     />
                   </TouchableOpacity>
                 </View>
@@ -83,16 +81,6 @@ const UserSkill = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -115,7 +103,7 @@ const styles = StyleSheet.create({
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
     height: normalize(60),
@@ -125,6 +113,16 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.large),
     width: '90%',
     color: theme.colors.black,
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

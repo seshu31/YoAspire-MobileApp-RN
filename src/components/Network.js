@@ -74,7 +74,7 @@ const Network = () => {
         <Text style={styles.manageText}>Manage my network</Text>
         <MaterialIcons
           name="arrow-forward-ios"
-          size={normalize(24)}
+          size={normalize(theme.iconSizes.medium)}
           color={theme.colors.primary}
         />
       </TouchableOpacity>

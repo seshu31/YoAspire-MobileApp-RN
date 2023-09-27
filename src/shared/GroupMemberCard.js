@@ -6,15 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 
-const GroupMemberCard = ({
-  item,
-  navigation,
-  owner,
-  admin,
-  creator,
-  // id,
-  // fetchHandler,
-}) => {
+const GroupMemberCard = ({item, navigation, owner, admin, creator}) => {
   const [connected, setConnected] = useState(() => false);
   const [visible, setVisible] = useState(() => false);
   const [connectionLevel, setConnectionLevel] = useState(() => 1);
@@ -67,7 +59,7 @@ const GroupMemberCard = ({
                   {'   '}
                   {'\u2B24'}
                 </Text>
-                <Text> {connectionLevel}</Text>
+                <Text style={styles.connectionCount}> {connectionLevel}</Text>
               </>
             ) : null}
           </View>
@@ -87,7 +79,11 @@ const GroupMemberCard = ({
             <TouchableOpacity
               style={styles.connectIcons}
               onPress={connectionHandler}>
-              <Ionicons name="person-add-outline" size={24} color="black" />
+              <Ionicons
+                name="person-add-outline"
+                size={theme.iconSizes.medium}
+                color={theme.colors.black}
+              />
             </TouchableOpacity>
           )}
           <TouchableOpacity
@@ -100,8 +96,8 @@ const GroupMemberCard = ({
             }>
             <Ionicons
               name="chatbubble-ellipses-outline"
-              size={26}
-              color="black"
+              size={theme.iconSizes.medium}
+              color={theme.colors.black}
             />
           </TouchableOpacity>
           {admin && !creator ? (
@@ -112,7 +108,11 @@ const GroupMemberCard = ({
                 <TouchableOpacity
                   style={[styles.connectIcons2]}
                   onPress={() => setVisible(true)}>
-                  <MaterialIcons name="more-vert" size={26} color="black" />
+                  <MaterialIcons
+                    name="more-vert"
+                    size={theme.iconSizes.medium}
+                    color={theme.colors.black}
+                  />
                 </TouchableOpacity>
               }>
               <Menu.Item
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: '5%',
-    paddingVertical: normalize(11),
+    paddingVertical: normalize(theme.spacing.small),
   },
   detailsSection: {
     flexDirection: 'row',
@@ -149,22 +149,22 @@ const styles = StyleSheet.create({
     borderRadius: normalize(100),
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.primary,
-    borderWidth: normalize(3),
+    borderWidth: 1,
   },
   connectionDetails: {
-    paddingLeft: normalize(15),
+    paddingLeft: normalize(theme.spacing.medium),
   },
   userNameDetails: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   connectionName: {
-    fontSize: normalize(16),
+    fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
   connectionTitle: {
-    paddingTop: normalize(5),
-    fontSize: normalize(15),
+    paddingTop: normalize(theme.spacing.extraSmall),
+    fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.darkgrey,
   },
   connectSection: {
@@ -176,15 +176,20 @@ const styles = StyleSheet.create({
   },
   connectIcons: {
     justifyContent: 'space-evenly',
-    paddingLeft: normalize(15),
+    paddingLeft: normalize(theme.spacing.medium),
   },
   connectIcons2: {
     justifyContent: 'space-evenly',
-    paddingLeft: normalize(15),
+    paddingLeft: normalize(theme.spacing.medium),
     marginLeft: normalize(-8),
   },
   connectionLevel: {
     fontSize: normalize(7),
+    color: theme.colors.darkgrey,
+    alignItems: 'center',
+  },
+  connectionCount: {
+    color: theme.colors.darkgrey,
   },
 });
 

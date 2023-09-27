@@ -135,7 +135,6 @@ const OTP = ({route, navigation}) => {
   };
 
   const verifyOtp = async () => {
-    console.log('1');
     setLoading(true);
     const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
 
@@ -154,8 +153,6 @@ const OTP = ({route, navigation}) => {
               'Content-type': 'application/json; charset=UTF-8',
             },
           }));
-
-      console.log(response.data, 'response for verifyotp');
 
       if (response.data) {
         setLoading(false);
@@ -245,15 +242,6 @@ const OTP = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  mt10: {marginTop: 10},
-  timerText: {
-    color: theme.colors.black,
-    fontSize: normalize(theme.fontSizes.medium),
-  },
-  resendOtpText: {
-    color: theme.colors.primary,
-    fontSize: normalize(theme.fontSizes.medium),
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -288,7 +276,7 @@ const styles = StyleSheet.create({
     marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2196f3',
+    backgroundColor: theme.colors.primary,
     paddingHorizontal: '5%',
     borderRadius: normalize(5),
   },
@@ -299,6 +287,15 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     fontWeight: theme.fontWeight.bold,
+  },
+  mt10: {marginTop: normalize(theme.spacing.small)},
+  timerText: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.medium),
+  },
+  resendOtpText: {
+    color: theme.colors.primary,
+    fontSize: normalize(theme.fontSizes.medium),
   },
 });
 

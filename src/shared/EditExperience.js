@@ -27,14 +27,14 @@ const EditExperience = ({navigation, route}) => {
     handleSubmit,
     formState: {errors},
   } = useForm();
-  const [isChecked, setIsChecked] = useState(() =>
+  const [isChecked, setIsChecked] = useState(
     experience ? (experience.To ? false : true) : false,
   );
-  const [dateErr, setDateErr] = useState(() => false);
-  const [experienceFromDate, setExperienceFromDate] = useState(() =>
+  const [dateErr, setDateErr] = useState(false);
+  const [experienceFromDate, setExperienceFromDate] = useState(
     experience?.From ? new Date(experience.From) : null,
   );
-  const [experienceToDate, setExperienceToDate] = useState(() =>
+  const [experienceToDate, setExperienceToDate] = useState(
     experience?.To ? new Date(experience.To) : null,
   );
   const [showFromDatePicker, setShowFromDatePicker] = useState(false);
@@ -114,7 +114,7 @@ const EditExperience = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(24)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -126,7 +126,7 @@ const EditExperience = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="save-outline"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -143,7 +143,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Company"
+              placeholder="Company*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -170,7 +170,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Role"
+              placeholder="Role*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -197,7 +197,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="City"
+              placeholder="City*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -218,7 +218,7 @@ const EditExperience = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="State"
+              placeholder="State*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -237,7 +237,7 @@ const EditExperience = ({navigation, route}) => {
             {isChecked ? (
               <Ionicons
                 name="checkmark"
-                size={normalize(15)}
+                size={normalize(theme.iconSizes.extraSmall)}
                 color={theme.colors.primary}
               />
             ) : null}
@@ -265,7 +265,7 @@ const EditExperience = ({navigation, route}) => {
                 } - ${experienceFromDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Year
+                  Start Date*
                 </Text>
               )}
             </Text>
@@ -284,9 +284,10 @@ const EditExperience = ({navigation, route}) => {
               />
             )}
             {dateErr && experienceFromDate == null ? (
-              <Text style={styles.errorText}>Start Year Field is required</Text>
+              <Text style={styles.errorText}>Start Date Field is required</Text>
             ) : null}
           </View>
+          <Text style={styles.hyphen}>-</Text>
           <View style={styles.yearField}>
             {isChecked ? (
               <Text style={[styles.inputField, styles.projectDuration]}>
@@ -308,7 +309,7 @@ const EditExperience = ({navigation, route}) => {
                   } - ${experienceToDate.getFullYear()}`
                 ) : (
                   <Text style={styles.projectDurationPlaceholder}>
-                    Final Year
+                    Final Date*
                   </Text>
                 )}
               </Text>
@@ -328,7 +329,7 @@ const EditExperience = ({navigation, route}) => {
               />
             )}
             {dateErr && experienceToDate == null && !isChecked ? (
-              <Text style={styles.errorText}>Final Year Field is required</Text>
+              <Text style={styles.errorText}>Final Date Field is required</Text>
             ) : null}
           </View>
         </View>
@@ -390,10 +391,11 @@ const styles = StyleSheet.create({
   },
   projectDuration: {
     paddingTop: normalize(theme.spacing.medium),
+    textAlign: 'center',
   },
   checkBoxText: {
-    fontSize: 16,
-    color: 'black',
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   container: {
     flex: 1,
@@ -430,15 +432,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   yearField: {
-    width: '49%',
+    width: '46%',
   },
   textarea: {
     textAlignVertical: 'top', // hack android
-    fontSize: 16,
+    fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
   initialBody: {
-    paddingVertical: 5,
+    paddingVertical: normalize(theme.spacing.extraSmall),
     borderColor: theme.colors.primary,
     marginBottom: normalize(theme.spacing.small),
     borderBottomWidth: 1,
@@ -458,6 +460,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  hyphen: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    marginTop: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
   },
 });
 

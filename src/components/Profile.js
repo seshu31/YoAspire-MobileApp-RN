@@ -25,6 +25,7 @@ const Profile = ({navigation, route}) => {
       ? new Date(route.params?.user.profile.DOB)
       : null,
   );
+
   const [skills, setSkills] = useState([]);
   const [userID, setUserID] = useState(null);
   const [owner, setOwner] = useState(true);
@@ -88,7 +89,7 @@ const Profile = ({navigation, route}) => {
     try {
       await AsyncStorage.removeItem('userToken');
       await AsyncStorage.removeItem('userId');
-      route.params.loginHandler(false);
+      // route.params.loginHandler(false);
     } catch (error) {
       Alert.alert('Logout unsuccessful', 'user id, userToken not found');
     }
@@ -133,7 +134,7 @@ const Profile = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.primary}
           />
         </TouchableOpacity>
@@ -142,7 +143,7 @@ const Profile = ({navigation, route}) => {
           <MaterialIcons
             name="logout"
             color={theme.colors.primary}
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
           />
         </TouchableOpacity>
       </View>
@@ -163,51 +164,55 @@ const Profile = ({navigation, route}) => {
               />
             </View>
           </View>
-          <View style={styles.userInfo}>
-            <View style={styles.userNameDetails}>
-              <Text style={styles.userName} numberOfLines={1}>
-                {user.profile.First_Name} {user.profile.Last_Name}
-              </Text>
-              {connectionLevel ? (
-                <>
-                  <Text style={styles.connectionLevel}>
-                    {'   '}
-                    {'\u2B24'}
-                  </Text>
-                  <Text style={styles.details}> {connectionLevel}</Text>
-                </>
-              ) : null}
-            </View>
-            {user.profile.Title ? (
-              <Text style={styles.userDesc} numberOfLines={2}>
-                {user.profile.Title}
-              </Text>
-            ) : null}
-            {owner ? null : (
-              <View style={styles.followSection}>
-                <TouchableOpacity onPress={followHandler} activeOpacity={0.5}>
-                  {following ? (
-                    <Text style={styles.followingButton}>Following</Text>
-                  ) : (
-                    <Text style={styles.followingButton}>Follow</Text>
-                  )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={
-                    () => console.log('navigate to chat-section ')
-                    // navigation.navigate('chat-section', {
-                    //   name: `${user.profile.First_Name} ${user.profile.Last_Name}`,
-                    //   id: route.params.userID,
-                    // })
-                  }
-                  activeOpacity={0.5}>
-                  <Text style={[styles.followingButton, styles.messageButton]}>
-                    Message
-                  </Text>
-                </TouchableOpacity>
+          {user.profile ? (
+            <View style={styles.userInfo}>
+              <View style={styles.userNameDetails}>
+                <Text style={styles.userName}>
+                  {user.profile.First_Name} {user.profile.Last_Name}
+                </Text>
+                {connectionLevel ? (
+                  <>
+                    <Text style={styles.connectionLevel}>
+                      {'   '}
+                      {'\u2B24'}
+                    </Text>
+                    <Text style={styles.details}> {connectionLevel}</Text>
+                  </>
+                ) : null}
               </View>
-            )}
-          </View>
+              {user.profile.Title ? (
+                <Text style={styles.userDesc} numberOfLines={2}>
+                  {user.profile.Title}
+                </Text>
+              ) : null}
+              {owner ? null : (
+                <View style={styles.followSection}>
+                  <TouchableOpacity onPress={followHandler} activeOpacity={0.5}>
+                    {following ? (
+                      <Text style={styles.followingButton}>Following</Text>
+                    ) : (
+                      <Text style={styles.followingButton}>Follow</Text>
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={
+                      () => console.log('navigate to chat-section ')
+                      // navigation.navigate('chat-section', {
+                      //   name: `${user.profile.First_Name} ${user.profile.Last_Name}`,
+                      //   id: route.params.userID,
+                      // })
+                    }
+                    activeOpacity={0.5}>
+                    <Text
+                      style={[styles.followingButton, styles.messageButton]}>
+                      Message
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ) : null}
+
           <View style={styles.userDetailesContainer}>
             <View style={styles.boxHeader}>
               <Text style={styles.infoHeader}>Personal Info</Text>
@@ -222,58 +227,65 @@ const Profile = ({navigation, route}) => {
                   <AntDesign
                     name="edit"
                     color={theme.colors.primary}
-                    size={normalize(24)}
+                    size={normalize(theme.iconSizes.medium)}
                   />
                 </TouchableOpacity>
               ) : null}
             </View>
-            <View style={styles.infoBox}>
-              <View style={styles.userInfoBox}>
-                <View style={styles.personalInfoItem}>
-                  <Text style={styles.details}>Date Of Birth :</Text>
-                  {dob != null ? (
-                    <Text style={styles.details}>
-                      {`${
-                        dob.getDate().toString().length === 1
-                          ? '0' + dob.getDate()
-                          : dob.getDate()
-                      } - ${
-                        (dob.getMonth() + 1).toString().length === 1
-                          ? '0' + (dob.getMonth() + 1)
-                          : dob.getMonth() + 1
-                      } - ${dob.getFullYear()}`}
-                    </Text>
-                  ) : (
-                    <Text style={styles.details}>----</Text>
-                  )}
-                </View>
-                <View style={styles.personalInfoItem}>
-                  <Text style={styles.details}>Email :</Text>
-                  {(user.profile.Email && user.profile.Email !== '') || null ? (
-                    <Text style={styles.details}>{user.profile.Email}</Text>
-                  ) : (
-                    <Text style={styles.details}>----</Text>
-                  )}
-                </View>
-                <View style={styles.personalInfoItem}>
-                  <Text style={styles.details}>Phone :</Text>
-                  {(user.profile.phone_no && user.profile.phone_no !== '') ||
-                  null ? (
-                    <Text style={styles.details}>{user.profile.phone_no}</Text>
-                  ) : (
-                    <Text style={styles.details}>----</Text>
-                  )}
-                </View>
-                <View style={styles.personalInfoItem}>
-                  <Text style={styles.details}>Location :</Text>
-                  {user.profile.Location != null ? (
-                    <Text style={styles.details}>{user.profile.Location}</Text>
-                  ) : (
-                    <Text style={styles.details}>----</Text>
-                  )}
+            {user.profile ? (
+              <View style={styles.infoBox}>
+                <View style={styles.userInfoBox}>
+                  <View style={styles.personalInfoItem}>
+                    <Text style={styles.details}>Date Of Birth :</Text>
+                    {dob != null ? (
+                      <Text style={styles.details}>
+                        {`${
+                          dob.getDate().toString().length === 1
+                            ? '0' + dob.getDate()
+                            : dob.getDate()
+                        } - ${
+                          (dob.getMonth() + 1).toString().length === 1
+                            ? '0' + (dob.getMonth() + 1)
+                            : dob.getMonth() + 1
+                        } - ${dob.getFullYear()}`}
+                      </Text>
+                    ) : (
+                      <Text style={styles.details}>----</Text>
+                    )}
+                  </View>
+                  <View style={styles.personalInfoItem}>
+                    <Text style={styles.details}>Email :</Text>
+                    {(user.profile.Email && user.profile.Email !== '') ||
+                    null ? (
+                      <Text style={styles.details}>{user.profile.Email}</Text>
+                    ) : (
+                      <Text style={styles.details}>----</Text>
+                    )}
+                  </View>
+                  <View style={styles.personalInfoItem}>
+                    <Text style={styles.details}>Phone :</Text>
+                    {(user.profile.phone_no && user.profile.phone_no !== '') ||
+                    null ? (
+                      <Text style={styles.details}>
+                        {user.profile.phone_no}
+                      </Text>
+                    ) : (
+                      <Text style={styles.details}>----</Text>
+                    )}
+                  </View>
+                  <View style={styles.personalInfoItem}>
+                    <Text style={styles.details}>Location :</Text>
+                    {user.profile.Location && user.profile.Location !== '' ? (
+                      <Text style={styles.details}>
+                        {user.profile.Location}
+                      </Text>
+                    ) : (
+                      <Text style={styles.details}>----</Text>
+                    )}
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : null}
 
             <View style={styles.boxHeader}>
               <Text style={styles.infoHeader}>Experience</Text>
@@ -288,7 +300,7 @@ const Profile = ({navigation, route}) => {
                   <AntDesign
                     name="edit"
                     color={theme.colors.primary}
-                    size={normalize(24)}
+                    size={normalize(theme.iconSizes.medium)}
                   />
                 </TouchableOpacity>
               ) : null}
@@ -365,7 +377,7 @@ const Profile = ({navigation, route}) => {
                   <AntDesign
                     name="edit"
                     color={theme.colors.primary}
-                    size={normalize(24)}
+                    size={normalize(theme.iconSizes.medium)}
                   />
                 </TouchableOpacity>
               ) : null}
@@ -439,7 +451,7 @@ const Profile = ({navigation, route}) => {
                   <AntDesign
                     name="edit"
                     color={theme.colors.primary}
-                    size={normalize(24)}
+                    size={normalize(theme.iconSizes.medium)}
                   />
                 </TouchableOpacity>
               ) : null}
@@ -515,8 +527,8 @@ const Profile = ({navigation, route}) => {
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
-                  size={20}
-                  color="#376eb3"
+                  size={normalize(theme.iconSizes.small)}
+                  color={theme.colors.primary}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -534,8 +546,8 @@ const Profile = ({navigation, route}) => {
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
-                  size={20}
-                  color="#376eb3"
+                  size={normalize(theme.iconSizes.small)}
+                  color={theme.colors.primary}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -553,8 +565,8 @@ const Profile = ({navigation, route}) => {
                 </Text>
                 <MaterialIcons
                   name="arrow-forward-ios"
-                  size={20}
-                  color="#376eb3"
+                  size={normalize(theme.iconSizes.small)}
+                  color={theme.colors.primary}
                 />
               </TouchableOpacity>
             </View>
@@ -649,7 +661,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     borderWidth: 1,
     borderRadius: normalize(5),
-    fontSize: normalize(theme.fontSizes.medium),
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 0.75,
     marginTop: normalize(theme.spacing.small),
     paddingHorizontal: normalize(theme.spacing.small),

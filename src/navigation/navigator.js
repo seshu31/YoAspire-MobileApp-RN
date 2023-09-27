@@ -36,7 +36,11 @@ const Navigator = ({handleCreatePost}) => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color}) => (
-            <Entypo name="home" color={color} size={normalize(26)} />
+            <Entypo
+              name="home"
+              color={color}
+              size={normalize(theme.iconSizes.mediumLarge)}
+            />
           ),
         }}
       />
@@ -46,7 +50,11 @@ const Navigator = ({handleCreatePost}) => {
         options={{
           tabBarLabel: 'Network',
           tabBarIcon: ({color}) => (
-            <Ionicons name="people" size={normalize(26)} color={color} />
+            <Ionicons
+              name="people"
+              size={normalize(theme.iconSizes.mediumLarge)}
+              color={color}
+            />
           ),
         }}
       />
@@ -63,7 +71,11 @@ const Navigator = ({handleCreatePost}) => {
           tabBarVisible: false,
           unmountOnBlur: true,
           tabBarIcon: ({color}) => (
-            <Ionicons name="create" size={normalize(26)} color={color} />
+            <Ionicons
+              name="create"
+              size={normalize(theme.iconSizes.mediumLarge)}
+              color={color}
+            />
           ),
         }}
       />
@@ -75,7 +87,7 @@ const Navigator = ({handleCreatePost}) => {
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
               name="account-group"
-              size={normalize(26)}
+              size={normalize(theme.iconSizes.mediumLarge)}
               color={color}
             />
           ),
@@ -87,7 +99,11 @@ const Navigator = ({handleCreatePost}) => {
         options={{
           tabBarLabel: 'Chat',
           tabBarIcon: ({color}) => (
-            <MaterialIcons name="textsms" size={normalize(26)} color={color} />
+            <MaterialIcons
+              name="textsms"
+              size={normalize(theme.iconSizes.mediumLarge)}
+              color={color}
+            />
           ),
         }}
       />

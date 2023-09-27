@@ -32,7 +32,7 @@ const ChatCard = ({item}) => {
 const styles = StyleSheet.create({
   chatSection: {
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingVertical: normalize(theme.spacing.small),
     paddingHorizontal: '5%',
     width: '85%',
   },
@@ -49,16 +49,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   chatName: {
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: normalize(theme.fontSizes.medium),
+    fontWeight: theme.fontWeight.bold,
   },
   chatDot: {
-    fontSize: 6,
-    color: '#606060',
-    paddingHorizontal: 7,
+    fontSize: normalize(theme.fontSizes.extraSmall),
+    color: theme.colors.level2,
+    paddingHorizontal: normalize(theme.spacing.extraSmall),
   },
   chatTime: {
-    color: '#606060',
+    color: theme.colors.level2,
     fontSize: normalize(theme.fontSizes.small),
   },
   chatText: {

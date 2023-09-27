@@ -106,7 +106,7 @@ const EditProject = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -118,7 +118,7 @@ const EditProject = ({navigation, route}) => {
           activeOpacity={0.5}>
           <Ionicons
             name="save-outline"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -134,7 +134,7 @@ const EditProject = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Title"
+              placeholder="Title*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -161,7 +161,7 @@ const EditProject = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Link"
+              placeholder="Link*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -195,7 +195,7 @@ const EditProject = ({navigation, route}) => {
                 } - ${projectStartDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Start Year
+                  Start Date*
                 </Text>
               )}
             </Text>
@@ -207,16 +207,16 @@ const EditProject = ({navigation, route}) => {
                 format="DD/MM/YYYY"
                 mode="date"
                 androidVariant="nativeAndroid"
-                value={projectStartDate}
                 onConfirm={onFromDateChange}
                 onCancel={onFromDateChange}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && projectStartDate == null ? (
-              <Text style={styles.errorText}>Start Year Field is required</Text>
+              <Text style={styles.errorText}>Start Date Field is required</Text>
             ) : null}
           </View>
+          <Text style={styles.hyphen}>-</Text>
           <View style={styles.yearField}>
             <Text
               style={[styles.inputField, styles.projectDuration]}
@@ -233,7 +233,7 @@ const EditProject = ({navigation, route}) => {
                 } - ${projectEndDate.getFullYear()}`
               ) : (
                 <Text style={styles.projectDurationPlaceholder}>
-                  Final Year
+                  Final Date*
                 </Text>
               )}
             </Text>
@@ -245,14 +245,13 @@ const EditProject = ({navigation, route}) => {
                 mode="date"
                 format="DD/MM/YYYY"
                 androidVariant="nativeAndroid"
-                value={projectEndDate}
                 onConfirm={onToDateChange}
                 onCancel={onToDateChange}
                 maximumDate={new Date()}
               />
             )}
             {dateErr && projectEndDate == null ? (
-              <Text style={styles.errorText}>Final Year Field is required</Text>
+              <Text style={styles.errorText}>Final Date Field is required</Text>
             ) : null}
           </View>
         </View>
@@ -298,15 +297,16 @@ const styles = StyleSheet.create({
   deleteButtonContainer: {
     backgroundColor: theme.colors.red,
     borderRadius: 6,
-    shadowOpacity: 0.4, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
     elevation: 6,
   },
   errorText: {
     color: theme.colors.red,
   },
   projectDuration: {
-    paddingTop: 15,
+    paddingTop: normalize(theme.spacing.medium),
+    textAlign: 'center',
   },
   projectDurationText: {
     color: theme.colors.placeholdercolor,
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   yearField: {
-    width: '50%',
+    width: '46%',
   },
   textarea: {
     textAlignVertical: 'top',
@@ -367,6 +367,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: normalize(theme.fontSizes.mediumLarge),
     marginVertical: normalize(theme.spacing.small),
+  },
+  hyphen: {
+    color: theme.colors.black,
+    fontSize: normalize(theme.fontSizes.extraLarge),
+    marginTop: normalize(theme.spacing.small),
+    marginHorizontal: normalize(theme.spacing.small),
   },
 });
 

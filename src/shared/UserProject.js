@@ -17,11 +17,11 @@ import normalize from 'react-native-normalize';
 
 const UserProject = ({navigation, route}) => {
   const [project, setProject] = useState(
-    route.params?.projects ? route.params.projects : null,
+    route.params?.projects ? route.params.projects : [],
   );
   const {userid} = route.params;
-  const [owner, setOwner] = useState(() => true);
-  const [isLoading, setIsLoading] = useState(() => false);
+  const [owner, setOwner] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => fetchProjects(), []);
 
@@ -84,7 +84,7 @@ const UserProject = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -93,13 +93,20 @@ const UserProject = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('edit-project')}
             activeOpacity={0.5}>
-            <Ionicons name="add" size={32} color="#fff" />
+            <Ionicons
+              name="add"
+              size={normalize(theme.iconSizes.large)}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         ) : (
-          <Ionicons size={32} color="#376eb3" />
+          <Ionicons
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.primary}
+          />
         )}
       </View>
-      {project && project.length ? (
+      {project.length ? (
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.coursesContainer}>
             {project.map((el, index) => {
@@ -123,7 +130,7 @@ const UserProject = ({navigation, route}) => {
                       <AntDesign
                         name="edit"
                         color={theme.colors.primary}
-                        size={normalize(24)}
+                        size={normalize(theme.iconSizes.medium)}
                       />
                     </TouchableOpacity>
                   ) : null}
@@ -145,15 +152,6 @@ const UserProject = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  NoProjectContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  NoProject: {
-    fontSize: normalize(theme.fontSizes.small),
-    color: theme.colors.darkgrey,
-    textAlign: 'center',
-  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
   couseItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderColor: theme.colors.border,
     paddingVertical: normalize(theme.spacing.small),
   },
@@ -192,6 +190,15 @@ const styles = StyleSheet.create({
   editIcon: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  NoProjectContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  NoProject: {
+    fontSize: normalize(theme.fontSizes.small),
+    color: theme.colors.darkgrey,
+    textAlign: 'center',
   },
 });
 

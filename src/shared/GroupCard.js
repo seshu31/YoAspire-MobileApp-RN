@@ -29,13 +29,13 @@ const GroupCard = ({item, navigation}) => {
 const styles = StyleSheet.create({
   groupDetails: {
     backgroundColor: theme.colors.whiteSmoke,
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
   },
   groupCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.medium),
     paddingVertical: normalize(theme.spacing.small),
     width: '85%',
   },
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     borderRadius: normalize(100),
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.primary,
-    borderWidth: normalize(3),
+    borderWidth: 1,
   },
   groupName: {
     fontSize: normalize(17),
-    paddingLeft: '5%',
+    paddingLeft: normalize(theme.spacing.medium),
     color: theme.colors.level2,
   },
 });

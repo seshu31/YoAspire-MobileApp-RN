@@ -87,7 +87,7 @@ const EditPublication = ({navigation, route}) => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.mediumLarge)}
             color={theme.colors.white}
           />
         </TouchableOpacity>
@@ -97,7 +97,11 @@ const EditPublication = ({navigation, route}) => {
         <TouchableOpacity
           onPress={handleSubmit(publicationHandler)}
           activeOpacity={0.5}>
-          <Ionicons name="save-outline" size={normalize(24)} color="#fff" />
+          <Ionicons
+            name="save-outline"
+            size={normalize(theme.iconSizes.mediumLarge)}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
       </View>
       {isLoading ? <Loader /> : null}
@@ -112,7 +116,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Title"
+              placeholder="Title*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -139,7 +143,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Link"
+              placeholder="Link*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -166,7 +170,7 @@ const EditPublication = ({navigation, route}) => {
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
-              placeholder="Journal"
+              placeholder="Journal*"
               placeholderTextColor={theme.colors.placeholdercolor}
             />
           )}
@@ -198,7 +202,7 @@ const EditPublication = ({navigation, route}) => {
                   : publicationDate.getMonth() + 1
               } - ${publicationDate.getFullYear()}`
             ) : (
-              <Text style={styles.projectDurationPlaceholder}>Year</Text>
+              <Text style={styles.projectDurationPlaceholder}>Date*</Text>
             )}
           </Text>
           {show && (
@@ -209,14 +213,13 @@ const EditPublication = ({navigation, route}) => {
               mode="date"
               format="DD/MM/YYYY"
               androidVariant="nativeAndroid"
-              value={publicationDate}
               onConfirm={onChange}
               onCancel={onChange}
               maximumDate={new Date()}
             />
           )}
           {dateErr && publicationDate == null ? (
-            <Text style={styles.errorText}>Year Field is required</Text>
+            <Text style={styles.errorText}>Date Field is required</Text>
           ) : null}
         </View>
         <Controller
@@ -259,8 +262,8 @@ const styles = StyleSheet.create({
   deleteButtonContainer: {
     backgroundColor: theme.colors.red,
     borderRadius: 6,
-    shadowOpacity: 0.4, // Shadow opacity
-    shadowRadius: 4, // Shadow radius
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
     elevation: 6,
   },
   errorText: {

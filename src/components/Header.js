@@ -11,9 +11,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import {DummyUser} from '../staticData';
 
 const Header = ({navigation, createPost}) => {
-  const [notificationCount, setNotificationCount] = useState(() => 0);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const mount = navigation.addListener('focus', () => {
@@ -30,7 +31,7 @@ const Header = ({navigation, createPost}) => {
         token: await AsyncStorage.getItem('userToken'),
       };
     } catch (error) {
-      // Alert.alert('Something went wrong', 'userId, token are undefined');
+      Alert.alert('Something went wrong', 'userId, token are undefined');
     }
   };
 
@@ -42,13 +43,6 @@ const Header = ({navigation, createPost}) => {
     );
   };
 
-  const dummyUser = {
-    UserId: 8,
-    profile: {
-      First_Name: 'durga1',
-      Last_Name: 'sravani1',
-    },
-  };
   return (
     <View>
       {createPost ? null : (
@@ -58,13 +52,13 @@ const Header = ({navigation, createPost}) => {
               style={styles.userLogo}
               onPress={() =>
                 navigation.navigate('profile', {
-                  user: dummyUser,
+                  user: DummyUser,
                 })
               }
               activeOpacity={0.5}>
               <Ionicons
                 name="person-outline"
-                size={normalize(30)}
+                size={normalize(theme.iconSizes.large)}
                 color={theme.colors.level2}
               />
             </TouchableOpacity>
@@ -72,7 +66,7 @@ const Header = ({navigation, createPost}) => {
           <Ionicons
             name="search-outline"
             style={styles.searchIcon}
-            size={normalize(30)}
+            size={normalize(theme.iconSizes.large)}
             color={theme.colors.level2}
           />
           {/* <View style={styles.inputHolder}>
@@ -97,7 +91,7 @@ const Header = ({navigation, createPost}) => {
               activeOpacity={0.5}>
               <Ionicons
                 name="notifications-outline"
-                size={normalize(30)}
+                size={normalize(theme.iconSizes.large)}
                 color={theme.colors.level2}
               />
             </TouchableOpacity>
@@ -151,11 +145,6 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
-  // searchIcon: {
-  //   position: 'absolute',
-  //   right: normalize(15),
-  //   top: normalize(5),
-  // },
   searchIcon: {
     position: 'absolute',
     right: '15%',

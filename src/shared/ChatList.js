@@ -27,7 +27,7 @@ const ChatList = ({item, navigation}) => {
         />
         <View style={styles.chatData}>
           <View style={styles.chatDetails}>
-            <Text style={styles.chatName}>
+            <Text style={styles.chatName} numberOfLines={1}>
               {item.profile.First_Name} {item.profile.Last_Name}
             </Text>
             {/* <Moment style={styles.chatTime} element={Text} fromNow ago>

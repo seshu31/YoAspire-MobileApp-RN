@@ -14,7 +14,7 @@ const articlesData = [
       'Current working tool React Native Current working tool React Native Current working tool React Native React Native Current working tool React Native Current working tool React Native',
     heading: 'Heading1',
     Time_of_Event: '1812',
-    PostedOn: '2D',
+    PostedOn: '2023-09-25T10:16:09.981Z',
   },
   {
     UserId: 1,
@@ -33,7 +33,7 @@ const articlesData = [
     Organiser: 'Aspire',
     Brief: 'This is sravani working as a developer in aspire',
     admin_flag: 1,
-    PostedOn: '7h',
+    PostedOn: '2023-08-27T10:16:09.981Z',
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const articlesData = [
     Location: 'Vijayawada',
     Job_Type: 'Full time',
     creator: 1,
-    PostedOn: '11D',
+    PostedOn: '2023-09-27T10:14:09.981Z',
   },
   // Add more static article data as needed
 ];
@@ -91,4 +91,43 @@ const groupMembers = [
   },
   // Add more static article data as needed
 ];
-export {articlesData, groupMembers};
+
+const commentsData = [
+  {
+    id: '1',
+    text: 'This is comment 1',
+    First_Name: 'venu',
+    Last_Name: 'm',
+    Comment: 'Comment 1',
+  },
+  {
+    id: '2',
+    text: 'This is comment 2',
+    First_Name: 'venu2',
+    Last_Name: 'm',
+    Comment: 'Comment 2',
+  },
+  {
+    id: '3',
+    text: 'This is comment 3',
+    First_Name: 'venu3',
+    Last_Name: 'm',
+    Comment: 'Comment 3',
+  },
+];
+
+const groupData = {
+  id: 1,
+  name: 'Sample Group',
+  description:
+    'This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is a sample group description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  image: 'https://example.com/sample-image.jpg',
+  created_on: '2023-01-15T10:30:00Z',
+  total_members: 20,
+  admin_flag: true, //Boolean value change according data
+  created_by: null, //This is will take int value
+  joined: false,
+  req_sent: true, //Boolean value change according data
+  group_type: true, //Boolean value change according data
+};
+export {articlesData, groupMembers, commentsData, groupData};
