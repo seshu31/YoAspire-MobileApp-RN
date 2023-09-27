@@ -99,6 +99,7 @@ const commentsData = [
     First_Name: 'venu',
     Last_Name: 'm',
     Comment: 'Comment 1',
+    No_of_Likes: 3,
   },
   {
     id: '2',
@@ -106,6 +107,7 @@ const commentsData = [
     First_Name: 'venu2',
     Last_Name: 'm',
     Comment: 'Comment 2',
+    No_of_Likes: 30,
   },
   {
     id: '3',
@@ -113,6 +115,7 @@ const commentsData = [
     First_Name: 'venu3',
     Last_Name: 'm',
     Comment: 'Comment 3',
+    No_of_Likes: 2,
   },
 ];
 

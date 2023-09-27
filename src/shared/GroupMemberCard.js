@@ -175,11 +175,9 @@ const styles = StyleSheet.create({
     marginRight: normalize(-10),
   },
   connectIcons: {
-    justifyContent: 'space-evenly',
     paddingLeft: normalize(theme.spacing.medium),
   },
   connectIcons2: {
-    justifyContent: 'space-evenly',
     paddingLeft: normalize(theme.spacing.medium),
     marginLeft: normalize(-8),
   },

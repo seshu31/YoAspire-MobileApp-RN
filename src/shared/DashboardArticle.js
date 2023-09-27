@@ -69,7 +69,11 @@ const DashboardArticle = ({articles, navigation}) => {
               <View style={styles.postedOn}>
                 <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
                 <Text style={styles.dot}>{'\u2B24'}</Text>
-                <FontAwesome name="globe" color={theme.colors.level2} />
+                <FontAwesome
+                  name="globe"
+                  size={normalize(theme.iconSizes.extraSmall)}
+                  color={theme.colors.level2}
+                />
               </View>
             </View>
           </View>
@@ -113,7 +117,11 @@ const DashboardArticle = ({articles, navigation}) => {
             <View style={styles.postedOn}>
               <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
               <Text style={styles.dot}>{'\u2B24'}</Text>
-              <FontAwesome name="globe" color={theme.colors.level2} />
+              <FontAwesome
+                name="globe"
+                size={normalize(theme.iconSizes.extraSmall)}
+                color={theme.colors.level2}
+              />
             </View>
             <Text style={styles.jobType}>{articles.Job_Type}</Text>
             <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
@@ -129,7 +137,11 @@ const DashboardArticle = ({articles, navigation}) => {
           <View style={styles.postedOn}>
             <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
             <Text style={styles.dot}>{'\u2B24'}</Text>
-            <FontAwesome name="globe" color={theme.colors.level2} />
+            <FontAwesome
+              name="globe"
+              size={normalize(theme.iconSizes.extraSmall)}
+              color={theme.colors.level2}
+            />
           </View>
           <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
           <Text style={styles.webinarBrief}>{articles.Brief}</Text>
@@ -354,7 +366,7 @@ const styles = StyleSheet.create({
     paddingLeft: normalize(theme.spacing.medium),
   },
   likeText: {
-    paddingLeft: normalize(theme.spacing.extraSmall),
+    paddingLeft: normalize(theme.spacing.small),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.grey,
   },
