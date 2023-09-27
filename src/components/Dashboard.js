@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import DashboardArticle from '../shared/DashboardArticle';
 import Loader from '../reusables/Loader';
@@ -12,14 +12,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
 
-  useEffect(() => {
-    setArticles(articles);
-  }, []);
-
   const renderFooter = () => {
-    {
-      loading ? <Loader /> : null;
-    }
+    loading ? <Loader /> : null;
   };
 
   const loadTopPosts = () => {
@@ -35,7 +29,6 @@ const Dashboard = () => {
 
   const loadEndPosts = () => {
     if (!allLoaded) {
-      // setLoading(true);
       setLoading(false);
     }
     if (loading) {
@@ -63,12 +56,10 @@ const Dashboard = () => {
           keyExtractor={item => item.PostId.toString()}
           renderItem={renderItem}
           ListFooterComponent={renderFooter}
-          ListFooterComponentStyle={{paddingBottom: 10}}
           refreshing={fetching}
           onRefresh={loadTopPosts}
           onEndReachedThreshold={0.1}
           onEndReached={loadEndPosts}
-          style={{paddingVertical: 5}}
         />
       ) : null}
     </View>

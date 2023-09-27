@@ -7,11 +7,8 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
-  Platform,
   Alert,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Textarea from 'react-native-textarea';
 import {useForm, Controller} from 'react-hook-form';
@@ -20,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Picker} from '@react-native-picker/picker';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import CameraOptionsModal from '../reusables/CameraOptionsModal';
 
 const CreatePost = () => {
   const navigation = useNavigation();
@@ -37,6 +35,7 @@ const CreatePost = () => {
     post ? post.Visibility : 0,
   );
   const [image, setImage] = useState(() => (post ? post.Image : null));
+  const [showCameraOptions, setShowCameraOptions] = useState(false);
 
   const handleSubmitPost = data => {
     console.log(data, visibility, category);
@@ -87,6 +86,11 @@ const CreatePost = () => {
       {cancelable: false},
     );
 
+  // Function to handle image selection
+  const imageHandler = async () => {
+    setShowCameraOptions(true);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -95,7 +99,7 @@ const CreatePost = () => {
           activeOpacity={0.5}>
           <MaterialIcons
             name="arrow-back-ios"
-            size={normalize(26)}
+            size={normalize(theme.iconSizes.medium)}
             color={theme.colors.primary}
           />
         </TouchableOpacity>
@@ -169,23 +173,23 @@ const CreatePost = () => {
           onValueChange={handeleVisibility}
           prompt="Visibility Status"
           style={styles.picker}
-          dropdownIconColor={'#000'}>
+          dropdownIconColor={theme.colors.black}>
           <Picker.Item label="Public" value="Public" />
           <Picker.Item label="Connections" value="Connections" />
         </Picker>
-        <View style={styles.horizontalLine}></View>
+        <View style={styles.horizontalLine} />
         <Text style={styles.dropdownLabel}>Category</Text>
         <Picker
           selectedValue={category}
           onValueChange={handleCategory}
           prompt="Category"
           style={styles.picker}
-          dropdownIconColor={'#000'}>
+          dropdownIconColor={theme.colors.black}>
           <Picker.Item label="Article" value="article" />
           <Picker.Item label="Webinar" value="webinar" />
           <Picker.Item label="Job" value="job" />
         </Picker>
-        <View style={styles.horizontalLine}></View>
+        <View style={styles.horizontalLine} />
         <Controller
           control={control}
           name="title"
@@ -302,7 +306,7 @@ const CreatePost = () => {
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity onPress={() => {}} activeOpacity={0.5}>
+          <TouchableOpacity onPress={() => imageHandler()} activeOpacity={0.5}>
             <Text style={styles.imageButton}>Upload an image</Text>
           </TouchableOpacity>
         )}
@@ -311,6 +315,10 @@ const CreatePost = () => {
             <Text style={styles.deleteButton}>Delete the Post</Text>
           </TouchableOpacity>
         ) : null}
+        <CameraOptionsModal
+          showCameraOptions={showCameraOptions}
+          setShowCameraOptions={setShowCameraOptions}
+        />
       </ScrollView>
     </View>
   );
@@ -333,7 +341,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: normalize(theme.fontSizes.large),
-    paddingLeft: '5%',
+    paddingLeft: normalize(theme.spacing.large),
     color: theme.colors.primary,
   },
   postButton: {
@@ -355,7 +363,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textareaContainer: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
   },
   textareaField: {
@@ -365,35 +373,25 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   dropdownLabel: {
-    paddingTop: '5%',
+    paddingTop: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.small),
     color: theme.colors.primary,
   },
   picker: {
-    borderWidth: normalize(3),
+    borderWidth: 1,
     borderColor: theme.colors.red,
     color: theme.colors.black,
   },
   textField: {
-    marginTop: '3%',
+    marginTop: normalize(theme.spacing.small),
     paddingVertical: normalize(theme.spacing.small),
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
-  date: {
-    marginTop: '7%',
-  },
-  dateTime: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: '5%',
-  },
-  dateTimeText: {
-    fontSize: normalize(theme.fontSizes.medium),
-  },
   uploadedImage: {
+    backgroundColor: 'red',
     width: normalize(200),
     height: normalize(200),
     marginTop: normalize(theme.spacing.small),

@@ -32,6 +32,14 @@ const theme = {
     large: 20,
     extraLarge: 24,
   },
+  iconSizes: {
+    extraSmall: 16,
+    small: 20,
+    medium: 24,
+    mediumLarge: 28,
+    large: 32,
+    extraLarge: 36,
+  },
 };
 
 export default theme;

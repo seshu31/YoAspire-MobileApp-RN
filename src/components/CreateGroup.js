@@ -5,15 +5,11 @@ import {
   Text,
   TextInput,
   Image,
-  Platform,
-  PermissionsAndroid,
   TouchableOpacity,
   Alert,
-  Modal,
-  TouchableWithoutFeedback,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CameraOptionsModal from '../reusables/CameraOptionsModal';
 import Loader from '../reusables/Loader';
 import {useForm, Controller} from 'react-hook-form';
 import Textarea from 'react-native-textarea';
@@ -21,16 +17,11 @@ import {Picker} from '@react-native-picker/picker';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import ImgToBase64 from 'react-native-image-base64';
 
 const CreateGroup = ({navigation, route}) => {
   // Initialize variables and states
   var group = false;
   const [loading, setLoading] = useState(() => false);
-  const [photo, setPhoto] = useState(null);
-  const [disableGalleryClick, setDisableGalleryClick] = useState(false);
   const [showCameraOptions, setShowCameraOptions] = useState(false);
   const [image, setImage] = useState(() => (group ? group.image : null));
   const {
@@ -54,175 +45,7 @@ const CreateGroup = ({navigation, route}) => {
 
   // Function to handle image selection
   const imageHandler = async () => {
-    console.log('imageHandler');
     setShowCameraOptions(true);
-  };
-
-  const requestCameraPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Camera Permission',
-            message: 'App needs camera permission',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Camera permission granted');
-          return true;
-        } else {
-          console.log('Camera permission denied');
-          return false;
-        }
-      } catch (err) {
-        console.log(err);
-        return false;
-      }
-    } else {
-      console.log('Platform is not Android');
-      return true;
-    }
-  };
-
-  const requestExternalWritePermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'storage Permission',
-            message: 'App needs external storage permission',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('storage permission granted');
-          return true;
-        } else {
-          console.log('Camera permission denied');
-          return false;
-        }
-      } catch (err) {
-        console.log(err);
-        return false;
-      }
-    } else {
-      console.log('Platform is not Android');
-      return true;
-    }
-    // if (Platform.OS === 'android') {
-    //   try {
-    //     const granted = await PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    //       {
-    //         title: 'External Storage Write Permission',
-    //         message: 'App needs write permission',
-    //       },
-    //     );
-    //     console.log(granted, 'permissions granted');
-    //     // If WRITE_EXTERNAL_STORAGE Permission is granted
-    //     return granted === PermissionsAndroid.RESULTS.GRANTED;
-    //   } catch (err) {
-    //     console.log(err);
-    //     Alert.alert('Write permission err', err);
-    //   }
-    //   return false;
-    // } else {
-    //   return true;
-    // }
-  };
-
-  const picFromGallery = async () => {
-    setLoading(true);
-    const options = {
-      maxHeight: 500,
-      maxWidth: 500,
-    };
-    let isStoragePermitted = await requestExternalWritePermission();
-
-    if (isStoragePermitted) {
-      setLoading(false);
-      launchImageLibrary(options, response => {
-        console.log(response);
-        if (
-          response.assets &&
-          response.assets.length > 0 &&
-          response.assets[0].uri
-        ) {
-          if (
-            response.assets[0].type === 'image/jpeg' ||
-            response.assets[0].type === 'image/jpg' ||
-            response.assets[0].type === 'image/png'
-          ) {
-            setShowCameraOptions(false);
-            setPhoto(response.assets[0]);
-          } else {
-            Alert.alert('You should upload only JPG or PNG files');
-          }
-        } else if (response.errorCode === 'permission') {
-          Alert.alert('Permission not satisfied');
-          setShowCameraOptions(false);
-          return;
-        } else if (response.errorCode === 'others') {
-          Alert.alert(response.errorMessage);
-          setShowCameraOptions(false);
-          return;
-        }
-        setDisableGalleryClick(false);
-      });
-    } else {
-      setLoading(false);
-      Alert.alert('You need to give storage permissions');
-    }
-  };
-
-  const picFromCam = async () => {
-    const options = {
-      maxWidth: 500,
-      maxHeight: 500,
-    };
-
-    let isCameraPermitted = await requestCameraPermission();
-    let isStoragePermitted = await requestExternalWritePermission();
-    if (isCameraPermitted && isStoragePermitted) {
-      launchCamera(options, response => {
-        if (
-          response.assets &&
-          response.assets.length > 0 &&
-          response.assets[0].uri
-        ) {
-          setShowCameraOptions(false);
-          setPhoto(response.assets[0]);
-        } else if (response.didCancel) {
-          Alert.alert('User cancelled camera picker');
-          setShowCameraOptions(false);
-          return;
-        } else if (response.errorCode === 'camera_unavailable') {
-          Alert.alert('Camera not available on device');
-          setShowCameraOptions(false);
-          return;
-        } else if (response.errorCode === 'permission') {
-          Alert.alert('Permission not satisfied');
-          setShowCameraOptions(false);
-          return;
-        } else if (response.errorCode === 'others') {
-          Alert.alert(response.errorMessage);
-          setShowCameraOptions(false);
-          return;
-        }
-      });
-    } else {
-      Alert.alert('You need to give camera and storage permissions');
-      setShowCameraOptions(false);
-    }
   };
 
   // Function to handle group deletion confirmation dialog
@@ -258,7 +81,11 @@ const CreateGroup = ({navigation, route}) => {
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               activeOpacity={0.5}>
-              <Ionicons name="arrow-back" size={32} color="#376eb3" />
+              <MaterialIcons
+                name="arrow-back-ios"
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
             <Text style={styles.title}>Edit Group </Text>
             <Text
@@ -274,7 +101,7 @@ const CreateGroup = ({navigation, route}) => {
               activeOpacity={0.5}>
               <MaterialIcons
                 name="arrow-back-ios"
-                size={normalize(26)}
+                size={normalize(theme.iconSizes.mediumLarge)}
                 color={theme.colors.primary}
               />
             </TouchableOpacity>
@@ -297,10 +124,14 @@ const CreateGroup = ({navigation, route}) => {
               source={image ? {uri: image} : require('../../assets/male.png')}
             />
             <TouchableOpacity
-              onPress={imageHandler}
+              onPress={() => imageHandler()}
               style={styles.photoEdit}
               activeOpacity={0.5}>
-              <AntDesign name="edit" size={24} color="#376eb3" />
+              <AntDesign
+                name="edit"
+                size={normalize(theme.iconSizes.medium)}
+                color={theme.colors.primary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -311,7 +142,7 @@ const CreateGroup = ({navigation, route}) => {
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
               placeholder="name"
-              style={[styles.textField, {marginTop: 0}]}
+              style={[styles.textField]}
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
               value={value}
@@ -377,50 +208,10 @@ const CreateGroup = ({navigation, route}) => {
           </TouchableOpacity>
         ) : null}
       </View>
-      <Modal
-        visible={showCameraOptions}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowCameraOptions(false)}>
-        <TouchableWithoutFeedback onPress={() => setShowCameraOptions(false)}>
-          <View style={styles.cameraOptions}>
-            <View style={styles.modalView}>
-              <View>
-                <Text style={styles.chooseOption}>Choose Profile Pic</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setShowCameraOptions(false)}
-                style={styles.closeButton}>
-                <Ionicons name="close" size={24} color="#000" />
-              </TouchableOpacity>
-              <View style={styles.editContainer}>
-                <TouchableOpacity onPress={picFromCam} style={styles.option}>
-                  <View style={styles.iconWithText}>
-                    <FontAwesome name="camera" size={24} color="#376eb3" />
-                  </View>
-                  <Text style={styles.optionText}>Camera</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={picFromGallery}
-                  style={styles.option}>
-                  <View style={styles.iconWithText}>
-                    <FontAwesome name="image" size={24} color="#376eb3" />
-                  </View>
-                  <Text style={styles.optionText}>Gallery</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={picFromGallery}
-                  style={styles.option}>
-                  <View style={styles.iconWithText}>
-                    <MaterialIcons name="delete" size={24} color="#376eb3" />
-                  </View>
-                  <Text style={styles.optionText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+      <CameraOptionsModal
+        showCameraOptions={showCameraOptions}
+        setShowCameraOptions={setShowCameraOptions}
+      />
     </View>
   );
 };
@@ -431,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     height: normalize(50),
     flexDirection: 'row',
     alignItems: 'center',
@@ -441,7 +232,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: normalize(theme.fontSizes.large),
-    paddingLeft: '10%',
+    paddingLeft: normalize(35),
     color: theme.colors.level2,
   },
   postButton: {
@@ -449,7 +240,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(theme.fontSizes.large),
   },
   postForm: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: normalize(theme.spacing.large),
   },
   photoSection: {
     justifyContent: 'center',
@@ -465,7 +256,7 @@ const styles = StyleSheet.create({
     width: normalize(100),
     height: normalize(100),
     borderRadius: normalize(50),
-    borderWidth: normalize(5),
+    borderWidth: 3,
     borderColor: theme.colors.primary,
     marginVertical: normalize(theme.spacing.small),
   },
@@ -475,14 +266,14 @@ const styles = StyleSheet.create({
   photoEdit: {
     position: 'absolute',
     right: normalize(-8),
-    bottom: normalize(25),
+    bottom: normalize(theme.spacing.extraLarge),
     backgroundColor: theme.colors.white,
     elevation: normalize(5),
     borderRadius: normalize(50),
     padding: normalize(8),
   },
   textareaContainer: {
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
   },
   textareaField: {
@@ -492,20 +283,17 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   dropdownLabel: {
-    paddingTop: '5%',
+    paddingTop: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.small),
     color: theme.colors.level2,
   },
   picker: {
     marginLeft: '-2%',
-    borderBottomWidth: normalize(3),
-    borderBottomColor: theme.colors.grey,
     color: theme.colors.black,
   },
   textField: {
-    marginTop: '3%',
     paddingVertical: normalize(theme.spacing.small),
-    borderBottomWidth: normalize(3),
+    borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
     fontSize: normalize(theme.fontSizes.medium),
   },
@@ -517,67 +305,6 @@ const styles = StyleSheet.create({
   },
   textFieldError: {
     color: theme.colors.red,
-  },
-  cameraOptions: {
-    flex: 1,
-    backgroundColor: theme.colors.darkgrey,
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.85,
-  },
-  option: {
-    alignItems: 'center',
-    marginVertical: normalize(theme.spacing.small),
-  },
-  optionText: {
-    color: theme.colors.primary,
-    fontSize: normalize(theme.fontSizes.mediumLarge),
-  },
-  deleteButton: {
-    position: 'absolute',
-    top: normalize(theme.spacing.large),
-    right: normalize(theme.spacing.large),
-  },
-  closeButton: {
-    position: 'absolute',
-    top: normalize(theme.spacing.large),
-    right: normalize(theme.spacing.large),
-  },
-  modalView: {
-    backgroundColor: theme.colors.white,
-    borderRadius: normalize(theme.spacing.large),
-    paddingVertical: normalize(30),
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    width: '80%',
-  },
-  iconWithText: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderColor: theme.colors.primary,
-    borderWidth: normalize(4),
-    paddingVertical: normalize(18),
-    paddingHorizontal: normalize(18),
-    borderRadius: normalize(100),
-    marginVertical: normalize(theme.spacing.small),
-    width: '100%',
-  },
-  deleteOption: {
-    alignItems: 'center',
-    marginVertical: normalize(theme.spacing.small),
-    flexDirection: 'column',
-  },
-  chooseOption: {
-    fontSize: normalize(theme.fontSizes.mediumLarge),
-    fontWeight: 'bold',
-    color: theme.colors.level2,
-  },
-  editContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
   },
 });
 
