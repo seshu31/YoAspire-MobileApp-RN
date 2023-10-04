@@ -3,55 +3,10 @@ import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const GroupCard = ({item, navigation}) => {
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
-  // const renderProfilePic = ({firstName, lastName}) => {
-  //   if (firstName) {
-  //     const nameWords = firstName.split(' ');
-
-  //     if (nameWords.length >= 2) {
-  //       const secondName = nameWords[1];
-  //       const initials = `${firstName.charAt(0).toUpperCase()}${secondName
-  //         .charAt(0)
-  //         .toUpperCase()}`;
-
-  //       return (
-  //         <View style={styles.profilePic}>
-  //           <Text style={styles.profilePicText}>{initials}</Text>
-  //         </View>
-  //       );
-  //     } else {
-  //       const lastNameInitial = lastName
-  //         ? lastName.charAt(0).toUpperCase()
-  //         : '';
-  //       const firstNameInitial = firstName.charAt(0).toUpperCase();
-  //       const initials = `${firstNameInitial}${lastNameInitial}`;
-
-  //       return (
-  //         <View style={styles.profilePic}>
-  //           <Text style={styles.profilePicText}>{initials}</Text>
-  //         </View>
-  //       );
-  //     }
-  //   }
-
-  //   return null;
-  // };
-
-  // const profilePic = renderProfilePic({
-  //   firstName: item?.name,
-  //   lastName: item?.name,
-  // });
 
   return (
     <TouchableOpacity
@@ -69,7 +24,6 @@ const GroupCard = ({item, navigation}) => {
             item.image ? {uri: item.image} : require('../../assets/male.png')
           }
         /> */}
-        {/* {profilePic} */}
         <ProfilePicture
           firstName={item?.name}
           lastName={item?.name}

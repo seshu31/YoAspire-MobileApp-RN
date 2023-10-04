@@ -6,6 +6,7 @@ import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CommentCard from './CommentCard';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
@@ -48,65 +49,14 @@ const DashboardArticle = ({articles, navigation}) => {
     }
   }
 
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
-
-  // const renderProfilePic = ({firstName, lastName}) => {
-  //   if (firstName) {
-  //     const nameWords = firstName.split(' ');
-
-  //     if (nameWords.length >= 2) {
-  //       const secondName = nameWords[1];
-  //       const initials = `${firstName.charAt(0).toUpperCase()}${secondName
-  //         .charAt(0)
-  //         .toUpperCase()}`;
-
-  //       return (
-  //         <View style={styles.profilePic}>
-  //           <Text style={styles.profilePicText}>{initials}</Text>
-  //         </View>
-  //       );
-  //     } else {
-  //       const lastNameInitial = lastName
-  //         ? lastName.charAt(0).toUpperCase()
-  //         : '';
-  //       const firstNameInitial = firstName.charAt(0).toUpperCase();
-  //       const initials = `${firstNameInitial}${lastNameInitial}`;
-
-  //       return (
-  //         <View style={styles.profilePic}>
-  //           <Text style={styles.profilePicText}>{initials}</Text>
-  //         </View>
-  //       );
-  //     }
-  //   }
-
-  //   return null;
-  // };
-
-  // const profilePic = renderProfilePic({
-  //   firstName: articles?.First_Name,
-  //   lastName: articles?.Last_Name,
-  // });
 
   const fetchArticle = () => {
     if (articles?.Category_Type === 'article') {
       return (
         <View style={styles.articleItem}>
           <View style={styles.writerInfo}>
-            <View
-              style={[
-                styles.writeImage,
-                {backgroundColor: randomBackgroundColor},
-              ]}>
+            <View style={[styles.writeImage]}>
               {/* <Image
                 // style={styles.writeImage}
                 style={[
@@ -119,7 +69,6 @@ const DashboardArticle = ({articles, navigation}) => {
                     : require('../../assets/male.png')
                 }
               /> */}
-              {/* {profilePic} */}
               <ProfilePicture
                 firstName={articles?.First_Name}
                 lastName={articles?.Last_Name}

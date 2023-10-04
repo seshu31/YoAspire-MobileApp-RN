@@ -16,17 +16,9 @@ import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import Loader from '../reusables/Loader';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const Profile = ({navigation, route}) => {
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
 
   const [isLoading, setIsLoading] = useState(false);

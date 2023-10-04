@@ -18,17 +18,9 @@ import theme from '../../theme';
 import {articlesData, members, groupData} from '../PostProfileData';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const GroupDetailsCard = ({navigation, route}) => {
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
   // Replace the following static data with actual data
 

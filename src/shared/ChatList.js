@@ -3,17 +3,9 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const ChatList = ({item, navigation}) => {
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
   return (
     <TouchableOpacity

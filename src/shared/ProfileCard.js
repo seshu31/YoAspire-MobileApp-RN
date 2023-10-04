@@ -11,17 +11,9 @@ import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const ProfileCard = ({item, navigation}) => {
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const randomBackgroundColor = getRandomColor();
   const [connected, setConnected] = useState(false);
   const [connectionLevel, setConnectionLevel] = useState(0);

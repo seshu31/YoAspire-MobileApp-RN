@@ -1,4 +1,3 @@
-// ProfilePicture.js
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import normalize from 'react-native-normalize';

@@ -5,8 +5,11 @@ import moment from 'moment';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const GroupRequestCard = ({item, navigation, fetchHandler}) => {
+  const randomBackgroundColor = getRandomColor();
   const [connectionLevel, setConnectionLevel] = useState(() => 1);
 
   useEffect(() => fetchConnectionLevel(), []);
@@ -36,13 +39,22 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
       onPress={profileHandler}
       activeOpacity={0.5}>
       <View style={styles.detailsSection}>
-        <Image
+        {/* <Image
           style={styles.connectionImage}
           source={
             item.profile.img_file_name
               ? {uri: item.profile.img_file_name}
               : require('../../assets/male.png')
           }
+        /> */}
+        <ProfilePicture
+          firstName={item?.profile.First_Name}
+          lastName={item?.profile.Last_Name}
+          style={{
+            backgroundColor: randomBackgroundColor,
+            height: normalize(50),
+            width: normalize(50),
+          }}
         />
         <View style={styles.connectionDetails}>
           <View style={styles.userNameDetails}>
