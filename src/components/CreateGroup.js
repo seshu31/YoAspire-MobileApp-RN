@@ -17,8 +17,10 @@ import {Picker} from '@react-native-picker/picker';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import getRandomColor from '../reusables/randomColor';
 
 const CreateGroup = ({navigation, route}) => {
+  const randomBackgroundColor = getRandomColor();
   // Initialize variables and states
   var group = false;
   const [loading, setLoading] = useState(() => false);
@@ -120,10 +122,10 @@ const CreateGroup = ({navigation, route}) => {
           <Text style={styles.photoText}>Group Photo</Text>
           <View style={styles.photoDiv}>
             <Image
-              style={styles.photo}
-              source={image ? {uri: image} : require('../../assets/male.png')}
+              style={[styles.photo, {backgroundColor: randomBackgroundColor}]}
+              // source={image ? {uri: image} : require('../../assets/male.png')}
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => imageHandler()}
               style={styles.photoEdit}
               activeOpacity={0.5}>
@@ -132,7 +134,7 @@ const CreateGroup = ({navigation, route}) => {
                 size={normalize(theme.iconSizes.medium)}
                 color={theme.colors.primary}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <Controller

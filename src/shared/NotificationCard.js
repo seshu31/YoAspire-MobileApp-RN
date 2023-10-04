@@ -3,8 +3,11 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import Moment from 'react-moment';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const NotificationCard = props => {
+  const randomBackgroundColor = getRandomColor();
   const {item} = props;
   const notificationHandler = () => {
     console.log(
@@ -23,13 +26,22 @@ const NotificationCard = props => {
         },
       ]}>
       <View style={styles.notification}>
-        <Image
+        {/* <Image
           style={styles.notificationImage}
           source={
             item.img_file_name
               ? {uri: item.img_file_name}
               : require('../../assets/male.png')
           }
+        /> */}
+        <ProfilePicture
+          firstName={item?.First_Name}
+          lastName={item?.Last_Name}
+          style={{
+            backgroundColor: randomBackgroundColor,
+            height: normalize(50),
+            width: normalize(50),
+          }}
         />
         <View style={styles.notificationContent}>
           <Text style={styles.notificationText}>

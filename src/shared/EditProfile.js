@@ -19,8 +19,11 @@ import DatePicker from 'react-native-date-picker';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CameraOptionsModal from '../reusables/CameraOptionsModal';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const EditProfile = ({navigation, route}) => {
+  const randomBackgroundColor = getRandomColor();
   const user = route.params?.user ? route.params.user : null;
   const [photoLoaded, setPhotoLoaded] = useState(true);
   const [showCameraOptions, setShowCameraOptions] = useState(false);
@@ -131,18 +134,27 @@ const EditProfile = ({navigation, route}) => {
         <View style={styles.photoSection}>
           <Text style={styles.photoText}>Profile Photo</Text>
           <View style={styles.photoDiv}>
-            <Image
+            {/* <Image
               style={styles.photo}
               source={require('../../assets/male.png')}
               onLoadStart={() => setPhotoLoaded(true)}
               onLoadEnd={() => setPhotoLoaded(false)}
+            /> */}
+            <ProfilePicture
+              firstName={user?.profile.First_Name}
+              lastName={user?.profile.Last_Name}
+              style={{
+                backgroundColor: randomBackgroundColor,
+                height: normalize(100),
+                width: normalize(100),
+              }}
             />
-            <ActivityIndicator
+            {/* <ActivityIndicator
               style={styles.photoIndicator}
               animating={photoLoaded}
               size="large"
               color={theme.colors.primary}
-            />
+            /> */}
             {/* <TouchableOpacity
               style={styles.photoEdit}
               onPress={() => imageHandler()}
