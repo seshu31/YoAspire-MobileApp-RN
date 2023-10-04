@@ -2,8 +2,19 @@ import React from 'react';
 import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import ProfilePicture from '../reusables/profilePic';
 
 const ChatList = ({item, navigation}) => {
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomBackgroundColor = getRandomColor();
   return (
     <TouchableOpacity
       style={styles.chatList}
@@ -15,7 +26,7 @@ const ChatList = ({item, navigation}) => {
         })
       }>
       <View style={styles.chatSection}>
-        <Image
+        {/* <Image
           style={styles.chatImage}
           source={
             item.profile.img_file_name
@@ -24,6 +35,15 @@ const ChatList = ({item, navigation}) => {
                 }
               : require('../../assets/male.png')
           }
+        /> */}
+        <ProfilePicture
+          firstName={item?.profile.First_Name}
+          lastName={item?.profile.Last_Name}
+          style={{
+            backgroundColor: randomBackgroundColor,
+            height: normalize(50),
+            width: normalize(50),
+          }}
         />
         <View style={styles.chatData}>
           <View style={styles.chatDetails}>

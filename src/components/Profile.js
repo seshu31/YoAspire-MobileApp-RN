@@ -15,8 +15,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import Loader from '../reusables/Loader';
+import ProfilePicture from '../reusables/profilePic';
 
 const Profile = ({navigation, route}) => {
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomBackgroundColor = getRandomColor();
+
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [user, setUser] = useState('');
@@ -152,7 +164,7 @@ const Profile = ({navigation, route}) => {
         <ScrollView style={{opacity: isLoading ? 0 : 1}}>
           <View style={styles.userProfileImage}>
             <View style={styles.profileImageContainer}>
-              <Image
+              {/* <Image
                 style={styles.profileImage}
                 source={
                   user.profile.img_file_name
@@ -161,6 +173,15 @@ const Profile = ({navigation, route}) => {
                 }
                 onLoadStart={() => setImageLoading(true)}
                 onLoadEnd={() => setImageLoading(false)}
+              /> */}
+              <ProfilePicture
+                firstName={user?.profile.First_Name}
+                lastName={user?.profile.Last_Name}
+                style={{
+                  backgroundColor: randomBackgroundColor,
+                  width: normalize(100),
+                  height: normalize(100),
+                }}
               />
             </View>
           </View>
@@ -614,7 +635,7 @@ const styles = StyleSheet.create({
     marginBottom: normalize(50),
   },
   profileImageContainer: {
-    backgroundColor: theme.colors.white,
+    // backgroundColor: theme.colors.white,
     borderRadius: normalize(100),
     height: normalize(100),
     width: normalize(100),

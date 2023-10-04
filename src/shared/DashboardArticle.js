@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CommentCard from './CommentCard';
+import ProfilePicture from '../reusables/profilePic';
 
 const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
@@ -47,19 +48,84 @@ const DashboardArticle = ({articles, navigation}) => {
     }
   }
 
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomBackgroundColor = getRandomColor();
+
+  // const renderProfilePic = ({firstName, lastName}) => {
+  //   if (firstName) {
+  //     const nameWords = firstName.split(' ');
+
+  //     if (nameWords.length >= 2) {
+  //       const secondName = nameWords[1];
+  //       const initials = `${firstName.charAt(0).toUpperCase()}${secondName
+  //         .charAt(0)
+  //         .toUpperCase()}`;
+
+  //       return (
+  //         <View style={styles.profilePic}>
+  //           <Text style={styles.profilePicText}>{initials}</Text>
+  //         </View>
+  //       );
+  //     } else {
+  //       const lastNameInitial = lastName
+  //         ? lastName.charAt(0).toUpperCase()
+  //         : '';
+  //       const firstNameInitial = firstName.charAt(0).toUpperCase();
+  //       const initials = `${firstNameInitial}${lastNameInitial}`;
+
+  //       return (
+  //         <View style={styles.profilePic}>
+  //           <Text style={styles.profilePicText}>{initials}</Text>
+  //         </View>
+  //       );
+  //     }
+  //   }
+
+  //   return null;
+  // };
+
+  // const profilePic = renderProfilePic({
+  //   firstName: articles?.First_Name,
+  //   lastName: articles?.Last_Name,
+  // });
+
   const fetchArticle = () => {
     if (articles?.Category_Type === 'article') {
       return (
         <View style={styles.articleItem}>
           <View style={styles.writerInfo}>
-            <View>
-              <Image
-                style={styles.writeImage}
+            <View
+              style={[
+                styles.writeImage,
+                {backgroundColor: randomBackgroundColor},
+              ]}>
+              {/* <Image
+                // style={styles.writeImage}
+                style={[
+                  styles.writeImage,
+                  {backgroundColor: randomBackgroundColor},
+                ]}
                 source={
                   articles.img_file_name
                     ? {uri: articles.img_file_name}
                     : require('../../assets/male.png')
                 }
+              /> */}
+              {/* {profilePic} */}
+              <ProfilePicture
+                firstName={articles?.First_Name}
+                lastName={articles?.Last_Name}
+                style={{
+                  backgroundColor: randomBackgroundColor,
+                }}
               />
             </View>
             <View style={styles.writerDesc}>
@@ -396,6 +462,18 @@ const styles = StyleSheet.create({
   likesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  profilePic: {
+    width: normalize(35),
+    height: normalize(35),
+    borderRadius: normalize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePicText: {
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.white,
   },
 });
 

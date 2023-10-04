@@ -2,8 +2,57 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import ProfilePicture from '../reusables/profilePic';
 
 const GroupCard = ({item, navigation}) => {
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomBackgroundColor = getRandomColor();
+  // const renderProfilePic = ({firstName, lastName}) => {
+  //   if (firstName) {
+  //     const nameWords = firstName.split(' ');
+
+  //     if (nameWords.length >= 2) {
+  //       const secondName = nameWords[1];
+  //       const initials = `${firstName.charAt(0).toUpperCase()}${secondName
+  //         .charAt(0)
+  //         .toUpperCase()}`;
+
+  //       return (
+  //         <View style={styles.profilePic}>
+  //           <Text style={styles.profilePicText}>{initials}</Text>
+  //         </View>
+  //       );
+  //     } else {
+  //       const lastNameInitial = lastName
+  //         ? lastName.charAt(0).toUpperCase()
+  //         : '';
+  //       const firstNameInitial = firstName.charAt(0).toUpperCase();
+  //       const initials = `${firstNameInitial}${lastNameInitial}`;
+
+  //       return (
+  //         <View style={styles.profilePic}>
+  //           <Text style={styles.profilePicText}>{initials}</Text>
+  //         </View>
+  //       );
+  //     }
+  //   }
+
+  //   return null;
+  // };
+
+  // const profilePic = renderProfilePic({
+  //   firstName: item?.name,
+  //   lastName: item?.name,
+  // });
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -14,11 +63,21 @@ const GroupCard = ({item, navigation}) => {
       style={styles.groupDetails}
       activeOpacity={0.5}>
       <View style={styles.groupCard}>
-        <Image
+        {/* <Image
           style={styles.groupPhoto}
           source={
             item.image ? {uri: item.image} : require('../../assets/male.png')
           }
+        /> */}
+        {/* {profilePic} */}
+        <ProfilePicture
+          firstName={item?.name}
+          lastName={item?.name}
+          style={{
+            backgroundColor: randomBackgroundColor,
+            width: normalize(50), // Adjust the width as needed
+            height: normalize(50), // Adjust the height as needed
+          }}
         />
         <Text style={styles.groupName}>{item.name}</Text>
       </View>
@@ -51,6 +110,19 @@ const styles = StyleSheet.create({
     fontSize: normalize(17),
     paddingLeft: normalize(theme.spacing.medium),
     color: theme.colors.level2,
+  },
+
+  profilePic: {
+    width: normalize(35),
+    height: normalize(35),
+    borderRadius: normalize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePicText: {
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.white,
   },
 });
 

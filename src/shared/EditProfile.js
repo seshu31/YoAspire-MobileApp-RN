@@ -143,7 +143,7 @@ const EditProfile = ({navigation, route}) => {
               size="large"
               color={theme.colors.primary}
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.photoEdit}
               onPress={() => imageHandler()}
               activeOpacity={0.5}>
@@ -152,7 +152,7 @@ const EditProfile = ({navigation, route}) => {
                 size={normalize(theme.iconSizes.small)}
                 color={theme.colors.primary}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <Controller

@@ -88,7 +88,7 @@ const CreatePost = () => {
 
   // Function to handle image selection
   const imageHandler = async () => {
-    setShowCameraOptions(true);
+    // setShowCameraOptions(true);
   };
 
   return (
@@ -307,7 +307,7 @@ const CreatePost = () => {
           </>
         ) : (
           <TouchableOpacity onPress={() => imageHandler()} activeOpacity={0.5}>
-            <Text style={styles.imageButton}>Upload an image</Text>
+            {/* <Text style={styles.imageButton}>Upload an image</Text> */}
           </TouchableOpacity>
         )}
         {post ? (

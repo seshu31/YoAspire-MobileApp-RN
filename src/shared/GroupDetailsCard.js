@@ -17,8 +17,19 @@ import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import {articlesData, members, groupData} from '../PostProfileData';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ProfilePicture from '../reusables/profilePic';
 
 const GroupDetailsCard = ({navigation, route}) => {
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomBackgroundColor = getRandomColor();
   // Replace the following static data with actual data
 
   const {id, item} = route.params || {id: null, item: null};
@@ -116,14 +127,18 @@ const GroupDetailsCard = ({navigation, route}) => {
       <>
         <View style={styles.groupImageSection}>
           <View style={styles.groupImageBlock}>
-            <Image
+            {/* <Image
               style={styles.groupImage}
-              // source={
-              //   group.image
-              //     ? {uri: group.image}
-              //     : require('../../assets/male.png')
-              // }
               source={require('../../assets/male.png')}
+            /> */}
+            <ProfilePicture
+              firstName={group?.name}
+              lastName={group?.name}
+              style={{
+                backgroundColor: randomBackgroundColor,
+                width: normalize(100), // Adjust the width as needed
+                height: normalize(100), // Adjust the height as needed
+              }}
             />
           </View>
         </View>
