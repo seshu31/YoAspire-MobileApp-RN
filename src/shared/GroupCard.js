@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const GroupCard = ({item, navigation}) => {
   return (
@@ -14,11 +16,20 @@ const GroupCard = ({item, navigation}) => {
       style={styles.groupDetails}
       activeOpacity={0.5}>
       <View style={styles.groupCard}>
-        <Image
+        {/* <Image
           style={styles.groupPhoto}
           source={
             item.image ? {uri: item.image} : require('../../assets/male.png')
           }
+        /> */}
+        <ProfilePicture
+          firstName={item?.name}
+          lastName={item?.name}
+          style={{
+            backgroundColor: getRandomColor(),
+            width: normalize(50), // Adjust the width as needed
+            height: normalize(50), // Adjust the height as needed
+          }}
         />
         <Text style={styles.groupName}>{item.name}</Text>
       </View>
@@ -51,6 +62,19 @@ const styles = StyleSheet.create({
     fontSize: normalize(17),
     paddingLeft: normalize(theme.spacing.medium),
     color: theme.colors.level2,
+  },
+
+  profilePic: {
+    width: normalize(35),
+    height: normalize(35),
+    borderRadius: normalize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePicText: {
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.white,
   },
 });
 

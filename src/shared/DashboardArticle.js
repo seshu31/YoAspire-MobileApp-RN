@@ -5,6 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CommentCard from './CommentCard';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const DashboardArticle = ({articles, navigation}) => {
   const [liked, setLiked] = useState(() =>
@@ -52,14 +54,25 @@ const DashboardArticle = ({articles, navigation}) => {
       return (
         <View style={styles.articleItem}>
           <View style={styles.writerInfo}>
-            <View>
-              <Image
-                style={styles.writeImage}
+            <View style={[styles.writeImage]}>
+              {/* <Image
+                // style={styles.writeImage}
+                style={[
+                  styles.writeImage,
+                  {backgroundColor: randomBackgroundColor},
+                ]}
                 source={
                   articles.img_file_name
                     ? {uri: articles.img_file_name}
                     : require('../../assets/male.png')
                 }
+              /> */}
+              <ProfilePicture
+                firstName={articles?.First_Name}
+                lastName={articles?.Last_Name}
+                style={{
+                  backgroundColor: getRandomColor(),
+                }}
               />
             </View>
             <View style={styles.writerDesc}>
@@ -396,6 +409,18 @@ const styles = StyleSheet.create({
   likesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  profilePic: {
+    width: normalize(35),
+    height: normalize(35),
+    borderRadius: normalize(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePicText: {
+    fontSize: normalize(theme.fontSizes.mediumLarge),
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.white,
   },
 });
 

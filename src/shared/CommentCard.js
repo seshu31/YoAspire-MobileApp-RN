@@ -14,6 +14,8 @@ import {Menu} from 'react-native-paper';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const CommentCard = ({item, navigation, admin, fetchComments}) => {
   const [liked, setLiked] = useState(true);
@@ -58,9 +60,16 @@ const CommentCard = ({item, navigation, admin, fetchComments}) => {
     <View style={styles.commentCard}>
       <View style={styles.commentHeader}>
         <View style={styles.commentProfileContainer}>
-          <Image
+          {/* <Image
             style={styles.profileImage}
             source={require('../../assets/male.png')}
+          /> */}
+          <ProfilePicture
+            firstName={item?.First_Name}
+            lastName={item?.Last_Name}
+            style={{
+              backgroundColor: getRandomColor(),
+            }}
           />
           <Text style={styles.username}>
             {item.First_Name} {item.Last_Name}

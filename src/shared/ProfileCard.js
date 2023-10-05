@@ -10,6 +10,8 @@ import {
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const ProfileCard = ({item, navigation}) => {
   const [connected, setConnected] = useState(false);
@@ -52,13 +54,22 @@ const ProfileCard = ({item, navigation}) => {
       activeOpacity={0.5}>
       <View style={styles.imageSection}>
         <View style={styles.profileImageContainer}>
-          <Image
+          {/* <Image
             style={styles.profileImage}
             source={
               item.profile.img_file_name
                 ? {uri: item.profile.img_file_name}
                 : require('../../assets/male.png')
             }
+          /> */}
+          <ProfilePicture
+            firstName={item?.profile.First_Name}
+            lastName={item?.profile.Last_Name}
+            style={{
+              backgroundColor: getRandomColor(),
+              width: normalize(75),
+              height: normalize(75),
+            }}
           />
         </View>
       </View>

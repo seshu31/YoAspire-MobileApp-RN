@@ -5,6 +5,8 @@ import {Menu} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const GroupMemberCard = ({item, navigation, owner, admin, creator}) => {
   const [connected, setConnected] = useState(() => false);
@@ -40,13 +42,22 @@ const GroupMemberCard = ({item, navigation, owner, admin, creator}) => {
       onPress={() => profileHandler(item.UserId)}
       activeOpacity={0.5}>
       <View style={styles.detailsSection}>
-        <Image
+        {/* <Image
           style={styles.connectionImage}
           source={
             item.profile.img_file_name
               ? {uri: item.image.img_file_name}
               : require('../../assets/male.png')
           }
+        /> */}
+        <ProfilePicture
+          firstName={item?.profile.First_Name}
+          lastName={item?.profile.Last_Name}
+          style={{
+            backgroundColor: getRandomColor(),
+            width: normalize(50), // Adjust the width as needed
+            height: normalize(50), // Adjust the height as needed
+          }}
         />
         <View style={styles.connectionDetails}>
           <View style={styles.userNameDetails}>

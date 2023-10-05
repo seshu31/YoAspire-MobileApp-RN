@@ -19,6 +19,8 @@ import DatePicker from 'react-native-date-picker';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CameraOptionsModal from '../reusables/CameraOptionsModal';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const EditProfile = ({navigation, route}) => {
   const user = route.params?.user ? route.params.user : null;
@@ -131,19 +133,28 @@ const EditProfile = ({navigation, route}) => {
         <View style={styles.photoSection}>
           <Text style={styles.photoText}>Profile Photo</Text>
           <View style={styles.photoDiv}>
-            <Image
+            {/* <Image
               style={styles.photo}
               source={require('../../assets/male.png')}
               onLoadStart={() => setPhotoLoaded(true)}
               onLoadEnd={() => setPhotoLoaded(false)}
+            /> */}
+            <ProfilePicture
+              firstName={user?.profile.First_Name}
+              lastName={user?.profile.Last_Name}
+              style={{
+                backgroundColor: getRandomColor(),
+                height: normalize(100),
+                width: normalize(100),
+              }}
             />
-            <ActivityIndicator
+            {/* <ActivityIndicator
               style={styles.photoIndicator}
               animating={photoLoaded}
               size="large"
               color={theme.colors.primary}
-            />
-            <TouchableOpacity
+            /> */}
+            {/* <TouchableOpacity
               style={styles.photoEdit}
               onPress={() => imageHandler()}
               activeOpacity={0.5}>
@@ -152,7 +163,7 @@ const EditProfile = ({navigation, route}) => {
                 size={normalize(theme.iconSizes.small)}
                 color={theme.colors.primary}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <Controller

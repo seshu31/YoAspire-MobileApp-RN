@@ -18,6 +18,8 @@ import normalize from 'react-native-normalize';
 import {Provider} from 'react-native-paper';
 import theme from '../../theme';
 import {commentsData} from '../PostProfileData';
+import ProfilePicture from '../reusables/profilePic';
+import getRandomColor from '../reusables/randomColor';
 
 const DetailedArticle = ({navigation, route}) => {
   const {articles, enableAutofocusValue, formatTimeAgo} = route.params;
@@ -83,13 +85,22 @@ const DetailedArticle = ({navigation, route}) => {
       <View>
         <View style={styles.writerInfo}>
           <View>
-            <Image
+            {/* <Image
               style={styles.writeImage}
               source={
                 article.img_file_name
                   ? {uri: article.img_file_name}
                   : require('../../assets/male.png')
               }
+            /> */}
+            <ProfilePicture
+              firstName={articles?.First_Name}
+              lastName={articles?.Last_Name}
+              style={{
+                backgroundColor: getRandomColor(),
+                height: normalize(50),
+                width: normalize(50),
+              }}
             />
           </View>
           <View style={styles.writerDesc}>
