@@ -19,8 +19,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const Profile = ({navigation, route}) => {
-  const randomBackgroundColor = getRandomColor();
-
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [user, setUser] = useState('');
@@ -170,7 +168,7 @@ const Profile = ({navigation, route}) => {
                 firstName={user?.profile.First_Name}
                 lastName={user?.profile.Last_Name}
                 style={{
-                  backgroundColor: randomBackgroundColor,
+                  backgroundColor: getRandomColor(),
                   width: normalize(100),
                   height: normalize(100),
                 }}

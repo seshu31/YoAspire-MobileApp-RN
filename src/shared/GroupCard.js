@@ -6,8 +6,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const GroupCard = ({item, navigation}) => {
-  const randomBackgroundColor = getRandomColor();
-
   return (
     <TouchableOpacity
       onPress={() =>
@@ -28,7 +26,7 @@ const GroupCard = ({item, navigation}) => {
           firstName={item?.name}
           lastName={item?.name}
           style={{
-            backgroundColor: randomBackgroundColor,
+            backgroundColor: getRandomColor(),
             width: normalize(50), // Adjust the width as needed
             height: normalize(50), // Adjust the height as needed
           }}

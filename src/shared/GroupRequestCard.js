@@ -9,7 +9,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const GroupRequestCard = ({item, navigation, fetchHandler}) => {
-  const randomBackgroundColor = getRandomColor();
   const [connectionLevel, setConnectionLevel] = useState(() => 1);
 
   useEffect(() => fetchConnectionLevel(), []);
@@ -51,7 +50,7 @@ const GroupRequestCard = ({item, navigation, fetchHandler}) => {
           firstName={item?.profile.First_Name}
           lastName={item?.profile.Last_Name}
           style={{
-            backgroundColor: randomBackgroundColor,
+            backgroundColor: getRandomColor(),
             height: normalize(50),
             width: normalize(50),
           }}

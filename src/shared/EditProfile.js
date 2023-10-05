@@ -23,7 +23,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const EditProfile = ({navigation, route}) => {
-  const randomBackgroundColor = getRandomColor();
   const user = route.params?.user ? route.params.user : null;
   const [photoLoaded, setPhotoLoaded] = useState(true);
   const [showCameraOptions, setShowCameraOptions] = useState(false);
@@ -144,7 +143,7 @@ const EditProfile = ({navigation, route}) => {
               firstName={user?.profile.First_Name}
               lastName={user?.profile.Last_Name}
               style={{
-                backgroundColor: randomBackgroundColor,
+                backgroundColor: getRandomColor(),
                 height: normalize(100),
                 width: normalize(100),
               }}

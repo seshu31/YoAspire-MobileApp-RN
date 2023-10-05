@@ -18,7 +18,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const CommentCard = ({item, navigation, admin, fetchComments}) => {
-  const randomBackgroundColor = getRandomColor();
   const [liked, setLiked] = useState(true);
   const [likeCount, setLikeCount] = useState(item.No_of_Likes);
   const [visible, setVisible] = useState(false);
@@ -69,7 +68,7 @@ const CommentCard = ({item, navigation, admin, fetchComments}) => {
             firstName={item?.First_Name}
             lastName={item?.Last_Name}
             style={{
-              backgroundColor: randomBackgroundColor,
+              backgroundColor: getRandomColor(),
             }}
           />
           <Text style={styles.username}>

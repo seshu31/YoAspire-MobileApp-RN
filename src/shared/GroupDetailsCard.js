@@ -21,7 +21,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const GroupDetailsCard = ({navigation, route}) => {
-  const randomBackgroundColor = getRandomColor();
   // Replace the following static data with actual data
 
   const {id, item} = route.params || {id: null, item: null};
@@ -127,7 +126,7 @@ const GroupDetailsCard = ({navigation, route}) => {
               firstName={group?.name}
               lastName={group?.name}
               style={{
-                backgroundColor: randomBackgroundColor,
+                backgroundColor: getRandomColor(),
                 width: normalize(100), // Adjust the width as needed
                 height: normalize(100), // Adjust the height as needed
               }}

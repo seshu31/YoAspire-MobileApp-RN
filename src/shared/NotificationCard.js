@@ -7,7 +7,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const NotificationCard = props => {
-  const randomBackgroundColor = getRandomColor();
   const {item} = props;
   const notificationHandler = () => {
     console.log(
@@ -38,7 +37,7 @@ const NotificationCard = props => {
           firstName={item?.First_Name}
           lastName={item?.Last_Name}
           style={{
-            backgroundColor: randomBackgroundColor,
+            backgroundColor: getRandomColor(),
             height: normalize(50),
             width: normalize(50),
           }}

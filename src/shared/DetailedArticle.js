@@ -22,7 +22,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const DetailedArticle = ({navigation, route}) => {
-  const randomBackgroundColor = getRandomColor();
   const {articles, enableAutofocusValue, formatTimeAgo} = route.params;
   const [article, setArticle] = useState(
     route.params?.articles ? route.params.articles : {},
@@ -98,7 +97,7 @@ const DetailedArticle = ({navigation, route}) => {
               firstName={articles?.First_Name}
               lastName={articles?.Last_Name}
               style={{
-                backgroundColor: randomBackgroundColor,
+                backgroundColor: getRandomColor(),
                 height: normalize(50),
                 width: normalize(50),
               }}

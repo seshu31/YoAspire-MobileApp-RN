@@ -20,7 +20,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import getRandomColor from '../reusables/randomColor';
 
 const CreateGroup = ({navigation, route}) => {
-  const randomBackgroundColor = getRandomColor();
   // Initialize variables and states
   var group = false;
   const [loading, setLoading] = useState(() => false);
@@ -122,7 +121,7 @@ const CreateGroup = ({navigation, route}) => {
           <Text style={styles.photoText}>Group Photo</Text>
           <View style={styles.photoDiv}>
             <Image
-              style={[styles.photo, {backgroundColor: randomBackgroundColor}]}
+              style={[styles.photo, {backgroundColor: getRandomColor()}]}
               // source={image ? {uri: image} : require('../../assets/male.png')}
             />
             {/* <TouchableOpacity

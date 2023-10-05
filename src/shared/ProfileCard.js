@@ -14,7 +14,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const ProfileCard = ({item, navigation}) => {
-  const randomBackgroundColor = getRandomColor();
   const [connected, setConnected] = useState(false);
   const [connectionLevel, setConnectionLevel] = useState(0);
 
@@ -67,7 +66,7 @@ const ProfileCard = ({item, navigation}) => {
             firstName={item?.profile.First_Name}
             lastName={item?.profile.Last_Name}
             style={{
-              backgroundColor: randomBackgroundColor,
+              backgroundColor: getRandomColor(),
               width: normalize(75),
               height: normalize(75),
             }}

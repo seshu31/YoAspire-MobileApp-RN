@@ -49,8 +49,6 @@ const DashboardArticle = ({articles, navigation}) => {
     }
   }
 
-  const randomBackgroundColor = getRandomColor();
-
   const fetchArticle = () => {
     if (articles?.Category_Type === 'article') {
       return (
@@ -73,7 +71,7 @@ const DashboardArticle = ({articles, navigation}) => {
                 firstName={articles?.First_Name}
                 lastName={articles?.Last_Name}
                 style={{
-                  backgroundColor: randomBackgroundColor,
+                  backgroundColor: getRandomColor(),
                 }}
               />
             </View>

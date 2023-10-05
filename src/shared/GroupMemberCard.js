@@ -9,7 +9,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const GroupMemberCard = ({item, navigation, owner, admin, creator}) => {
-  const randomBackgroundColor = getRandomColor();
   const [connected, setConnected] = useState(() => false);
   const [visible, setVisible] = useState(() => false);
   const [connectionLevel, setConnectionLevel] = useState(() => 1);
@@ -55,7 +54,7 @@ const GroupMemberCard = ({item, navigation, owner, admin, creator}) => {
           firstName={item?.profile.First_Name}
           lastName={item?.profile.Last_Name}
           style={{
-            backgroundColor: randomBackgroundColor,
+            backgroundColor: getRandomColor(),
             width: normalize(50), // Adjust the width as needed
             height: normalize(50), // Adjust the height as needed
           }}

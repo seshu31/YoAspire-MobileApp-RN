@@ -6,7 +6,6 @@ import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
 const ChatList = ({item, navigation}) => {
-  const randomBackgroundColor = getRandomColor();
   return (
     <TouchableOpacity
       style={styles.chatList}
@@ -32,7 +31,7 @@ const ChatList = ({item, navigation}) => {
           firstName={item?.profile.First_Name}
           lastName={item?.profile.Last_Name}
           style={{
-            backgroundColor: randomBackgroundColor,
+            backgroundColor: getRandomColor(),
             height: normalize(50),
             width: normalize(50),
           }}
