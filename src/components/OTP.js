@@ -87,51 +87,51 @@ const OTP = ({route, navigation}) => {
   };
 
   const resendOtp = () => {
-    // if (route.params && route.params.reset) {
-    //   axios
-    //     .post(
-    //       `${backend_url}/auth/forgot`,
-    //       {
-    //         email: route.params.email,
-    //       },
-    //       {
-    //         headers: {
-    //           'Content-type': 'application/json; charset=UTF-8',
-    //         },
-    //       },
-    //     )
-    //     .then(response => {
-    //       if (response.data.statuscode === 1) {
-    //         setTimer(120);
-    //         setResend(prevResend => !prevResend);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       alert('Something went wrong. Please, try again');
-    //     });
-    // } else {
-    //   axios
-    //     .post(
-    //       `${backend_url}/auth/register/resend`,
-    //       {
-    //         email,
-    //       },
-    //       {
-    //         headers: {
-    //           'Content-type': 'application/json; charset=UTF-8',
-    //         },
-    //       },
-    //     )
-    //     .then(response => {
-    //       if (response.data.statuscode === 1) {
-    //         setTimer(120);
-    //         setResend(prevResend => !prevResend);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       alert('User already validated');
-    //     });
-    // }
+    if (route.params && route.params.reset) {
+      axios
+        .post(
+          `${backend_url}/auth/forgot`,
+          {
+            email: route.params.email,
+          },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          },
+        )
+        .then(response => {
+          if (response.data.statuscode === 1) {
+            setTimer(120);
+            setResend(prevResend => !prevResend);
+          }
+        })
+        .catch(err => {
+          alert('Something went wrong. Please, try again');
+        });
+    } else {
+      axios
+        .post(
+          `${backend_url}/auth/register/resend`,
+          {
+            email,
+          },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          },
+        )
+        .then(response => {
+          if (response.data.statuscode === 1) {
+            setTimer(120);
+            setResend(prevResend => !prevResend);
+          }
+        })
+        .catch(err => {
+          alert('User already validated');
+        });
+    }
   };
 
   const verifyOtp = async () => {
@@ -139,22 +139,21 @@ const OTP = ({route, navigation}) => {
     const otp = `${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`;
 
     try {
-      const payload = {email: email, otp: otp};
+      const payload = {email: email};
 
       const url =
         route.params && route.params.reset
           ? `${backend_url}/auth/getresetdata/${otp}`
-          : `${backend_url}/auth/verify_otp`;
+          : `${backend_url}/auth/validate_otp/${otp}`;
 
-      const response = await (route.params && route.params.reset
-        ? axios.get(url)
-        : axios.post(url, payload, {
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-          }));
+      const response = await axios.post(url, payload, {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
 
-      if (response.data) {
+      if (response.data.statuscode === 1) {
+        console.log('this is data', response);
         setLoading(false);
         navigation.setParams({email: null});
         if (route.params && route.params.reset) {
@@ -162,8 +161,15 @@ const OTP = ({route, navigation}) => {
             message:
               'Verification successful. Please, Set a new password to continue',
             code: otp,
+            email: email,
           });
         } else {
+          console.log('This is token', response.data.token);
+          if (response.data.statuscode === 1) {
+            navigation.navigate('login', {
+              message: 'Verification successful. Please, Login to continue',
+            });
+          }
           response.data.token
             ? AsyncStorage.setItem('token', response.data.token)
             : Alert.alert('no token found');

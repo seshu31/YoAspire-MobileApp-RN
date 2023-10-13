@@ -5,68 +5,66 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import AccountImage from './AccountImage';
+import Loader from '../reusables/Loader';
+import axios from 'axios';
+import backend_url from '../../config';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const ForgotPassword = ({navigation}) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
+    reset,
   } = useForm({
     defaultValues: {
       email: '',
     },
   });
 
-  const [emailAdd, setEmailAdd] = useState(() => '');
   const [loading, setLoading] = useState(() => false);
 
   const validateEmail = async value => {
-    // const response = await axios.get(`${backend_url}/auth/checkemail/${value}`);
-    // if (response.data.statuscode !== 1) {
-    //   return true;
-    // }
-    // return false;
+    const response = await axios.get(`${backend_url}/auth/checkemail/${value}`);
+    if (response.data.statuscode !== 1) {
+      return true;
+    }
+    return false;
   };
 
   const handleOTP = data => {
-    // setLoading(true);
-    // axios
-    //   .post(
-    //     `${backend_url}/auth/forgot`,
-    //     {
-    //       email: emailAdd,
-    //     },
-    //     {
-    //       headers: {
-    //         'Content-type': 'application/json; charset=UTF-8',
-    //       },
-    //     },
-    //   )
-    //   .then(response => {
-    //     setLoading(false);
-    //     if (response.data.statuscode === 1)
-    //       reset({
-    //         email: '',
-    //       });
-    //     navigation.navigate('otp-verification', {
-    //       email: emailAdd,
-    //       reset: true,
-    //     });
-    //   })
-    //   .catch(err => {
-    //     setLoading(false);
-    //     alert('Something went wrong. Please, try again.');
-    //   });
-
-    console.log(data);
-    navigation.navigate('otp-verification', {
-      email: data.email,
-      reset: true,
-    });
+    setLoading(true);
+    axios
+      .post(
+        `${backend_url}/auth/forgot`,
+        {
+          email: data.email,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        },
+      )
+      .then(response => {
+        setLoading(false);
+        if (response.data.statuscode === 1)
+          reset({
+            email: '',
+          });
+        navigation.navigate('otp-verification', {
+          email: data.email,
+          reset: true,
+        });
+      })
+      .catch(err => {
+        setLoading(false);
+        alert('Something went wrong. Please, try again.');
+      });
   };
 
   return (
@@ -94,7 +92,7 @@ const ForgotPassword = ({navigation}) => {
             required: true,
             pattern:
               /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-            // validate: validateEmail,
+            validate: validateEmail,
           }}
         />
         {errors.email && errors.email.type === 'required' && (
@@ -104,29 +102,14 @@ const ForgotPassword = ({navigation}) => {
           <Text style={{color: 'red'}}>Enter valid EmailID</Text>
         )}
         <TouchableOpacity activeOpacity={0.5} onPress={handleSubmit(handleOTP)}>
-          <View
-            style={[
-              styles.sendotpButton,
-              {
-                backgroundColor: loading ? '#cce4f7' : '#2196f3',
-              },
-            ]}>
-            <ActivityIndicator
-              style={{
-                position: 'absolute',
-                top: '15%',
-                left: '45%',
-              }}
-              animating={loading}
-              size="large"
-              color="#376eb3"
-            />
+          <View style={styles.sendotpButton}>
             <Text style={[styles.sendotpText, {opacity: loading ? 0 : 1}]}>
               SEND OTP
             </Text>
           </View>
         </TouchableOpacity>
       </View>
+      {loading ? <Loader /> : null}
     </View>
   );
 };
@@ -134,45 +117,45 @@ const ForgotPassword = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loginCard: {
     width: '85%',
-    marginBottom: 100,
-    marginTop: -20,
+    marginBottom: normalize(100),
+    marginTop: normalize(-20),
   },
   emailText: {
-    color: 'orange',
-    fontSize: 16,
-    paddingBottom: 10,
+    color: '#FFA500',
+    fontSize: normalize(theme.fontSizes.medium),
+    paddingBottom: normalize(theme.spacing.small),
   },
   inputField: {
     width: '100%',
-    height: 50,
-    fontSize: 16,
-    marginBottom: 10,
+    height: normalize(50),
+    fontSize: normalize(theme.fontSizes.medium),
+    marginBottom: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    color: '#000',
+    backgroundColor: theme.colors.white,
+    color: theme.colors.black,
   },
   sendotpButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2196f3',
+    backgroundColor: theme.colors.primary,
   },
   sendotpText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
   },
 });
 

@@ -9,9 +9,14 @@ import {
 import AccountImage from './AccountImage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useForm, Controller} from 'react-hook-form';
+import axios from 'axios';
+import backend_url from '../../config';
+import Loader from '../reusables/Loader';
+import theme from '../../theme';
+import normalize from 'react-native-normalize';
 
 const EnterPassword = ({navigation, route}) => {
-  const {code} = route.params;
+  const {code, email} = route.params;
 
   const {
     control,
@@ -26,6 +31,7 @@ const EnterPassword = ({navigation, route}) => {
 
   const [isSecureEntry, setIsSecureEntry] = useState(() => true);
   const [isSecureEntryConfirm, setIsSecureEntryConfirm] = useState(() => true);
+  const [loading, setLoading] = useState(() => false);
 
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
@@ -38,34 +44,40 @@ const EnterPassword = ({navigation, route}) => {
   };
 
   const updateHandler = data => {
-    // axios
-    //   .post(
-    //     `${backend_url}/auth/reset/${code}`,
-    //     {
-    //       password,
-    //     },
-    //     {
-    //       headers: {
-    //         'Content-type': 'application/json; charset=UTF-8',
-    //       },
-    //     },
-    //   )
-    //   .then(response => {
-    //     if (response.data.statuscode === 1)
-    //       navigation.navigate('login', {
-    //         message: 'Password updated successfully. Please, Login to continue',
-    //       });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     alert('Somthing went wrong. Please, try again.');
-    //   });
-    console.log(data);
-    navigation.navigate('login');
+    setLoading(true);
+    console.log('This is data,email', data, email);
+    axios
+      .post(
+        `${backend_url}/auth/reset/${code}`,
+        {
+          email: email,
+          password: data.password,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        },
+      )
+
+      .then(response => {
+        console.log(response.data);
+        if (response.data.statuscode === 1) {
+          setLoading(false);
+          navigation.navigate('login', {
+            message: 'Password updated successfully. Please, Login to continue',
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Somthing went wrong. Please, try again.');
+      });
   };
 
   return (
     <View style={styles.container}>
+      {loading ? <Loader /> : null}
       <AccountImage />
       <View style={styles.loginCard}>
         <View style={styles.passwordField}>
@@ -103,10 +115,10 @@ const EnterPassword = ({navigation, route}) => {
             </TouchableOpacity>
           )}
           {errors.password && errors.password.type === 'required' && (
-            <Text style={{color: 'red'}}>Password Field is required.</Text>
+            <Text style={styles.error}>Password Field is required.</Text>
           )}
           {errors.password && errors.password.type === 'minLength' && (
-            <Text style={{color: 'red'}}>
+            <Text style={styles.error}>
               Password should consists of minimum 8 characters.
             </Text>
           )}
@@ -149,10 +161,10 @@ const EnterPassword = ({navigation, route}) => {
             </TouchableOpacity>
           )}
           {errors.cnfPassword && errors.cnfPassword.type === 'required' && (
-            <Text style={{color: 'red'}}>Password Field is required.</Text>
+            <Text style={styles.error}>Password Field is required.</Text>
           )}
           {errors.cnfPassword && errors.cnfPassword.type === 'minLength' && (
-            <Text style={{color: 'red'}}>
+            <Text style={styles.error}>
               Password should consists of minimum 8 characters.
             </Text>
           )}
@@ -174,38 +186,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
   },
   loginCard: {
     width: '85%',
-    marginTop: -50,
-    marginBottom: 50,
+    marginTop: normalize(-50),
+    marginBottom: normalize(50),
   },
   inputField: {
     width: '100%',
-    height: 50,
-    marginVertical: 10,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.small),
     alignItems: 'center',
-    borderColor: '#376eb3',
+    borderColor: theme.colors.primary,
     borderBottomWidth: 1,
-    backgroundColor: '#fff',
-    fontSize: 16,
-    color: '#000',
+    backgroundColor: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
   },
   updateButton: {
-    height: 50,
-    marginVertical: 20,
+    height: normalize(50),
+    marginVertical: normalize(theme.spacing.large),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2196f3',
+    backgroundColor: theme.colors.primary,
   },
   updateText: {
-    color: '#fff',
-    fontSize: 18,
+    color: theme.colors.white,
+    fontSize: normalize(theme.fontSizes.mediumLarge),
     letterSpacing: 2,
     width: '100%',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: theme.fontWeight.bold,
     textTransform: 'uppercase',
   },
   passwordField: {
@@ -213,8 +225,11 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
-    top: 20,
+    right: normalize(theme.spacing.small),
+    top: normalize(theme.spacing.large),
+  },
+  error: {
+    color: theme.colors.red,
   },
 });
 
