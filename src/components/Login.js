@@ -30,7 +30,6 @@ const Login = ({navigation, route}) => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [emailAdd, setEmailAdd] = useState('');
   const [loading, setLoading] = useState(false);
-  const values = getValues();
 
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
@@ -48,24 +47,22 @@ const Login = ({navigation, route}) => {
           },
           {
             headers: {
-              'Content-type': 'application/json; charset=UTF-8',
+              'Content-Type': 'application/json; charset=UTF-8', // Use 'Content-Type' instead of 'Content-type'
             },
           },
         );
+        console.log('ya');
+
         if (response.data.token) {
-          try {
-            AsyncStorage.setItem('userToken', response.data.token);
-            AsyncStorage.setItem('userId', response.data.userid.toString());
-            navigation.navigate('index');
-          } catch (error) {
-            Alert.alert('Local storage failed');
-          }
+          await AsyncStorage.setItem('userToken', response.data.token);
+          await AsyncStorage.setItem('userId', response.data.userid.toString());
           setLoading(false);
+          navigation.navigate('index');
           return true;
         } else if (response.data.statuscode === 0) {
           setLoading(false);
           navigation.navigate('otp-verification', {
-            email: emailAdd,
+            email: email,
           });
         } else if (response.data.statuscode === -1) {
           setError('email', {
@@ -75,17 +72,17 @@ const Login = ({navigation, route}) => {
         } else {
           setError('email', {
             type: 'incorrectPassword',
-            message: 'incorrect password',
+            message: 'Incorrect password',
           });
         }
-        setLoading(false);
-        return false;
       }
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
+    } catch (error) {
+      console.log(error);
       Alert.alert('Something went wrong. Try again later.');
     }
+
+    setLoading(false);
+    return false;
   };
 
   const hasSpace = async value => {
@@ -95,11 +92,11 @@ const Login = ({navigation, route}) => {
     return true;
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async data => {
     setIsSecureEntry(true);
     setEmailAdd('');
     navigation.setParams({message: null});
-    await verifyPassword(values.email, values.password);
+    await verifyPassword(data.email, data.password);
     // route.params.loginHandler(true);
   };
 

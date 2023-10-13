@@ -87,51 +87,51 @@ const OTP = ({route, navigation}) => {
   };
 
   const resendOtp = () => {
-    // if (route.params && route.params.reset) {
-    //   axios
-    //     .post(
-    //       `${backend_url}/auth/forgot`,
-    //       {
-    //         email: route.params.email,
-    //       },
-    //       {
-    //         headers: {
-    //           'Content-type': 'application/json; charset=UTF-8',
-    //         },
-    //       },
-    //     )
-    //     .then(response => {
-    //       if (response.data.statuscode === 1) {
-    //         setTimer(120);
-    //         setResend(prevResend => !prevResend);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       alert('Something went wrong. Please, try again');
-    //     });
-    // } else {
-    //   axios
-    //     .post(
-    //       `${backend_url}/auth/register/resend`,
-    //       {
-    //         email,
-    //       },
-    //       {
-    //         headers: {
-    //           'Content-type': 'application/json; charset=UTF-8',
-    //         },
-    //       },
-    //     )
-    //     .then(response => {
-    //       if (response.data.statuscode === 1) {
-    //         setTimer(120);
-    //         setResend(prevResend => !prevResend);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       alert('User already validated');
-    //     });
-    // }
+    if (route.params && route.params.reset) {
+      axios
+        .post(
+          `${backend_url}/auth/forgot`,
+          {
+            email: route.params.email,
+          },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          },
+        )
+        .then(response => {
+          if (response.data.statuscode === 1) {
+            setTimer(120);
+            setResend(prevResend => !prevResend);
+          }
+        })
+        .catch(err => {
+          alert('Something went wrong. Please, try again');
+        });
+    } else {
+      axios
+        .post(
+          `${backend_url}/auth/register/resend`,
+          {
+            email,
+          },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          },
+        )
+        .then(response => {
+          if (response.data.statuscode === 1) {
+            setTimer(120);
+            setResend(prevResend => !prevResend);
+          }
+        })
+        .catch(err => {
+          alert('User already validated');
+        });
+    }
   };
 
   const verifyOtp = async () => {
@@ -152,7 +152,7 @@ const OTP = ({route, navigation}) => {
         },
       });
 
-      if (response.data) {
+      if (response.data.statuscode === 1) {
         console.log('this is data', response);
         setLoading(false);
         navigation.setParams({email: null});
@@ -170,12 +170,12 @@ const OTP = ({route, navigation}) => {
               message: 'Verification successful. Please, Login to continue',
             });
           }
-          // response.data.token
-          //   ? AsyncStorage.setItem('token', response.data.token)
-          //   : Alert.alert('no token found');
-          // navigation.navigate('login', {
-          //   message: 'Verification successful. Please, Login to continue',
-          // });
+          response.data.token
+            ? AsyncStorage.setItem('token', response.data.token)
+            : Alert.alert('no token found');
+          navigation.navigate('login', {
+            message: 'Verification successful. Please, Login to continue',
+          });
         }
       } else {
         setLoading(false);
