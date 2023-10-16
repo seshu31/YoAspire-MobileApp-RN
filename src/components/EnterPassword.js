@@ -14,10 +14,8 @@ import backend_url from '../../config';
 import Loader from '../reusables/Loader';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
-
 const EnterPassword = ({navigation, route}) => {
   const {code, email} = route.params;
-
   const {
     control,
     handleSubmit,
@@ -29,15 +27,12 @@ const EnterPassword = ({navigation, route}) => {
       cnfPassword: '',
     },
   });
-
   const [isSecureEntry, setIsSecureEntry] = useState(() => true);
   const [isSecureEntryConfirm, setIsSecureEntryConfirm] = useState(() => true);
   const [loading, setLoading] = useState(() => false);
-
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
   };
-
   const toggleConfirmPasswordType = () => {
     setIsSecureEntryConfirm(
       prevIsSecureEntryConfirm => !prevIsSecureEntryConfirm,
@@ -45,15 +40,7 @@ const EnterPassword = ({navigation, route}) => {
   };
 
   const updateHandler = data => {
-    const {password, cnfPassword} = data;
-
-    if (password !== cnfPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
     setLoading(true);
-    console.log('This is data,email', data, email);
     axios
       .post(
         `${backend_url}/auth/reset/${code}`,
@@ -67,7 +54,6 @@ const EnterPassword = ({navigation, route}) => {
           },
         },
       )
-
       .then(response => {
         console.log(response.data);
         if (response.data.statuscode === 1) {
@@ -81,7 +67,6 @@ const EnterPassword = ({navigation, route}) => {
         alert('Somthing went wrong. Please, try again.');
       });
   };
-
   return (
     <View style={styles.container}>
       {loading ? <Loader /> : null}
@@ -153,6 +138,7 @@ const EnterPassword = ({navigation, route}) => {
             rules={{
               required: true,
               minLength: 8,
+              validate: value => value === watch('password'),
             }}
           />
           {isSecureEntryConfirm ? (
@@ -178,6 +164,9 @@ const EnterPassword = ({navigation, route}) => {
               Password should consists of minimum 8 characters.
             </Text>
           )}
+          {errors.cnfPassword && errors.cnfPassword.type === 'validate' && (
+            <Text style={styles.error}>Passwords didn't matched.</Text>
+          )}
         </View>
         <TouchableOpacity
           onPress={handleSubmit(updateHandler)}
@@ -190,7 +179,6 @@ const EnterPassword = ({navigation, route}) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -242,5 +230,4 @@ const styles = StyleSheet.create({
     color: theme.colors.red,
   },
 });
-
 export default EnterPassword;
