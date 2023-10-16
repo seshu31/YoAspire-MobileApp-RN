@@ -153,7 +153,6 @@ const OTP = ({route, navigation}) => {
       });
 
       if (response.data.statuscode === 1) {
-        console.log('this is data', response);
         setLoading(false);
         navigation.setParams({email: null});
         if (route.params && route.params.reset) {
@@ -164,18 +163,11 @@ const OTP = ({route, navigation}) => {
             email: email,
           });
         } else {
-          console.log('This is token', response.data.token);
           if (response.data.statuscode === 1) {
             navigation.navigate('login', {
               message: 'Verification successful. Please, Login to continue',
             });
           }
-          response.data.token
-            ? AsyncStorage.setItem('token', response.data.token)
-            : Alert.alert('no token found');
-          navigation.navigate('login', {
-            message: 'Verification successful. Please, Login to continue',
-          });
         }
       } else {
         setLoading(false);
@@ -229,10 +221,7 @@ const OTP = ({route, navigation}) => {
           <Text style={styles.timerText}>Resend otp in {timer} seconds</Text>
         )}
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={verifyOtp}
-        disabled={!otpArray.every(item => item > 0)}
-        activeOpacity={0.5}>
+      <TouchableOpacity onPress={verifyOtp} activeOpacity={0.5}>
         <View
           style={[
             styles.submitButton,
