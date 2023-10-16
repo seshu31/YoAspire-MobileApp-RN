@@ -22,6 +22,7 @@ const EnterPassword = ({navigation, route}) => {
     control,
     handleSubmit,
     formState: {errors},
+    watch,
   } = useForm({
     defaultValues: {
       password: '',
@@ -44,6 +45,13 @@ const EnterPassword = ({navigation, route}) => {
   };
 
   const updateHandler = data => {
+    const {password, cnfPassword} = data;
+
+    if (password !== cnfPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
     console.log('This is data,email', data, email);
     axios
@@ -70,7 +78,6 @@ const EnterPassword = ({navigation, route}) => {
         }
       })
       .catch(err => {
-        console.log(err);
         alert('Somthing went wrong. Please, try again.');
       });
   };
@@ -97,7 +104,10 @@ const EnterPassword = ({navigation, route}) => {
                 placeholderTextColor={'lightgrey'}
               />
             )}
-            rules={{required: true, minLength: 8}}
+            rules={{
+              required: true,
+              minLength: 8,
+            }}
           />
           {isSecureEntry ? (
             <TouchableOpacity

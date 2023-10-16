@@ -51,11 +51,13 @@ const Login = ({navigation, route}) => {
             },
           },
         );
-        console.log('ya');
 
         if (response.data.token) {
           await AsyncStorage.setItem('userToken', response.data.token);
-          await AsyncStorage.setItem('userId', response.data.userid.toString());
+          await AsyncStorage.setItem(
+            'userId',
+            response.data.user_id.toString(),
+          );
           setLoading(false);
           navigation.navigate('index');
           return true;
