@@ -148,7 +148,8 @@ const DetailedArticle = ({navigation, route}) => {
             </View>
           ) : null}
 
-          {article.Date_of_Event !== null && article.Date_of_Event !== '' ? (
+          {typeof article.Date_of_Event !== 'undefined' &&
+          article.Date_of_Event !== '' ? (
             <View>
               <Text style={styles.heading}>Event On:</Text>
               <Text style={[styles.postTime]}>

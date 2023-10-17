@@ -7,38 +7,115 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Platform,
   Alert,
 } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Textarea from 'react-native-textarea';
 import {useForm, Controller} from 'react-hook-form';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import normalize from 'react-native-normalize';
 import theme from '../../theme';
 import CameraOptionsModal from '../reusables/CameraOptionsModal';
+import backend_url from '../../config';
+import DatePicker from 'react-native-date-picker';
 
-const CreatePost = () => {
+const CreatePost = ({handleFetch, handleCreatePost}) => {
   const navigation = useNavigation();
   const route = useRoute();
+  var post = false;
+  if (route.params && route.params.post) {
+    post = route.params.post;
+    var dateofevent = new Date(route.params.post.Date_of_Event);
+    var timeofevent = new Date(route.params.post.Time_of_Event);
+    let [hours, minutes, seconds] = route.params.post.Time_of_Event.split(':');
+    dateofevent.setHours(+hours);
+    dateofevent.setMinutes(minutes);
+    dateofevent.setSeconds(seconds);
+  }
+  const [loading, setLoading] = useState(() => false);
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
-  var post = false;
-  const [category, setCategory] = useState(() =>
-    post ? post.Category_Type : 'article',
-  );
   const [visibility, setVisibility] = useState(() =>
     post ? post.Visibility : 0,
   );
+  const [category, setCategory] = useState(() =>
+    post ? post.Category_Type : 'article',
+  );
+  const [date, setDate] = useState(post ? new Date(dateofevent) : null);
+  const [time, setTime] = useState(post ? new Date(timeofevent) : null);
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
   const [image, setImage] = useState(() => (post ? post.Image : null));
-  const [showCameraOptions, setShowCameraOptions] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const handleSubmitPost = data => {
-    console.log(data, visibility, category);
+  useEffect(() => {
+    const unmount = () => {
+      navigation.setParams({group: null, id: null, post: null});
+    };
+    return unmount;
+  }, []);
+
+  const getToken = async () => {
+    try {
+      return await AsyncStorage.getItem('userToken');
+    } catch (error) {
+      Alert.alert('Something went wrong');
+    }
+  };
+
+  const handleSubmitPost = async data => {
+    const user_id = await AsyncStorage.getItem('userId');
+    setLoading(true);
+    let formdata = new FormData();
+    formdata.description = data.description;
+    formdata.timestamp = new Date().toISOString();
+    formdata.visibility = visibility;
+    formdata.category_type = data.title;
+    formdata.dateofevent = date.toISOString();
+    formdata.time_of_event = date.toLocaleTimeString();
+    formdata.by = user_id;
+    formdata.brief = data.brief;
+    formdata.hashtags = data.hashtags;
+    formdata.link = data.link;
+    formdata.organiser = data.organiser;
+    formdata.job_type = data.job_type;
+    formdata.location = data.location;
+    if (data.brief) {
+      formdata.brief = data.brief;
+    }
+    if (data.hashtags) {
+      formdata.hashtags = data.hashtags;
+    }
+    if (category !== 'article') {
+      formdata.organiser = data.organiser;
+      formdata.link = data.link;
+    }
+    if (category === 'job') {
+      formdata.job_type = data.job_type;
+      formdata.location = data.location;
+    }
+    if (image) {
+      let filename = image.split('/').pop();
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      formdata.image = {
+        uri: image,
+        name: filename.slice(-10),
+        type,
+      };
+    } else formdata.image = '';
+    if (route.params && route.params.id) {
+      formdata.append('groupid', route.params.id);
+    }
   };
 
   const handeleVisibility = data => {
@@ -49,26 +126,27 @@ const CreatePost = () => {
     setCategory(data);
   };
 
+  const onDateChange = selectedDate => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const onTimeChange = selectedTime => {
+    const currentTime = selectedTime || date;
+    setShowTimePicker(Platform.OS === 'ios');
+    setTime(currentTime);
+  };
+
+  const showDatepicker = () => {
+    setShowDatePicker(true);
+  };
+
+  const showTimepicker = () => {
+    setShowTimePicker(true);
+  };
+
   const deleteHandler = () => {
-    // setLoading(true);
-    // getToken().then(token => {
-    //   axios
-    //     .delete(`${backend_url}/post/${post.PostId}`, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     })
-    //     .then(response => {
-    //       setLoading(false);
-    //       alert('Post deleted successfully');
-    //       navigation.navigate('Home');
-    //     })
-    //     .catch(err => {
-    //       setLoading(false);
-    //       alert('Something went wrong. Please, Try again');
-    //       navigation.navigate('Home');
-    //     });
-    // });
     console.log('deleted');
   };
 
@@ -89,6 +167,7 @@ const CreatePost = () => {
   // Function to handle image selection
   const imageHandler = async () => {
     // setShowCameraOptions(true);
+    console.log('image handler');
   };
 
   return (
@@ -123,11 +202,7 @@ const CreatePost = () => {
           </>
         )}
       </View>
-      <ScrollView
-        contentContainerStyle={[
-          styles.postForm,
-          // {opacity: loading ? 0.25 : 1},
-        ]}>
+      <ScrollView contentContainerStyle={[styles.postForm]}>
         {route.params && route.params.group && !post ? (
           <Text style={styles.groupText}>
             You're creating posts in {route.params.group} group
@@ -174,8 +249,8 @@ const CreatePost = () => {
           prompt="Visibility Status"
           style={styles.picker}
           dropdownIconColor={theme.colors.black}>
-          <Picker.Item label="Public" value="Public" />
-          <Picker.Item label="Connections" value="Connections" />
+          <Picker.Item label="Public" value="0" />
+          <Picker.Item label="Connections" value="1" />
         </Picker>
         <View style={styles.horizontalLine} />
         <Text style={styles.dropdownLabel}>Category</Text>
@@ -244,27 +319,193 @@ const CreatePost = () => {
             Brief should consists maximum of 50 characters.
           </Text>
         )}
-        {/* {category !== 'article' ? ( */}
-        <Controller
-          control={control}
-          name="link"
-          defaultValue={post ? post.Link : ''}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              placeholder="Link"
-              style={styles.textField}
-              onBlur={onBlur}
-              onChangeText={value => onChange(value)}
-              value={value}
-              placeholderTextColor={theme.colors.placeholdercolor}
-            />
-          )}
-          rules={{
-            required: true,
-            maxLength: 200,
-          }}
-        />
-        {/* ) : null} */}
+
+        <View style={styles.datePicker}>
+          <View style={styles.date}>
+            <View style={styles.dateTime}>
+              <Text style={styles.dateTimeText}>
+                {date != null ? (
+                  `${
+                    date.getDate().toString().length === 1
+                      ? '0' + date.getDate()
+                      : date.getDate()
+                  } - ${
+                    (date.getMonth() + 1).toString().length === 1
+                      ? '0' + (date.getMonth() + 1)
+                      : date.getMonth() + 1
+                  } - ${date.getFullYear()}`
+                ) : (
+                  <Text style={styles.placeholderText}>Select Date*</Text>
+                )}
+              </Text>
+              {showDatePicker && (
+                <DatePicker
+                  modal={true}
+                  open={showDatePicker}
+                  date={date ? date : new Date()}
+                  format="DD/MM/YYYY"
+                  mode="date"
+                  androidVariant="nativeAndroid"
+                  onConfirm={onDateChange}
+                  onCancel={onDateChange}
+                  maximumDate={new Date()}
+                />
+              )}
+
+              <TouchableOpacity onPress={showDatepicker} activeOpacity={0.5}>
+                <Ionicons
+                  name="calendar-outline"
+                  size={normalize(theme.iconSizes.large)}
+                  color={theme.colors.darkgrey}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.time}>
+            <View style={styles.dateTime}>
+              <Text style={styles.dateTimeText}>
+                {time != null ? (
+                  `${
+                    time.getHours().toString().length === 1
+                      ? '0' + time.getHours()
+                      : time.getHours()
+                  } : ${
+                    time.getMinutes().toString().length === 1
+                      ? '0' + time.getMinutes()
+                      : time.getMinutes()
+                  }`
+                ) : (
+                  <Text style={styles.placeholderText}>Select Time*</Text>
+                )}
+              </Text>
+              <TouchableOpacity onPress={showTimepicker} activeOpacity={0.5}>
+                <Ionicons
+                  name="time-outline"
+                  size={normalize(theme.iconSizes.large)}
+                  color={theme.colors.darkgrey}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        {showTimePicker && (
+          <DatePicker
+            modal={true}
+            open={showTimePicker}
+            date={date ? date : new Date()}
+            format="DD/MM/YYYY"
+            is24hourSource="locale"
+            locale={'en_GB'}
+            mode="time"
+            androidVariant="nativeAndroid"
+            onConfirm={onTimeChange}
+            onCancel={onTimeChange}
+            maximumDate={new Date()}
+          />
+        )}
+
+        {category !== 'article' ? (
+          <Controller
+            control={control}
+            name="organiser"
+            defaultValue={post ? post.Organiser : ''}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="Organiser"
+                style={[styles.textField, {marginTop: 0}]}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                placeholderTextColor={theme.colors.placeholdercolor}
+              />
+            )}
+            rules={{
+              required: true,
+              maxLength: 40,
+            }}
+          />
+        ) : null}
+        {errors.organiser && errors.organiser.type === 'required' && (
+          <Text style={styles.errorText}>Organiser field is required.</Text>
+        )}
+        {errors.organiser && errors.organiser.type === 'maxLength' && (
+          <Text style={styles.errorText}>
+            Organiser should consists maximum of 40 characters.
+          </Text>
+        )}
+        {category === 'job' ? (
+          <Controller
+            control={control}
+            name="jobtype"
+            defaultValue={post ? post.Job_Type : ''}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="Job Type"
+                style={styles.textField}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                placeholderTextColor={theme.colors.placeholdercolor}
+              />
+            )}
+            rules={{
+              required: true,
+              maxLength: 20,
+            }}
+          />
+        ) : null}
+        {errors.jobtype && errors.jobtype.type === 'required' && (
+          <Text style={styles.errorText}>Job Type field is required.</Text>
+        )}
+        {errors.jobtype && errors.jobtype.type === 'maxLength' && (
+          <Text style={styles.errorText}>
+            Job Type should consists maximum of 20 characters.
+          </Text>
+        )}
+        {category === 'job' ? (
+          <Controller
+            control={control}
+            name="location"
+            defaultValue={post ? post.Location : ''}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="Location"
+                style={styles.textField}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                placeholderTextColor={theme.colors.placeholdercolor}
+              />
+            )}
+            rules={{
+              required: true,
+            }}
+          />
+        ) : null}
+        {errors.location && errors.location.type === 'required' && (
+          <Text style={styles.errorText}>Location field is required.</Text>
+        )}
+        {category !== 'article' ? (
+          <Controller
+            control={control}
+            name="link"
+            defaultValue={post ? post.Link : ''}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                placeholder="Link"
+                style={styles.textField}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                value={value}
+                placeholderTextColor={theme.colors.placeholdercolor}
+              />
+            )}
+            rules={{
+              required: true,
+              maxLength: 200,
+            }}
+          />
+        ) : null}
         {errors.link && errors.link.type === 'required' && (
           <Text style={styles.errorText}>Link field is required.</Text>
         )}
@@ -279,7 +520,7 @@ const CreatePost = () => {
           defaultValue={post ? post.Hashtags : ''}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              placeholder="Multiple Hash Tags should be seperated by comma"
+              placeholder="Multiple Hash Tags (seperated by comma)"
               style={styles.textField}
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
@@ -315,20 +556,44 @@ const CreatePost = () => {
             <Text style={styles.deleteButton}>Delete the Post</Text>
           </TouchableOpacity>
         ) : null}
-        <CameraOptionsModal
+        {/* <CameraOptionsModal
           showCameraOptions={showCameraOptions}
           setShowCameraOptions={setShowCameraOptions}
-        />
+        /> */}
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  errorText: {color: 'red'},
+  datePicker: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.border,
+  },
+  date: {
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  dateTime: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: normalize(theme.spacing.small),
+    alignItems: 'center',
+  },
+  dateTimeText: {
+    fontSize: normalize(theme.fontSizes.medium),
+    color: theme.colors.black,
+  },
+  errorText: {
+    color: theme.colors.red,
+  },
+  placeholderText: {
+    color: theme.colors.placeholdercolor,
+  },
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
+    paddingBottom: theme.spacing.small,
   },
   header: {
     borderBottomWidth: 1,
@@ -367,13 +632,13 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.grey,
   },
   textareaField: {
-    textAlignVertical: 'top', // hack android
+    textAlignVertical: 'top',
     paddingVertical: normalize(theme.spacing.small),
     fontSize: normalize(theme.fontSizes.medium),
     color: theme.colors.black,
   },
   dropdownLabel: {
-    paddingTop: normalize(theme.spacing.large),
+    paddingTop: normalize(theme.spacing.medium),
     fontSize: normalize(theme.fontSizes.small),
     color: theme.colors.primary,
   },
@@ -383,7 +648,6 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   textField: {
-    marginTop: normalize(theme.spacing.small),
     paddingVertical: normalize(theme.spacing.small),
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.grey,
