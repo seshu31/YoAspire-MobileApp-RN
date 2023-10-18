@@ -52,7 +52,7 @@ const Register = ({navigation}) => {
       first_name: firstName.trim(),
       last_name: lastName.trim(),
       username: username.trim(),
-      role: 'user',
+      role: 'User',
     };
     console.log(JSON.stringify(payload), 'handleRegister function');
 

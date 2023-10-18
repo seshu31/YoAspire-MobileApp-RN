@@ -23,6 +23,9 @@ import theme from '../../theme';
 import CameraOptionsModal from '../reusables/CameraOptionsModal';
 import backend_url from '../../config';
 import DatePicker from 'react-native-date-picker';
+import {tokens} from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
+import Loader from '../reusables/Loader';
+import {articlesData} from '../PostProfileData';
 
 const CreatePost = ({handleFetch, handleCreatePost}) => {
   const navigation = useNavigation();
@@ -56,16 +59,22 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
   const [image, setImage] = useState(() => (post ? post.Image : null));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [dateErr, setDateErr] = useState(false);
+  const [timeErr, setTimeErr] = useState(false);
 
   useEffect(() => {
+    // handleCreatePost(true);
     const unmount = () => {
       navigation.setParams({group: null, id: null, post: null});
+      // handleCreatePost(false);
     };
     return unmount;
   }, []);
 
   const getToken = async () => {
     try {
+      const au = await AsyncStorage.getItem('userToken');
+      console.log(au);
       return await AsyncStorage.getItem('userToken');
     } catch (error) {
       Alert.alert('Something went wrong');
@@ -73,49 +82,99 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
   };
 
   const handleSubmitPost = async data => {
+    if (date == null || time == null) {
+      date == null ? setDateErr(true) : setTimeErr(true);
+      setLoading(false);
+      return;
+    }
     const user_id = await AsyncStorage.getItem('userId');
     setLoading(true);
-    let formdata = new FormData();
-    formdata.description = data.description;
-    formdata.timestamp = new Date().toISOString();
-    formdata.visibility = visibility;
-    formdata.category_type = data.title;
-    formdata.dateofevent = date.toISOString();
-    formdata.time_of_event = date.toLocaleTimeString();
-    formdata.by = user_id;
-    formdata.brief = data.brief;
-    formdata.hashtags = data.hashtags;
-    formdata.link = data.link;
-    formdata.organiser = data.organiser;
-    formdata.job_type = data.job_type;
-    formdata.location = data.location;
+    let payload = {};
+    payload.timestamp = new Date().toISOString();
+    payload.description = data.description;
+    payload.visibility = visibility;
+    payload.category_type = category;
+    payload.brief = data.brief;
+    payload.heading = data.title;
+    payload.by = user_id;
+    payload.body = 'sample Body';
+
     if (data.brief) {
-      formdata.brief = data.brief;
+      payload.brief = data.brief;
     }
     if (data.hashtags) {
-      formdata.hashtags = data.hashtags;
+      payload.tags = [data.hashtags];
     }
     if (category !== 'article') {
-      formdata.organiser = data.organiser;
-      formdata.link = data.link;
+      payload.organiser = data.organiser;
+      payload.link = data.link;
     }
     if (category === 'job') {
-      formdata.job_type = data.job_type;
-      formdata.location = data.location;
+      payload.job_type = data.job_type;
+      payload.location = data.location;
     }
     if (image) {
       let filename = image.split('/').pop();
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
-      formdata.image = {
+      payload.image = {
         uri: image,
         name: filename.slice(-10),
         type,
       };
-    } else formdata.image = '';
-    if (route.params && route.params.id) {
-      formdata.append('groupid', route.params.id);
     }
+    if (route.params && route.params.id) {
+      payload.groupid = route.params.id;
+    }
+    console.log('payload', payload);
+
+    getToken().then(token => {
+      post
+        ? axios
+            .put(`${backend_url}/post/${post.PostId}`, payload, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-type': 'multipart/form-data',
+              },
+            })
+            .then(response => {
+              if (response.data.statuscode === 1) {
+                setLoading(false);
+                handleFetch();
+                navigation.navigate('article', {
+                  PostId: post.PostId,
+                });
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              setLoading(false);
+              alert('Something went wrong. Please, Try again');
+            })
+        : axios
+            .post(`${backend_url}/post`, payload, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-type': 'multipart/form-data',
+              },
+            })
+            .then(response => {
+              if (response.data.statuscode === 1) {
+                setLoading(false);
+                alert('Post Created Successfully');
+                handleFetch();
+                route.params && route.params.id
+                  ? navigation.navigate('group', {
+                      id: route.params.id,
+                    })
+                  : navigation.navigate('Home');
+              }
+            })
+            .catch(err => {
+              setLoading(false);
+              alert('Something went wrong. Please, Try again');
+            });
+    });
   };
 
   const handeleVisibility = data => {
@@ -147,6 +206,25 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
   };
 
   const deleteHandler = () => {
+    setLoading(true);
+    getToken().then(token => {
+      axios
+        .delete(`${backend_url}/post/${post.PostId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(response => {
+          setLoading(false);
+          alert('Post deleted successfully');
+          navigation.navigate('Home');
+        })
+        .catch(err => {
+          setLoading(false);
+          alert('Something went wrong. Please, Try again');
+          navigation.navigate('Home');
+        });
+    });
     console.log('deleted');
   };
 
@@ -172,6 +250,7 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
 
   return (
     <View style={styles.container}>
+      {loading ? <Loader /> : null}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -348,10 +427,9 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
                   androidVariant="nativeAndroid"
                   onConfirm={onDateChange}
                   onCancel={onDateChange}
-                  maximumDate={new Date()}
+                  minimumDate={new Date()}
                 />
               )}
-
               <TouchableOpacity onPress={showDatepicker} activeOpacity={0.5}>
                 <Ionicons
                   name="calendar-outline"
@@ -361,6 +439,9 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
               </TouchableOpacity>
             </View>
           </View>
+          {dateErr && date == null ? (
+            <Text style={styles.errorText}>Date Field is required</Text>
+          ) : null}
           <View style={styles.time}>
             <View style={styles.dateTime}>
               <Text style={styles.dateTimeText}>
@@ -388,6 +469,9 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
             </View>
           </View>
         </View>
+        {timeErr && time == null ? (
+          <Text style={styles.errorText}>Time Field is required</Text>
+        ) : null}
         {showTimePicker && (
           <DatePicker
             modal={true}
@@ -400,7 +484,7 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
             androidVariant="nativeAndroid"
             onConfirm={onTimeChange}
             onCancel={onTimeChange}
-            maximumDate={new Date()}
+            minimumDate={new Date()}
           />
         )}
 
@@ -520,7 +604,7 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
           defaultValue={post ? post.Hashtags : ''}
           render={({field: {onChange, onBlur, value}}) => (
             <TextInput
-              placeholder="Multiple Hash Tags (seperated by comma)"
+              placeholder="Multiple Hash Tags(seperated by comma)"
               style={styles.textField}
               onBlur={onBlur}
               onChangeText={value => onChange(value)}
@@ -622,7 +706,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
   },
   groupText: {
-    color: 'orange',
+    color: '#FFA500',
     fontSize: normalize(theme.fontSizes.medium),
     paddingTop: normalize(theme.spacing.medium),
     alignSelf: 'center',
@@ -638,7 +722,7 @@ const styles = StyleSheet.create({
     color: theme.colors.black,
   },
   dropdownLabel: {
-    paddingTop: normalize(theme.spacing.medium),
+    paddingTop: normalize(theme.spacing.large),
     fontSize: normalize(theme.fontSizes.small),
     color: theme.colors.primary,
   },
