@@ -40,7 +40,7 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
     dateofevent.setMinutes(minutes);
     dateofevent.setSeconds(seconds);
   }
-  const [loading, setLoading] = useState(() => false);
+  const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -74,7 +74,6 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
   const getToken = async () => {
     try {
       const au = await AsyncStorage.getItem('userToken');
-      console.log(au);
       return await AsyncStorage.getItem('userToken');
     } catch (error) {
       Alert.alert('Something went wrong');
@@ -97,13 +96,12 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
     payload.brief = data.brief;
     payload.heading = data.title;
     payload.by = user_id;
-    payload.body = 'sample Body';
 
     if (data.brief) {
       payload.brief = data.brief;
     }
     if (data.hashtags) {
-      payload.tags = [data.hashtags];
+      payload.hashtags = [data.hashtags];
     }
     if (category !== 'article') {
       payload.organiser = data.organiser;
@@ -126,7 +124,6 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
     if (route.params && route.params.id) {
       payload.groupid = route.params.id;
     }
-    console.log('payload', payload);
 
     getToken().then(token => {
       post
@@ -147,7 +144,6 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
               }
             })
             .catch(err => {
-              console.log(err);
               setLoading(false);
               alert('Something went wrong. Please, Try again');
             })
@@ -225,7 +221,6 @@ const CreatePost = ({handleFetch, handleCreatePost}) => {
           navigation.navigate('Home');
         });
     });
-    console.log('deleted');
   };
 
   const dialogHandler = () =>

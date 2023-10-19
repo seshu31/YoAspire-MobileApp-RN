@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import normalize from 'react-native-normalize';
@@ -8,14 +9,13 @@ import CommentCard from './CommentCard';
 import ProfilePicture from '../reusables/profilePic';
 import getRandomColor from '../reusables/randomColor';
 
-const DashboardArticle = ({articles, navigation}) => {
-  const [liked, setLiked] = useState(() =>
-    articles?.Active === 1 ? true : false,
-  );
+const DashboardArticle = ({articles, navigation, item}) => {
+  console.log('This is item', item);
+  const [liked, setLiked] = useState(() => (item?.Active === 1 ? true : false));
   // console.log('Image Source:', articles);
   const [commentCount, setCommentCount] = useState(10);
 
-  const [likeCount, setLikeCount] = useState(() => articles?.No_of_Likes);
+  const [likeCount, setLikeCount] = useState(() => item?.likes);
   const likeHandler = () => {
     // Toggle the liked state locally
     setLiked(prevValue => !prevValue);
@@ -24,7 +24,7 @@ const DashboardArticle = ({articles, navigation}) => {
     setLikeCount(prevValue => (liked ? prevValue - 1 : prevValue + 1));
   };
 
-  const postedFormattedTime = formatTimeAgo(articles?.PostedOn);
+  const postedFormattedTime = formatTimeAgo(item?.timestamp);
 
   // Function to format the time difference
   function formatTimeAgo(postedTime) {
@@ -49,8 +49,24 @@ const DashboardArticle = ({articles, navigation}) => {
     }
   }
 
+  const getToken = async () => {
+    try {
+      return await AsyncStorage.getItem('userToken');
+    } catch (error) {
+      alert('Something went wrong');
+    }
+  };
+
+  if (item == null) {
+    return (
+      <View style={styles.container}>
+        <Text>No posts</Text>
+      </View>
+    );
+  }
+
   const fetchArticle = () => {
-    if (articles?.Category_Type === 'article') {
+    if (item?.category_type === 'article') {
       return (
         <View style={styles.articleItem}>
           <View style={styles.writerInfo}>
@@ -68,8 +84,8 @@ const DashboardArticle = ({articles, navigation}) => {
                 }
               /> */}
               <ProfilePicture
-                firstName={articles?.First_Name}
-                lastName={articles?.Last_Name}
+                firstName={item?.first_name}
+                lastName={item?.last_name}
                 style={{
                   backgroundColor: getRandomColor(),
                 }}
@@ -77,7 +93,7 @@ const DashboardArticle = ({articles, navigation}) => {
             </View>
             <View style={styles.writerDesc}>
               <Text style={styles.writerName} numberOfLines={1}>
-                {articles.First_Name} {articles.Last_Name}
+                {item.first_name} {item.last_name}
               </Text>
               <View style={styles.postedOn}>
                 <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
@@ -92,41 +108,49 @@ const DashboardArticle = ({articles, navigation}) => {
           </View>
           <View style={styles.articleTitle}>
             <Text style={styles.titleText} numberOfLines={1}>
-              {articles.Title}
+              {item.heading}
             </Text>
           </View>
           <View style={styles.articleDesc}>
             <Text style={styles.descriptionText} numberOfLines={3}>
-              {articles.Description}
+              {item.description}
             </Text>
           </View>
           <View style={styles.articleImage}>
-            <Image
+            {/* <Image
               style={styles.postImage}
               source={
                 articles.Image
-                  ? {uri: articles.Image}
+                  ? {uri: item.image}
                   : require('../../assets/pic2.png')
               }
+            /> */}
+            <Image
+              style={styles.postImage}
+              source={require('../../assets/pic2.png')}
             />
           </View>
         </View>
       );
-    } else if (articles?.Category_Type === 'job') {
+    } else if (item?.category_type === 'job') {
       return (
         <View style={styles.jobItem}>
           <View>
-            <Image
+            {/* <Image
               style={styles.jobImage}
               source={
                 articles.Image
                   ? {uri: articles.Image}
                   : require('../../assets/pic2.png')
               }
+            /> */}
+            <Image
+              style={styles.jobImage}
+              source={require('../../assets/pic2.png')}
             />
           </View>
           <View style={styles.jobDetails}>
-            <Text style={styles.jobTitle}>{articles.Title}</Text>
+            <Text style={styles.jobTitle}>{item.heading}</Text>
             <View style={styles.postedOn}>
               <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
               <Text style={styles.dot}>{'\u2B24'}</Text>
@@ -136,17 +160,17 @@ const DashboardArticle = ({articles, navigation}) => {
                 color={theme.colors.level2}
               />
             </View>
-            <Text style={styles.jobType}>{articles.Job_Type}</Text>
-            <Text style={styles.jobOrganiser}>{articles.Organiser}</Text>
-            <Text style={styles.jobLocation}>{articles.Location}</Text>
+            <Text style={styles.jobType}>{item.job}</Text>
+            <Text style={styles.jobOrganiser}>{item.organiser}</Text>
+            <Text style={styles.jobLocation}>{item.location}</Text>
           </View>
         </View>
       );
-    } else if (articles?.Category_Type === 'webinar') {
+    } else if (item?.category_type === 'webinar') {
       return (
         <View style={styles.webinarItem}>
           <Text style={styles.webinarText}>Webinar</Text>
-          <Text style={styles.webinarTitle}>{articles.Title}</Text>
+          <Text style={styles.webinarTitle}>{item.heading}</Text>
           <View style={styles.postedOn}>
             <Text style={styles.postedOnText}>{postedFormattedTime}</Text>
             <Text style={styles.dot}>{'\u2B24'}</Text>
@@ -156,15 +180,19 @@ const DashboardArticle = ({articles, navigation}) => {
               color={theme.colors.level2}
             />
           </View>
-          <Text style={styles.webinarOrganiser}>{articles.Organiser}</Text>
-          <Text style={styles.webinarBrief}>{articles.Brief}</Text>
-          <Image
+          <Text style={styles.webinarOrganiser}>{item.organiser}</Text>
+          <Text style={styles.webinarBrief}>{item.brief}</Text>
+          {/* <Image
             style={styles.webinarImage}
             source={
               articles.Image
                 ? {uri: articles.Image}
                 : require('../../assets/pic3.jpg')
             }
+          /> */}
+          <Image
+            style={styles.webinarImage}
+            source={require('../../assets/pic3.jpg')}
           />
         </View>
       );

@@ -88,12 +88,16 @@ const Profile = ({navigation, route}) => {
   }
 
   const logoutHandler = async () => {
+    console.log('logout', route.params);
     try {
       await AsyncStorage.removeItem('userToken');
       await AsyncStorage.removeItem('userId');
-      // route.params.loginHandler(false);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'register'}],
+      });
     } catch (error) {
-      Alert.alert('Logout unsuccessful', 'user id, userToken not found');
+      Alert.alert('Logout unsuccessful');
     }
   };
 

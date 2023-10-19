@@ -16,6 +16,7 @@ import backend_url from '../../config';
 import Loader from '../reusables/Loader';
 import theme from '../../theme';
 import normalize from 'react-native-normalize';
+import {useNavigation} from '@react-navigation/native';
 
 const Login = ({navigation, route}) => {
   const {
@@ -30,6 +31,7 @@ const Login = ({navigation, route}) => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [emailAdd, setEmailAdd] = useState('');
   const [loading, setLoading] = useState(false);
+  // const navigation = useNavigation();
 
   const togglePasswordType = () => {
     setIsSecureEntry(prevIsSecureEntry => !prevIsSecureEntry);
@@ -59,7 +61,10 @@ const Login = ({navigation, route}) => {
             response.data.user_id.toString(),
           );
           setLoading(false);
-          navigation.navigate('index');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'index'}],
+          });
           return true;
         } else if (response.data.statuscode === 0) {
           setLoading(false);
